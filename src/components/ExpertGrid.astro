@@ -1,0 +1,49 @@
+---
+import ExpertCard from './ExpertCard.astro';
+import ExpertDialog from './ExpertDialog.astro';
+import { hasDetail, type Expert } from '../data/experts';
+
+interface Props {
+  experts: Expert[];
+  /** id of the sector lead (rendered first, emphasised). */
+  leadId?: string;
+}
+const { experts, leadId } = Astro.props;
+const ordered = leadId
+  ? [...experts.filter((e) => e.id === leadId), ...experts.filter((e) => e.id !== leadId)]
+  : experts;
+---
+
+<ul class="expert-grid" role="list" data-reveal-group>
+  {ordered.map((e) => (
+    <ExpertCard expert={e} lead={e.id === leadId} />
+  ))}
+</ul>
+<div class="expert-dialogs">
+  {ordered.filter(hasDetail).map((e) => (
+    <ExpertDialog expert={e} />
+  ))}
+</div>
+
+<style>
+  .expert-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--gutter);
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (max-width: 1023px) {
+    .expert-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 767px) {
+    .expert-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-3);
+    }
+  }
+</style>

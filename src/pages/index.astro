@@ -1,0 +1,593 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import Statement from '../components/Statement.astro';
+import SectionIndex from '../components/SectionIndex.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import StatRow from '../components/StatRow.astro';
+import ServiceList from '../components/ServiceList.astro';
+import SectorGrid from '../components/SectorGrid.astro';
+import PullQuote from '../components/PullQuote.astro';
+import QualityStepper from '../components/QualityStepper.astro';
+import CertBadges from '../components/CertBadges.astro';
+import ProjectFilter from '../components/ProjectFilter.astro';
+import ExpertGrid from '../components/ExpertGrid.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import Picture from '../components/Picture.astro';
+
+import { homeStats } from '../data/stats';
+import { services } from '../data/services';
+import { projects } from '../data/projects';
+import { featuredExperts, getExpert } from '../data/experts';
+import { site } from '../data/site';
+import { getLiveSectors } from '../lib/sectors';
+import { url } from '../lib/url';
+
+import melbourne from '../assets/images/locations/melbourne-yarra-skyline.jpg';
+
+const sectors = await getLiveSectors();
+const md = getExpert(site.primaryContact);
+
+const index = [
+  { id: 'about', label: 'About us' },
+  { id: 'services', label: 'Services' },
+  { id: 'sectors', label: 'Sectors' },
+  { id: 'strategy', label: 'Strategy' },
+  { id: 'quality', label: 'Quality' },
+  { id: 'track-record', label: 'Track record' },
+  { id: 'experts', label: 'Experts' },
+  { id: 'contact', label: 'Contact' },
+];
+---
+
+<BaseLayout>
+  <Hero />
+  <SectionIndex items={index} />
+  <Statement />
+
+  <!-- 01 · About -->
+  <section class="section about" data-surface="white" id="about" aria-labelledby="about-title">
+    <div class="container grid-12">
+      <header class="about__head">
+        <Eyebrow num="01">About us</Eyebrow>
+        <h2 class="t-h1 about__title" id="about-title" data-reveal="clip">
+          We’re industry leaders
+        </h2>
+      </header>
+      <div class="about__body">
+        <p class="t-lead about__lead" data-reveal>
+          We provide owners, investors, financiers and all levels of government with specialist property
+          investment advice, research and analysis reflecting real-time market conditions — giving our clients
+          the ability to navigate every market.
+        </p>
+        <div class="about__cols prose" data-reveal>
+          <p>
+            Colliers’ Valuation &amp; Advisory Services team delivers specialist property investment advice,
+            property research and market analysis to maximise the potential of property. From acquisition or
+            disposal, capital raising, first mortgage security and insurance to statutory and litigation
+            matters, we can deliver on every one of your real estate needs.
+          </p>
+          <p>
+            Our depth of experience over many decades, across market cycles and severe global shocks, combined
+            with an intricate understanding of the drivers of value, allows us to take a clear, decisive and
+            consistent position.
+          </p>
+          <p>
+            From a single commercial building to a portfolio of properties across the world, we use
+            industry-leading, quality assured systems and processes to ensure you receive the most accurate,
+            informed and knowledgeable service possible.
+          </p>
+          <p>
+            We invest in relationships to deliver enduring value. We are a long-term partner, looking beyond
+            immediate needs to build and grow our clients’ businesses.
+          </p>
+        </div>
+
+        <div class="about__pair" data-reveal-group>
+          <article class="about__card card" data-surface="pale" data-reveal>
+            <span class="about__card-icon" aria-hidden="true">
+              <Icon name="growth" />
+            </span>
+            <h3 class="t-h4">We are enterprising</h3>
+            <p class="t-small">
+              Our service offering spans from traditional valuation requirements to detailed and bespoke DCF
+              simulations and associated scenario analysis. We provide forensic analysis of the key value
+              driver components within occupier and capital market segments.
+            </p>
+          </article>
+          <article class="about__card card" data-surface="pale" data-reveal>
+            <span class="about__card-icon" aria-hidden="true">
+              <Icon name="building" />
+            </span>
+            <h3 class="t-h4">Colliers</h3>
+            <p class="t-small">
+              Colliers (NASDAQ, TSX: CIGI) is a leading diversified professional services and investment
+              management company. With operations in 70 countries, our 28,000+ enterprising professionals work
+              collaboratively to provide expert advice to maximise the value of property for real estate
+              occupiers, owners and investors. For more than 30 years, our experienced leadership, owning
+              approximately 40% of our equity, has delivered compound annual investment returns of almost 20%
+              for shareholders.
+            </p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key numbers -->
+  <section class="section section--tight numbers" data-surface="white" aria-label="Key numbers">
+    <div class="container">
+      <StatRow stats={homeStats} />
+    </div>
+  </section>
+
+  <!-- 02 · Services -->
+  <section class="section" data-surface="pale" id="services" aria-labelledby="services-title">
+    <div class="container">
+      <header class="section-head">
+        <Eyebrow num="02">Services</Eyebrow>
+        <h2 class="t-h1" id="services-title" data-reveal="clip">
+          Every real estate need, one team
+        </h2>
+        <p class="t-lead section-head__lead" data-reveal>
+          Eleven core services, delivered by specialists across every property sector.
+        </p>
+      </header>
+      <ServiceList services={services} sectors={sectors} />
+    </div>
+  </section>
+
+  <!-- 03 · Sectors -->
+  <section class="section" data-surface="white" id="sectors" aria-labelledby="sectors-title">
+    <div class="container">
+      <header class="section-head section-head--split">
+        <div>
+          <Eyebrow num="03">Sectors</Eyebrow>
+          <h2 class="t-h1" id="sectors-title" data-reveal="clip">
+            Specialists in every sector
+          </h2>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p class="t-body t-muted">
+            Our team of experts provides researched and thorough valuation advice across all property sectors.
+            Choose a sector to see its services, track record and specialists.
+          </p>
+          <a class="link-arrow" href={url('/sectors/')}>
+            <span>All sectors</span> <Icon name="arrow-right" />
+          </a>
+        </div>
+      </header>
+      <SectorGrid sectors={sectors} />
+    </div>
+  </section>
+
+  <!-- 04 · Strategy -->
+  <section class="section strategy" data-surface="white" id="strategy" aria-labelledby="strategy-title">
+    <div class="strategy__media" aria-hidden="true">
+      <Picture src={melbourne} alt="" sizes="100vw" widths={[800, 1400, 1835]} class="strategy__img" />
+    </div>
+    <div class="container grid-12 strategy__grid">
+      <div class="strategy__copy">
+        <Eyebrow num="04">Our strategy</Eyebrow>
+        <h2 class="t-h1" id="strategy-title" data-reveal="clip">
+          Best practice, by design
+        </h2>
+        <p class="t-lead strategy__lead" data-reveal>
+          By embracing best practice, teamwork, and quality assured systems and processes, we ensure our
+          clients receive the most accurate, informed, results-focused service possible.
+        </p>
+        <div class="prose" data-reveal>
+          <p>
+            We allocate the most appropriate, skilled resources to each assignment. With a team of over 50
+            specialists across all property sectors in Australia, we are well suited to multidisciplinary
+            tasks.
+          </p>
+          <p>
+            Our strength is our national services platform, which combines technology, market knowledge and
+            resources.
+          </p>
+        </div>
+        <article class="tech card" data-surface="pale" data-reveal>
+          <span class="tech__icon" aria-hidden="true">
+            <Icon name="report" />
+          </span>
+          <p class="eyebrow">Technology</p>
+          <h3 class="t-h3 tech__title">Industry-leading proprietary financial modelling</h3>
+          <p class="t-small">
+            Our commitment to technology is best demonstrated by our proprietary financial modelling platform.
+            It enables our team to work in real time and ensures accurate, timely and consistent advice.
+          </p>
+        </article>
+      </div>
+      <div class="strategy__quote" data-reveal>
+        <PullQuote
+          short="I worked with CIVAS managing a National Valuation Program for a Commonwealth Entity over a two-year period. During this time CIVAS provided sound advice not only in terms of individual Property Valuations, however also in providing advice as to how to improve the delivery of the Program for future years."
+          rest="The Valuation Report template adopted for the Program was tailored to meet client expectations, which assisted greatly in referring to the previous Valuations completed by CIVAS to indicate movements from the previous year."
+          name="Joseph Ripepi"
+          role="Account Manager, Whole of Australian Government Property, Broadspectrum"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · Quality -->
+  <section class="section quality" data-surface="pale" id="quality" aria-labelledby="quality-title">
+    <div class="container">
+      <div class="grid-12 quality__split">
+        <header class="quality__head">
+          <Eyebrow num="05">Quality assurance</Eyebrow>
+          <h2 class="t-h1" id="quality-title" data-reveal="clip">
+            Colliers Assure
+          </h2>
+          <p class="t-lead quality__lead" data-reveal>
+            Quality assurance has been a cornerstone of our Valuation &amp; Advisory business for more than 25
+            years.
+          </p>
+        </header>
+        <div class="quality__body prose" data-reveal>
+          <p>
+            Our approach to Risk Management &amp; Valuation Standards ensures our procedures deliver the
+            highest quality service and advice — and drive continuous improvement.
+          </p>
+          <p>
+            Colliers Assure is Colliers’ unique, externally audited and certified risk management and quality
+            assurance methodology. All valuations and advice undergo a comprehensive, multi-stage peer-review
+            process. Certified professionals critique every stage, from initial contract agreement through to
+            service delivery.
+          </p>
+          <p>
+            We develop a detailed understanding of our clients’ requirements, identify and consider any
+            potential risk, and review industry intelligence before formalising instructions. All calculations
+            and advice are reviewed and verified, external sources are referenced, and all risk issues are
+            resolved before the valuation or advice is released.
+          </p>
+        </div>
+      </div>
+
+      <div class="quality__stepper">
+        <QualityStepper />
+      </div>
+
+      <div class="grid-12 quality__foot">
+        <p class="quality__audit" data-reveal>
+          Colliers Assure is embedded in our quality management system, which is externally audited by the
+          Royal Institution of Chartered Surveyors (RICS) and SAI Global, and continues to be awarded the
+          globally recognised 5&nbsp;Ticks StandardsMark.
+        </p>
+        <div class="quality__certs" data-reveal>
+          <CertBadges />
+        </div>
+      </div>
+      <p class="quality__close" data-reveal>
+        Colliers Assure reduces risk, provides certainty and enables confidence in decision making.
+      </p>
+    </div>
+  </section>
+
+  <!-- 06 · Track record -->
+  <section class="section" data-surface="white" id="track-record" aria-labelledby="track-title">
+    <div class="container">
+      <header class="section-head section-head--split">
+        <div>
+          <Eyebrow num="06">Track record</Eyebrow>
+          <h2 class="t-h1" id="track-title" data-reveal="clip">
+            Valued in the last 24&nbsp;months
+          </h2>
+        </div>
+        <p class="t-body t-muted section-head__aside" data-reveal>
+          A selection of assets and portfolios valued for owners, funds, operators, financiers and government
+          across Australia and New Zealand.
+        </p>
+      </header>
+      <ProjectFilter projects={projects} />
+    </div>
+  </section>
+
+  <!-- 07 · Experts -->
+  <section class="section" data-surface="pale" id="experts" aria-labelledby="experts-title">
+    <div class="container">
+      <header class="section-head section-head--split">
+        <div>
+          <Eyebrow num="07">Our experts</Eyebrow>
+          <h2 class="t-h1" id="experts-title" data-reveal="clip">
+            Leadership
+          </h2>
+        </div>
+        <p class="t-body t-muted section-head__aside" data-reveal>
+          National and sector leaders of Colliers Valuation &amp; Advisory Services. Select a profile for a
+          short biography and direct contact details.
+        </p>
+      </header>
+      <ExpertGrid experts={featuredExperts} />
+    </div>
+  </section>
+
+  <!-- 08 · Contact -->
+  <CtaBand id="contact" title="Let’s talk about your property.">
+    {md.email && (
+      <a class="btn btn--light btn--lg" href={`mailto:${md.email}`}>
+        Contact {md.name} <Icon name="arrow-right" />
+      </a>
+    )}
+    <a class="btn btn--outline-light btn--lg" href={url('/contact/')}>
+      Find a sector specialist
+    </a>
+  </CtaBand>
+</BaseLayout>
+
+<style>
+  .section-head {
+    display: grid;
+    gap: var(--space-5);
+    margin-block-end: var(--space-9);
+    max-inline-size: 900px;
+  }
+
+  .section-head--split {
+    max-inline-size: none;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: end;
+    column-gap: var(--gutter);
+  }
+
+  .section-head--split > div:first-child {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .section-head__aside {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: start;
+  }
+
+  .section-head__lead {
+    max-inline-size: 36ch;
+  }
+
+  /* About */
+  .about__head {
+    grid-column: 1 / span 5;
+    align-self: start;
+    position: sticky;
+    inset-block-start: calc(var(--header-h-condensed) + var(--index-h) + var(--space-7));
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .about__title {
+    max-inline-size: 9ch;
+  }
+
+  .about__body {
+    grid-column: 7 / span 6;
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .about__lead {
+    max-inline-size: none;
+  }
+
+  .about__cols {
+    color: var(--fg-muted);
+  }
+
+  .about__pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gutter);
+  }
+
+  .about__card {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: var(--space-4);
+    padding: var(--space-6) var(--space-5) var(--space-6);
+    background: var(--bg);
+  }
+
+  .about__card h3 {
+    padding-inline-end: var(--space-8);
+  }
+
+  .about__card p {
+    color: var(--fg-muted);
+  }
+
+  .about__card-icon,
+  .tech__icon {
+    position: absolute;
+    inset-block-start: var(--space-5);
+    inset-inline-end: var(--space-5);
+    display: grid;
+    place-items: center;
+    inline-size: 48px;
+    block-size: 48px;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--c-medium-blue);
+    color: var(--c-medium-blue);
+  }
+
+  .numbers {
+    padding-block-start: 0;
+  }
+
+  /* Strategy */
+  .strategy {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .strategy__media {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    inline-size: 42%;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .strategy__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: 40% 50%;
+  }
+
+  .strategy__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      var(--c-white) 0%,
+      transparent 18%,
+      transparent 82%,
+      var(--c-white) 100%
+    );
+  }
+
+  .strategy__grid {
+    align-items: center;
+  }
+
+  .strategy__copy {
+    grid-column: 1 / span 6;
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .strategy__copy .prose {
+    color: var(--fg-muted);
+  }
+
+  .strategy__lead {
+    max-inline-size: 34ch;
+  }
+
+  .strategy__quote {
+    grid-column: 8 / span 5;
+  }
+
+  .tech {
+    position: relative;
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    background: var(--bg);
+    margin-block-start: var(--space-4);
+  }
+
+  .tech__title {
+    font-weight: 400;
+    padding-inline-end: var(--space-8);
+  }
+
+  .tech p:last-child {
+    color: var(--fg-muted);
+  }
+
+  /* Quality */
+  .quality__head {
+    grid-column: 1 / span 5;
+    display: grid;
+    gap: var(--space-5);
+    align-content: start;
+  }
+
+  .quality__lead {
+    max-inline-size: 26ch;
+  }
+
+  .quality__body {
+    grid-column: 7 / span 6;
+    color: var(--fg-muted);
+    padding-block-start: var(--space-7);
+  }
+
+  .quality__stepper {
+    margin-block: var(--space-10) var(--space-9);
+    padding-block: var(--space-8);
+    border-block: 1px solid var(--c-light-blue-grey);
+  }
+
+  .quality__foot {
+    align-items: start;
+    row-gap: var(--space-6);
+  }
+
+  .quality__audit {
+    grid-column: 1 / span 5;
+    color: var(--fg-muted);
+  }
+
+  .quality__certs {
+    grid-column: 7 / span 6;
+  }
+
+  .quality__close {
+    margin-block-start: var(--space-9);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 300;
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    max-inline-size: 34ch;
+  }
+
+  @media (max-width: 1023px) {
+    .section-head--split {
+      grid-template-columns: 1fr;
+      row-gap: var(--space-5);
+    }
+
+    .about__head,
+    .about__body,
+    .strategy__copy,
+    .strategy__quote,
+    .quality__head,
+    .quality__body,
+    .quality__audit,
+    .quality__certs {
+      grid-column: 1 / -1;
+    }
+
+    .about__head {
+      position: static;
+      margin-block-end: var(--space-7);
+    }
+
+    .about__title {
+      max-inline-size: none;
+    }
+
+    .strategy__media {
+      display: none;
+    }
+
+    .strategy__quote {
+      margin-block-start: var(--space-8);
+    }
+
+    .quality__body {
+      padding-block-start: var(--space-6);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .about__pair {
+      grid-template-columns: 1fr;
+    }
+
+    .section-head {
+      margin-block-end: var(--space-8);
+    }
+
+    .quality__stepper {
+      margin-block: var(--space-8);
+    }
+  }
+</style>

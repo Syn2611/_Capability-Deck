@@ -1,0 +1,126 @@
+---
+import Picture from './Picture.astro';
+import Breadcrumb from './Breadcrumb.astro';
+import PreparedFor from './PreparedFor.astro';
+import Eyebrow from './Eyebrow.astro';
+import type { Sector } from '../lib/sectors';
+import { url, pad } from '../lib/url';
+
+interface Props {
+  sector: Sector;
+  index: number;
+}
+const { sector, index } = Astro.props;
+const { title, descriptor, heroImage, heroAlt } = sector.data;
+---
+
+<section class="sh" data-surface="medium" aria-labelledby="sector-title">
+  <div class="sh__media duotone">
+    <Picture
+      src={heroImage}
+      alt={heroAlt}
+      sizes="(max-width: 1023px) 100vw, 50vw"
+      widths={[640, 960, 1280, 1600]}
+      priority
+      vtName={`sector-${sector.id}`}
+    />
+  </div>
+  <div class="container sh__inner">
+    <div class="sh__copy">
+      <Breadcrumb
+        items={[
+          { label: 'Valuation & Advisory', href: url('/') },
+          { label: 'Sectors', href: url('/sectors/') },
+          { label: title },
+        ]}
+      />
+      <div class="sh__text">
+        <Eyebrow num={pad(index)}>Sector</Eyebrow>
+        <PreparedFor class="sh__prepared" />
+        <h1 class="t-h1 sh__title" id="sector-title" data-reveal="clip">
+          {title}
+        </h1>
+        {descriptor && (
+          <p class="t-lead sh__lead" data-reveal style="--i:3">
+            {descriptor}
+          </p>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sh {
+    position: relative;
+    isolation: isolate;
+    min-block-size: max(560px, 70vh);
+    display: grid;
+  }
+
+  .sh__media {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    inline-size: 50%;
+    z-index: -1;
+  }
+
+  .sh__media :global(picture),
+  .sh__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .sh__inner {
+    display: grid;
+  }
+
+  .sh__copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-9);
+    inline-size: calc(50% - var(--gutter));
+    padding-block: var(--space-6) var(--space-9);
+  }
+
+  .sh__text :global(.eyebrow) {
+    margin-block-end: var(--space-5);
+  }
+
+  .sh :global(.sh__prepared) {
+    margin-block: calc(-1 * var(--space-3)) var(--space-4);
+  }
+
+  .sh__title {
+    margin-block-end: var(--space-5);
+  }
+
+  .sh__lead {
+    max-inline-size: 30ch;
+  }
+
+  @media (max-width: 1023px) {
+    .sh {
+      min-block-size: 0;
+      grid-template-rows: auto auto;
+    }
+
+    .sh__media {
+      position: relative;
+      inline-size: 100%;
+      block-size: 34vh;
+      min-block-size: 240px;
+      order: 2;
+      z-index: 0;
+    }
+
+    .sh__copy {
+      inline-size: 100%;
+      gap: var(--space-8);
+      padding-block: var(--space-5) var(--space-8);
+    }
+  }
+</style>

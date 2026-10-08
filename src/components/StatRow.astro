@@ -1,0 +1,107 @@
+---
+import type { Stat } from '../data/stats';
+
+interface Props {
+  stats: Stat[];
+  /** Show the source + as-of date beneath each figure (sector pages). */
+  showSource?: boolean;
+}
+
+const { stats, showSource = false } = Astro.props;
+---
+
+<dl class="stats" data-reveal-group style={`--cols:${stats.length}`}>
+  {stats.map((s) => (
+    <div class="stat" data-reveal>
+      <dt class="stat__label">{s.label}</dt>
+      <dd class="stat__value t-stat" data-count={s.value}>
+        <span class="stat__ghost" aria-hidden="true">
+          {s.value}
+        </span>
+        <span class="stat__out" data-count-out>
+          {s.value}
+        </span>
+      </dd>
+      {showSource && (
+        <dd class="stat__source">
+          {s.source}
+          {s.asOf !== 'TBC' && ` · ${s.asOf}`}
+        </dd>
+      )}
+    </div>
+  ))}
+</dl>
+
+<style>
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: var(--space-7) var(--gutter);
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-block-start: var(--space-5);
+    position: relative;
+    container-type: inline-size;
+  }
+
+  .stat::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: 1px;
+    background: var(--kl-grad-medium);
+  }
+
+  [data-surface='deep'] .stat::before,
+  [data-surface='medium'] .stat::before,
+  [data-surface='dark'] .stat::before {
+    background: var(--kl-grad-light);
+  }
+
+  .stat__value {
+    order: -1;
+    display: grid;
+    color: var(--accent);
+    white-space: nowrap;
+    /* Never wider than its column: 6 glyphs of light numerals ≈ 0.55em each. */
+    font-size: min(var(--fs-stat), 26cqi);
+  }
+
+  .stat__ghost,
+  .stat__out {
+    grid-area: 1 / 1;
+  }
+
+  .stat__ghost {
+    visibility: hidden;
+  }
+
+  .stat__label {
+    font-size: var(--fs-body);
+    line-height: 1.5;
+    max-inline-size: 26ch;
+    color: var(--fg-muted);
+  }
+
+  .stat__source {
+    font-size: var(--fs-xs);
+    color: var(--fg-soft);
+  }
+
+  @media (max-width: 1023px) {
+    .stats {
+      grid-template-columns: repeat(min(var(--cols), 2), minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 479px) {
+    .stats {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

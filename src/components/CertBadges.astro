@@ -1,0 +1,72 @@
+---
+import { certifications } from '../data/quality';
+---
+
+<ul class="certs" role="list" aria-label="Certifications and external audit">
+  {certifications.map((c) => (
+    <li class="cert">
+      <span class="cert__mark">{c.mark}</span>
+      <span class="cert__name">{c.name}</span>
+      <span class="cert__role">{c.role}</span>
+      {import.meta.env.DEV && <span class="cert__pending">Artwork pending</span>}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .certs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gutter);
+    margin: 0;
+    padding: 0;
+  }
+
+  .cert {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--space-5);
+    border: 1px solid var(--keyline);
+    border-radius: var(--r-card);
+    background: var(--card-bg);
+  }
+
+  .cert__mark {
+    font-size: 1.75rem;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    margin-block-end: var(--space-3);
+  }
+
+  .cert__name {
+    font-weight: 600;
+    font-size: var(--fs-small);
+  }
+
+  .cert__role {
+    font-size: var(--fs-xs);
+    color: var(--fg-muted);
+  }
+
+  .cert__pending {
+    position: absolute;
+    inset-block-start: var(--space-3);
+    inset-inline-end: var(--space-3);
+    padding: 2px var(--space-2);
+    border: 1px dashed var(--c-light-blue-grey);
+    border-radius: var(--r-pill);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--c-deep-blue-grey);
+    background: var(--c-white);
+  }
+
+  @media (max-width: 767px) {
+    .certs {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

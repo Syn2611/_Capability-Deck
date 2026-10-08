@@ -1,0 +1,37 @@
+---
+import SectorTile from './SectorTile.astro';
+import type { Sector } from '../lib/sectors';
+
+interface Props {
+  sectors: Sector[];
+}
+const { sectors } = Astro.props;
+---
+
+<ol class="sector-grid" role="list" data-reveal-group>
+  {sectors.map((s, i) => (
+    <SectorTile sector={s} index={i + 1} />
+  ))}
+</ol>
+
+<style>
+  .sector-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gutter);
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (max-width: 1023px) {
+    .sector-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 599px) {
+    .sector-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,160 @@
+---
+import Picture from './Picture.astro';
+import Icon from './Icon.astro';
+import type { Project } from '../data/projects';
+import { filterGroupOf } from '../data/projects';
+import { sectorLabels } from '../data/sector-labels';
+
+interface Props {
+  project: Project;
+  /** Group id for client-side filtering. */
+  filterable?: boolean;
+}
+
+const { project: p, filterable = false } = Astro.props;
+---
+
+<li class="project" data-group={filterable ? filterGroupOf(p) : undefined}>
+  <article class="project__card">
+    <div class="project__media">
+      {p.image ? (
+        <Picture
+          src={p.image}
+          alt={`${p.name}, ${p.location}`}
+          sizes="(max-width: 599px) 100vw, (max-width: 1023px) 50vw, 400px"
+          widths={[320, 480, 640]}
+        />
+      ) : (
+        <span class="project__placeholder" role="img" aria-label="Image to be supplied">
+          <Icon name="building" />
+        </span>
+      )}
+      <span class="project__tag">{sectorLabels[p.sector]}</span>
+    </div>
+    <div class="project__body">
+      <h3 class="project__name">{p.name}</h3>
+      <p class="project__loc">{p.location}</p>
+      <p class="project__metric t-num">{p.metric}</p>
+      <dl class="project__meta">
+        {p.purpose && (
+          <div>
+            <dt>Purpose</dt>
+            <dd>{p.purpose}</dd>
+          </div>
+        )}
+        {p.client && (
+          <div>
+            <dt>On behalf of</dt>
+            <dd>{p.client}</dd>
+          </div>
+        )}
+      </dl>
+    </div>
+  </article>
+</li>
+
+<style>
+  .project {
+    container-type: inline-size;
+  }
+
+  .project[hidden] {
+    display: none;
+  }
+
+  .project__card {
+    display: flex;
+    flex-direction: column;
+    block-size: 100%;
+  }
+
+  .project__media {
+    position: relative;
+    aspect-ratio: 6 / 5;
+    border-radius: var(--r-img);
+    overflow: hidden;
+    background: var(--c-pale-blue-grey);
+  }
+
+  .project__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    transition: transform 600ms var(--ease-out);
+  }
+
+  .project__card:hover .project__media :global(img) {
+    transform: scale(1.03);
+  }
+
+  .project__placeholder {
+    display: grid;
+    place-items: center;
+    block-size: 100%;
+    color: var(--c-dark-blue-grey);
+    --icon-size: 40px;
+  }
+
+  .project__tag {
+    position: absolute;
+    inset-block-start: var(--space-3);
+    inset-inline-start: var(--space-3);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--r-pill);
+    background: var(--c-white);
+    color: var(--c-deep-blue);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+  }
+
+  .project__body {
+    padding-block: var(--space-5) 0;
+  }
+
+  .project__name {
+    font-size: var(--fs-h4);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .project__loc {
+    margin-block-start: var(--space-1);
+    font-size: var(--fs-small);
+    color: var(--fg-muted);
+  }
+
+  .project__metric {
+    margin-block: var(--space-4);
+    padding-block-start: var(--space-4);
+    border-block-start: 1px solid var(--keyline);
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--accent);
+  }
+
+  .project__meta {
+    display: grid;
+    gap: var(--space-2);
+    font-size: var(--fs-small);
+    line-height: 1.5;
+  }
+
+  .project__meta div {
+    display: grid;
+    grid-template-columns: 8.5em minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+
+  .project__meta dt {
+    color: var(--fg-muted);
+  }
+
+  @container (max-width: 280px) {
+    .project__meta div {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+</style>

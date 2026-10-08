@@ -1,0 +1,160 @@
+---
+import Picture from './Picture.astro';
+import Icon from './Icon.astro';
+import type { Sector } from '../lib/sectors';
+import { url, pad } from '../lib/url';
+
+interface Props {
+  sector: Sector;
+  index: number;
+}
+
+const { sector, index } = Astro.props;
+const { title, descriptor, heroImage } = sector.data;
+---
+
+<li class="tile-wrap" data-reveal>
+  <a class="tile" href={url(`/sectors/${sector.id}/`)}>
+    <span class="tile__media duotone">
+      <Picture
+        src={heroImage}
+        alt=""
+        sizes="(max-width: 599px) 100vw, (max-width: 1023px) 50vw, 33vw"
+        widths={[480, 720, 960]}
+        vtName={`sector-${sector.id}`}
+      />
+    </span>
+    <span class="tile__body">
+      <span class="tile__num t-num" aria-hidden="true">
+        {pad(index)}
+      </span>
+      <span class="tile__title">{title}</span>
+      {descriptor && <span class="tile__desc">{descriptor}</span>}
+      <span class="tile__arrow" aria-hidden="true">
+        <Icon name="arrow-right" />
+      </span>
+    </span>
+  </a>
+</li>
+
+<style>
+  .tile-wrap {
+    container-type: inline-size;
+  }
+
+  .tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    block-size: 100%;
+    border-radius: var(--r-card);
+    background: var(--c-pale-blue-grey);
+    color: var(--c-deep-blue);
+    text-decoration: none;
+    overflow: hidden;
+  }
+
+  /* Gradient keyline that draws in along the top on hover */
+  .tile::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: 2px;
+    z-index: 2;
+    background: var(--kl-grad-light);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 600ms var(--ease-out);
+  }
+
+  .tile:hover::before,
+  .tile:focus-visible::before {
+    transform: scaleX(1);
+  }
+
+  .tile__media {
+    display: block;
+    aspect-ratio: 16 / 10;
+    margin: 8px 8px 0;
+    border-radius: calc(var(--r-card) - 8px);
+  }
+
+  .tile__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    transition: transform 600ms var(--ease-out);
+  }
+
+  .tile:hover .tile__media :global(img) {
+    transform: scale(1.03);
+  }
+
+  .tile__body {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    column-gap: var(--space-4);
+    padding: var(--space-5) var(--space-5) var(--space-6);
+    flex: 1;
+  }
+
+  .tile__num {
+    grid-row: 1 / span 2;
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--c-medium-blue);
+    letter-spacing: -0.02em;
+  }
+
+  .tile__title {
+    font-size: var(--fs-h4);
+    font-weight: 600;
+    line-height: 1.3;
+    padding-inline-end: var(--space-7);
+    padding-block-start: 2px;
+  }
+
+  .tile__desc {
+    grid-column: 2;
+    margin-block-start: var(--space-2);
+    font-size: var(--fs-small);
+    line-height: 1.5;
+    color: var(--c-deep-blue-grey);
+  }
+
+  .tile__arrow {
+    position: absolute;
+    inset-block-start: var(--space-4);
+    inset-inline-end: var(--space-4);
+    display: grid;
+    place-items: center;
+    inline-size: 40px;
+    block-size: 40px;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--c-light-blue-grey);
+    color: var(--c-medium-blue);
+    background: var(--c-white);
+    transition:
+      transform var(--dur-hover) var(--ease-out),
+      background-color var(--dur-hover) var(--ease-out),
+      color var(--dur-hover) var(--ease-out),
+      border-color var(--dur-hover) var(--ease-out);
+  }
+
+  .tile:hover .tile__arrow {
+    transform: translateX(4px);
+    background: var(--c-medium-blue);
+    border-color: var(--c-medium-blue);
+    color: var(--c-white);
+  }
+
+  @container (max-width: 300px) {
+    .tile__num {
+      font-size: 1.5rem;
+    }
+  }
+</style>

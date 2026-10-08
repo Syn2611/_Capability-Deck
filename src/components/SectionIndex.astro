@@ -1,0 +1,109 @@
+---
+import { pad } from '../lib/url';
+
+interface Props {
+  items: { id: string; label: string }[];
+}
+const { items } = Astro.props;
+---
+
+<nav class="section-index" aria-label="On this page" data-section-index>
+  <div class="container">
+    <ol class="section-index__list" role="list" data-index-scroller>
+      {items.map((it, i) => (
+        <li>
+          <a href={`#${it.id}`}>
+            <span class="t-num">{pad(i + 1)}</span>
+            {it.label}
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+</nav>
+
+<style>
+  .section-index {
+    position: sticky;
+    inset-block-start: var(--header-h-condensed);
+    z-index: 40;
+    background: var(--c-white);
+    border-block-end: 1px solid var(--c-pale-blue-grey);
+  }
+
+  .section-index__list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    block-size: var(--index-h);
+    margin: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      var(--c-deep-blue) 16px,
+      var(--c-deep-blue) calc(100% - 24px),
+      transparent 100%
+    );
+  }
+
+  .section-index__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .section-index li {
+    flex: none;
+    scroll-snap-align: center;
+  }
+
+  .section-index a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-block-size: 36px;
+    padding: 0 var(--space-4);
+    border: 1px solid var(--c-pale-blue-grey);
+    border-radius: var(--r-pill);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    color: var(--c-deep-blue);
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      background-color var(--dur-hover) var(--ease-out),
+      border-color var(--dur-hover) var(--ease-out),
+      color var(--dur-hover) var(--ease-out);
+  }
+
+  .section-index a span {
+    font-weight: 700;
+    color: var(--c-medium-blue);
+    transition: color var(--dur-hover) var(--ease-out);
+  }
+
+  .section-index a:hover {
+    border-color: var(--c-light-blue-grey);
+  }
+
+  .section-index a[aria-current] {
+    background: var(--c-deep-blue);
+    border-color: var(--c-deep-blue);
+    color: var(--c-white);
+  }
+
+  .section-index a[aria-current] span {
+    color: var(--c-white);
+  }
+
+  @media (pointer: coarse) {
+    .section-index__list {
+      block-size: 60px;
+    }
+
+    .section-index a {
+      min-block-size: var(--tap);
+    }
+  }
+</style>

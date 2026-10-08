@@ -1,0 +1,35 @@
+{
+  "name": "colliers-va-capability-statement",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run contrast && astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "contrast": "node scripts/contrast-check.ts",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "screenshots": "node scripts/screenshots.ts",
+    "pdf": "node scripts/pdf.ts"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/open-sans": "^5.3.0",
+    "@fontsource/merriweather": "^5.3.0",
+    "astro": "^7.3.8"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@playwright/test": "^1.56.1",
+    "@typescript-eslint/parser": "^8.71.1",
+    "axe-core": "^4.14.0",
+    "eslint": "^10.12.0",
+    "eslint-plugin-astro": "^1.7.0",
+    "prettier": "^3.9.9",
+    "prettier-plugin-astro": "^1.1.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.1"
+  }
+}

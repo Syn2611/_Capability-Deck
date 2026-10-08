@@ -1,0 +1,64 @@
+---
+interface Props {
+  title: string;
+  text?: string;
+  id?: string;
+}
+const { title, text, id } = Astro.props;
+---
+
+<section class="cta" data-surface="medium" id={id} aria-labelledby={id ? `${id}-title` : undefined}>
+  <svg class="cta__arc" viewBox="0 0 1000 1000" aria-hidden="true" focusable="false">
+    <circle cx="500" cy="500" r="498" vector-effect="non-scaling-stroke"></circle>
+  </svg>
+  <div class="container cta__inner">
+    <h2 class="t-h1 cta__title" id={id ? `${id}-title` : undefined} data-reveal>
+      {title}
+    </h2>
+    {text && (
+      <p class="t-lead cta__text" data-reveal>
+        {text}
+      </p>
+    )}
+    <div class="cta__actions" data-reveal>
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: var(--section-pad);
+  }
+
+  .cta__arc {
+    position: absolute;
+    z-index: -1;
+    inline-size: min(70vw, 900px);
+    aspect-ratio: 1;
+    inset-inline-end: -18vw;
+    inset-block-start: -30%;
+    fill: none;
+    stroke: var(--c-white);
+    stroke-opacity: 0.4;
+    stroke-width: 1px;
+  }
+
+  .cta__title {
+    max-inline-size: 16ch;
+  }
+
+  .cta__text {
+    margin-block-start: var(--space-5);
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-start: var(--space-7);
+  }
+</style>

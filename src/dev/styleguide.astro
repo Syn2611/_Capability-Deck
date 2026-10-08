@@ -1,0 +1,198 @@
+---
+/**
+ * DEV-ONLY styleguide — injected by astro.config.mjs when running `astro dev`; never built.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import Icon from '../components/Icon.astro';
+import StatRow from '../components/StatRow.astro';
+import QualityStepper from '../components/QualityStepper.astro';
+import CertBadges from '../components/CertBadges.astro';
+import Pending from '../components/Pending.astro';
+import { icons, type IconName } from '../components/icons';
+import { stats } from '../data/stats';
+
+const palettes = {
+  Primary: ['deep-blue', 'dark-blue', 'medium-blue', 'light-blue', 'pale-blue', 'white'],
+  Secondary: ['deep-blue-grey', 'dark-blue-grey', 'medium-blue-grey', 'light-blue-grey', 'pale-blue-grey'],
+  'Tertiary (charts only)': [
+    'colliers-red',
+    'colliers-yellow',
+    'colliers-lightblue',
+    'teal',
+    'orange',
+    'purple',
+    'grey',
+  ],
+};
+const surfaces = ['white', 'pale', 'deep', 'dark', 'medium'];
+const type = [
+  ['t-display', 'Display — Open Sans 300'],
+  ['t-h1', 'Heading 1 — Open Sans 300'],
+  ['t-h2', 'Heading 2 — Open Sans 300'],
+  ['t-h3', 'Heading 3 — Open Sans 600'],
+  ['t-lead', 'Lead — Merriweather 300, for editorial moments'],
+  ['t-body', 'Body — Open Sans 400, 17px / 1.65, max 68ch.'],
+  ['t-small', 'Small — Open Sans 400, 14px'],
+];
+---
+
+<BaseLayout title="Styleguide" noindex>
+  <section class="section" data-surface="white">
+    <div class="container sg">
+      <Eyebrow>Dev only</Eyebrow>
+      <h1 class="t-h1">Styleguide</h1>
+
+      {Object.entries(palettes).map(([name, list]) => (
+        <div>
+          <h2 class="t-h3 sg__h">{name}</h2>
+          <ul class="sg__swatches" role="list">
+            {list.map((c) => (
+              <li>
+                <span class="sg__swatch" style={`background:var(--c-${c})`} />
+                <code>--c-{c}</code>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+
+      <h2 class="t-h3 sg__h">Surfaces (approved text pairs)</h2>
+      <div class="sg__surfaces">
+        {surfaces.map((s) => (
+          <div data-surface={s} class="sg__surface">
+            <p class="eyebrow">Eyebrow</p>
+            <p class="t-h3">Surface “{s}”</p>
+            <p class="t-small t-muted">Muted text on this surface.</p>
+            <a class="link-arrow" href="#">
+              <span>Accent link</span> <Icon name="arrow-right" />
+            </a>
+          </div>
+        ))}
+      </div>
+
+      <h2 class="t-h3 sg__h">Type scale</h2>
+      {type.map(([cls, label]) => (
+        <p class={cls}>{label}</p>
+      ))}
+      <p class="t-stat" style="color:var(--c-medium-blue)">
+        $7.8bn+
+      </p>
+
+      <h2 class="t-h3 sg__h">Buttons</h2>
+      <div class="sg__row">
+        <a class="btn" href="#">
+          Primary <Icon name="arrow-right" />
+        </a>
+        <a class="btn btn--deep" href="#">
+          Deep
+        </a>
+        <a class="btn btn--outline" href="#">
+          Outline
+        </a>
+        <span data-surface="medium" class="sg__pad">
+          <a class="btn btn--light" href="#">
+            Light <Icon name="arrow-right" />
+          </a>
+          <a class="btn btn--outline-light" href="#">
+            Outline light
+          </a>
+        </span>
+      </div>
+
+      <h2 class="t-h3 sg__h">Icons</h2>
+      <ul class="sg__icons" role="list">
+        {(Object.keys(icons) as IconName[]).map((n) => (
+          <li>
+            <Icon name={n} />
+            <code>{n}</code>
+          </li>
+        ))}
+      </ul>
+
+      <h2 class="t-h3 sg__h">Keylines</h2>
+      <hr class="hairline" />
+      <hr class="hairline hairline--gradient" style="margin-block-start:16px" />
+
+      <h2 class="t-h3 sg__h">Stats (count-up)</h2>
+      <StatRow stats={[stats.specialists, stats.industrial, stats.hrl]} showSource />
+
+      <h2 class="t-h3 sg__h">QA stepper</h2>
+      <QualityStepper />
+      <div style="margin-block-start:48px">
+        <CertBadges />
+      </div>
+
+      <h2 class="t-h3 sg__h">Pending</h2>
+      <Pending />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .sg {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .sg__h {
+    margin-block-start: var(--space-8);
+    padding-block-start: var(--space-4);
+    border-block-start: 1px solid var(--c-pale-blue-grey);
+  }
+
+  .sg__swatches,
+  .sg__icons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+  }
+
+  .sg__swatch {
+    display: block;
+    aspect-ratio: 1.6;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--c-pale-blue-grey);
+    margin-block-end: var(--space-2);
+  }
+
+  code {
+    font-size: var(--fs-xs);
+  }
+
+  .sg__surfaces {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .sg__surface {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    border-radius: var(--r-card);
+    border: 1px solid var(--c-pale-blue-grey);
+  }
+
+  .sg__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    align-items: center;
+  }
+
+  .sg__pad {
+    display: inline-flex;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    border-radius: var(--r-card);
+  }
+
+  .sg__icons li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+</style>

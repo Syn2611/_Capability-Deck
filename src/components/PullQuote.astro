@@ -1,0 +1,106 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  short: string;
+  rest: string;
+  name: string;
+  role: string;
+}
+const { short, rest, name, role } = Astro.props;
+---
+
+<figure class="pq" data-surface="deep">
+  <Icon name="quote" class="pq__mark" />
+  <blockquote class="pq__quote">
+    <p>
+      “{short}
+      <span class="pq__close">”</span>
+    </p>
+    <details class="pq__more">
+      <summary>
+        <span>Read the full testimonial</span>
+      </summary>
+      <p class="pq__rest">{rest}”</p>
+    </details>
+  </blockquote>
+  <figcaption class="pq__cite">
+    <span class="pq__name">{name}</span>
+    <span class="pq__role">{role}</span>
+  </figcaption>
+</figure>
+
+<style>
+  .pq {
+    position: relative;
+    padding: clamp(28px, 4vw, 56px);
+    border-radius: var(--r-card);
+  }
+
+  .pq :global(.pq__mark) {
+    --icon-size: 40px;
+    margin-block-end: var(--space-5);
+  }
+
+  .pq__quote {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: clamp(1.1875rem, 1rem + 0.5vw, 1.4375rem);
+    line-height: 1.55;
+    hanging-punctuation: first last;
+  }
+
+  .pq__quote:has(.pq__more[open]) .pq__close {
+    display: none;
+  }
+
+  .pq__more summary {
+    display: flex;
+    align-items: center;
+    min-block-size: var(--tap);
+    margin-block-start: var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .pq__more summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .pq__more summary span {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 100% 1px;
+  }
+
+  .pq__more[open] summary {
+    display: none;
+  }
+
+  .pq__rest {
+    display: block;
+    margin-block-start: 1em;
+  }
+
+  .pq__cite {
+    display: flex;
+    flex-direction: column;
+    margin-block-start: var(--space-6);
+    padding-block-start: var(--space-5);
+    border-block-start: 1px solid var(--c-dark-blue);
+  }
+
+  .pq__name {
+    font-family: var(--font-serif);
+    font-weight: 700;
+  }
+
+  .pq__role {
+    margin-block-start: var(--space-1);
+    font-size: var(--fs-small);
+  }
+</style>

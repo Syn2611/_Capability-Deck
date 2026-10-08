@@ -1,0 +1,265 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import ExpertPortrait from '../components/ExpertPortrait.astro';
+import Icon from '../components/Icon.astro';
+import { getExpert } from '../data/experts';
+import { site } from '../data/site';
+import { getLiveSectors } from '../lib/sectors';
+import { url, telHref } from '../lib/url';
+
+const md = getExpert(site.primaryContact);
+const sectors = await getLiveSectors();
+const leads = sectors
+  .filter((s) => s.data.leadExpert)
+  .map((s) => ({ sector: s, expert: getExpert(s.data.leadExpert!) }));
+const leadership = ['andrew-collins'].map(getExpert);
+---
+
+<BaseLayout
+  title="Contact"
+  description="Contact Colliers Valuation & Advisory Services — the Managing Director and every sector lead, with direct phone and email."
+  printLabel="Contact"
+>
+  <section class="ct-hero" data-surface="white" aria-labelledby="ct-title">
+    <div class="container">
+      <Breadcrumb items={[{ label: 'Valuation & Advisory', href: url('/') }, { label: 'Contact' }]} />
+      <div class="ct-hero__grid">
+        <div>
+          <Eyebrow>Contact</Eyebrow>
+          <h1 class="t-display ct-hero__title" id="ct-title" data-reveal="clip">
+            Let’s talk about your property.
+          </h1>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" data-surface="white" aria-labelledby="md-title">
+    <div class="container">
+      <article class="md card" data-surface="medium" data-reveal>
+        <ExpertPortrait expert={md} size={200} />
+        <div class="md__body">
+          <p class="eyebrow">{md.team}</p>
+          <h2 class="md__name" id="md-title">
+            {md.name}
+          </h2>
+          <p class="md__title">{md.title}</p>
+          <div class="md__actions">
+            {md.email && (
+              <a class="btn btn--light btn--lg" href={`mailto:${md.email}`}>
+                <Icon name="mail" /> {md.email}
+              </a>
+            )}
+            {md.phone && (
+              <a class="btn btn--outline-light btn--lg" href={telHref(md.phone)}>
+                <Icon name="phone" /> <span class="t-num">{md.phone}</span>
+              </a>
+            )}
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" data-surface="pale" aria-labelledby="leads-title">
+    <div class="container">
+      <header class="ct-head">
+        <Eyebrow>Sector leads</Eyebrow>
+        <h2 class="t-h2" id="leads-title">
+          Find a sector specialist
+        </h2>
+      </header>
+      <ul class="dir" role="list">
+        {[
+          ...leads.map((l) => ({
+            label: l.sector.data.title,
+            href: url(`/sectors/${l.sector.id}/`),
+            e: l.expert,
+          })),
+          ...leadership.map((e) => ({ label: 'Risk & Business Transformation', href: undefined, e })),
+        ].map(({ label, href, e }) => (
+          <li class="dir__row" data-reveal>
+            <p class="dir__sector">
+              {href ? (
+                <a class="link" href={href}>
+                  {label}
+                </a>
+              ) : (
+                label
+              )}
+            </p>
+            <p class="dir__person">
+              <span class="dir__name">{e.name}</span>
+              <span class="dir__title">{e.title}</span>
+            </p>
+            <p class="dir__contact">
+              {e.phone && (
+                <a class="link t-num" href={telHref(e.phone)}>
+                  {e.phone}
+                </a>
+              )}
+              {e.email && (
+                <a class="link" href={`mailto:${e.email}`}>
+                  {e.email}
+                </a>
+              )}
+              {!e.phone && !e.email && import.meta.env.DEV && (
+                <span class="pending">Contact details pending</span>
+              )}
+            </p>
+          </li>
+        ))}
+      </ul>
+      <p class="ct-note">
+        More of our people and offices are listed at{' '}
+        <a class="link link--under" href={site.colliersUrl} rel="noopener">
+          colliers.com.au
+        </a>
+        .
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .ct-hero {
+    padding-block: var(--space-6) var(--space-8);
+  }
+
+  .ct-hero__grid {
+    margin-block-start: var(--space-9);
+  }
+
+  .ct-hero__title {
+    margin-block-start: var(--space-5);
+    max-inline-size: 12ch;
+  }
+
+  .md {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-7);
+    padding: clamp(28px, 5vw, 64px);
+    background: var(--bg);
+  }
+
+  .md__name {
+    margin-block-start: var(--space-4);
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: var(--fs-h2);
+    line-height: 1.15;
+  }
+
+  .md__title {
+    margin-block-start: var(--space-2);
+    font-weight: 600;
+  }
+
+  .md__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-6);
+  }
+
+  .md__actions .btn {
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .ct-head {
+    display: grid;
+    gap: var(--space-5);
+    margin-block-end: var(--space-8);
+  }
+
+  .dir {
+    margin: 0;
+    padding: 0;
+    border-block-end: 1px solid var(--keyline);
+  }
+
+  .dir__row {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 4fr) minmax(0, 5fr);
+    gap: var(--space-2) var(--gutter);
+    padding-block: var(--space-5);
+    border-block-start: 1px solid var(--keyline);
+  }
+
+  .dir__sector {
+    font-weight: 600;
+  }
+
+  .dir__sector a {
+    text-decoration: none;
+  }
+
+  .dir__person {
+    display: grid;
+  }
+
+  .dir__name {
+    font-family: var(--font-serif);
+  }
+
+  .dir__title {
+    font-size: var(--fs-small);
+    color: var(--fg-muted);
+  }
+
+  .dir__contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-5);
+    font-size: var(--fs-small);
+  }
+
+  .dir__contact a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tap);
+    padding-block-end: 0;
+    background-position: 0 calc(100% - 10px);
+    text-decoration: none;
+    word-break: break-word;
+  }
+
+  .dir__contact .pending {
+    min-block-size: 0;
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .ct-note {
+    margin-block-start: var(--space-7);
+    color: var(--fg-muted);
+  }
+
+  @media (max-width: 1023px) {
+    .dir__row {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .dir__sector {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 599px) {
+    .md {
+      grid-template-columns: 1fr;
+    }
+
+    .md :global(.portrait) {
+      inline-size: 120px;
+    }
+
+    .dir__row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

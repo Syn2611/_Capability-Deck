@@ -1,0 +1,147 @@
+/* ==========================================================================
+   Design tokens — Colliers Visual Identity (see _reference/Visual_Identity_Cheat_Sheet.jpg)
+   This is the ONLY file allowed to contain colour literals.
+   scripts/contrast-check.ts fails the build if a hex value appears elsewhere.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* ---- Primary palette — the only colours allowed for solid blocks ---- */
+  --c-deep-blue: #000759;
+  --c-dark-blue: #25408f; /* Colliers Dark Blue */
+  --c-medium-blue: #1c54f4; /* hero / brand "moment" colour — screen only */
+  --c-light-blue: #4d93ff;
+  --c-pale-blue: #c3e6ff;
+  --c-white: #ffffff;
+
+  /* ---- Secondary palette — text, backgrounds and section content only ---- */
+  --c-deep-blue-grey: #353e59;
+  --c-dark-blue-grey: #56648f;
+  --c-medium-blue-grey: #7b8bbd;
+  --c-light-blue-grey: #acbbe8;
+  --c-pale-blue-grey: #dbe5ff;
+
+  /* ---- Tertiary palette — charts & illustration ONLY ---- */
+  --c-colliers-red: #ed1b34;
+  --c-colliers-yellow: #ffd400;
+  --c-colliers-lightblue: #0c9ed9;
+  --c-teal: #2ab6a9;
+  --c-orange: #fa6609;
+  --c-purple: #9c45ae;
+  --c-grey: #cccdd5;
+
+  /* ---- Keyline gradients (Pale Blue Grey / White 20–60% → Deep, Light or Medium Blue) ---- */
+  --kl-grad-deep: linear-gradient(
+    90deg,
+    var(--c-pale-blue-grey) 0%,
+    var(--c-pale-blue-grey) 40%,
+    var(--c-deep-blue) 100%
+  );
+  --kl-grad-medium: linear-gradient(
+    90deg,
+    var(--c-pale-blue-grey) 0%,
+    var(--c-pale-blue-grey) 40%,
+    var(--c-medium-blue) 100%
+  );
+  --kl-grad-light: linear-gradient(90deg, var(--c-white) 0%, var(--c-white) 30%, var(--c-light-blue) 100%);
+
+  /* ---- Typography — exactly two families ---- */
+  --font-sans:
+    'Open Sans Variable', 'Open Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-serif: 'Merriweather', Georgia, 'Times New Roman', serif;
+
+  --fs-display: clamp(3rem, 2rem + 4.5vw, 6.5rem);
+  --fs-h1: clamp(2.5rem, 1.8rem + 3vw, 4.5rem);
+  --fs-h2: clamp(2rem, 1.5rem + 2vw, 3.25rem);
+  --fs-h3: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+  --fs-h4: 1.125rem;
+  --fs-lead: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);
+  --fs-statement: clamp(1.625rem, 1.1rem + 2vw, 3rem);
+  --fs-body: 1.0625rem;
+  --fs-small: 0.875rem;
+  --fs-xs: 0.8125rem;
+  --fs-eyebrow: 0.75rem;
+  --fs-stat: clamp(3.5rem, 2rem + 6vw, 8rem);
+  --fs-stat-sm: clamp(3rem, 2rem + 3.5vw, 5.5rem);
+
+  --lh-display: 1;
+  --lh-h1: 1.05;
+  --lh-h2: 1.1;
+  --lh-h3: 1.25;
+  --lh-lead: 1.5;
+  --lh-body: 1.65;
+
+  --tr-display: -0.025em;
+  --tr-h1: -0.02em;
+  --tr-h2: -0.015em;
+  --tr-eyebrow: 0.16em;
+  --tr-lockup: 0.02em;
+
+  --measure: 68ch;
+  --measure-narrow: 52ch;
+
+  /* ---- Space — 8pt scale ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+  --space-11: 160px;
+  --space-12: 192px;
+  --section-pad: clamp(96px, 12vw, 192px);
+  --section-pad-tight: clamp(64px, 8vw, 128px);
+
+  /* ---- Grid ---- */
+  --content-max: 1320px;
+  --narrow-max: 880px;
+  --gutter: 24px;
+  --page-margin: clamp(20px, 6.4vw - 5px, 80px);
+
+  /* ---- Shape & depth ---- */
+  --r-card: 20px;
+  --r-img: 16px;
+  --r-sm: 10px;
+  --r-pill: 999px;
+  --hairline: 1px;
+  --shadow: 0 1px 2px rgb(0 7 89 / 0.04), 0 12px 32px -12px rgb(0 7 89 / 0.12);
+  --frost: rgb(255 255 255 / 0.72);
+  --scrim-deep: rgb(0 7 89 / 0.55);
+
+  /* ---- Motion ---- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 180ms;
+  --dur-base: 400ms;
+  --dur-hover: 300ms;
+  --dur-slow: 700ms;
+  --dur-hero: 1600ms;
+  --rise: 16px;
+  --stagger: 60ms;
+
+  /* ---- Chrome ---- */
+  --header-h: 88px;
+  --header-h-condensed: 72px; /* 64px in brief; 72px keeps the 2× colour-bar clear space around the 96px logo */
+  --index-h: 52px;
+  --tap: 44px;
+  --focus-ring: 0 0 0 2px var(--c-white), 0 0 0 4px var(--c-medium-blue);
+  --icon-stroke: 1.5;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: 32px;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --header-h: 72px;
+    --header-h-condensed: 72px;
+  }
+}

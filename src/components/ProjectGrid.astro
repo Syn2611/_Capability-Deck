@@ -1,0 +1,44 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import type { Project } from '../data/projects';
+
+interface Props {
+  projects: Project[];
+  filterable?: boolean;
+}
+const { projects, filterable = false } = Astro.props;
+---
+
+<ul class="project-grid" role="list" data-filter-grid>
+  {projects.map((p) => (
+    <ProjectCard project={p} filterable={filterable} />
+  ))}
+</ul>
+
+<style>
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-8) var(--gutter);
+    margin: 0;
+    padding: 0;
+    transition: opacity 250ms var(--ease-out);
+  }
+
+  .project-grid.is-fading {
+    opacity: 0;
+  }
+
+  @media (max-width: 1023px) {
+    .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 599px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+      row-gap: var(--space-7);
+    }
+  }
+</style>

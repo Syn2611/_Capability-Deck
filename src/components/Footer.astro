@@ -1,0 +1,186 @@
+---
+import logo from '../assets/brand/colliers-logo.svg';
+import Icon from './Icon.astro';
+import type { Sector } from '../lib/sectors';
+import { site } from '../data/site';
+import { url } from '../lib/url';
+
+interface Props {
+  sectors: Sector[];
+}
+
+const { sectors } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="footer" data-surface="deep">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <img src={logo.src} width="120" height="68" alt="Colliers" loading="lazy" decoding="async" />
+      <p class="footer__name">
+        Valuation &amp; Advisory Services
+        <br />
+        Australia
+      </p>
+      <button class="btn btn--outline-light footer__pdf" type="button" data-print>
+        <Icon name="download" /> Download as PDF
+      </button>
+    </div>
+
+    <nav class="footer__nav" aria-label="Sectors">
+      <p class="footer__heading">Sectors</p>
+      <ul role="list" class="footer__sectors">
+        {sectors.map((s) => (
+          <li>
+            <a class="link" href={url(`/sectors/${s.id}/`)}>
+              {s.data.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <nav class="footer__nav" aria-label="This document">
+      <p class="footer__heading">Capability statement</p>
+      <ul role="list">
+        <li>
+          <a class="link" href={url('/#about')}>
+            About us
+          </a>
+        </li>
+        <li>
+          <a class="link" href={url('/#services')}>
+            Services
+          </a>
+        </li>
+        <li>
+          <a class="link" href={url('/#quality')}>
+            Quality assurance
+          </a>
+        </li>
+        <li>
+          <a class="link" href={url('/#track-record')}>
+            Track record
+          </a>
+        </li>
+        <li>
+          <a class="link" href={url('/#experts')}>
+            Our experts
+          </a>
+        </li>
+        <li>
+          <a class="link" href={url('/contact/')}>
+            Contact
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container footer__legal">
+    <p class="footer__disclaimer">{site.disclaimer}</p>
+    <ul role="list" class="footer__meta">
+      <li>© {year} Colliers</li>
+      <li>
+        <a class="link" href={site.colliersUrl} rel="noopener">
+          Colliers Australia
+        </a>
+      </li>
+      <li>
+        <a class="link" href={site.privacyUrl} rel="noopener">
+          Privacy
+        </a>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-block: var(--space-9) var(--space-6);
+    font-size: var(--fs-small);
+  }
+
+  .footer__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 3fr);
+    gap: var(--space-7) var(--gutter);
+    padding-block-end: var(--space-8);
+  }
+
+  .footer__brand img {
+    inline-size: 120px;
+  }
+
+  .footer__name {
+    margin-block: var(--space-5);
+    font-weight: 600;
+    letter-spacing: var(--tr-lockup);
+    line-height: 1.5;
+  }
+
+  .footer__heading {
+    margin-block-end: var(--space-4);
+    font-size: var(--fs-eyebrow);
+    font-weight: 700;
+    letter-spacing: var(--tr-eyebrow);
+    text-transform: uppercase;
+  }
+
+  .footer ul {
+    margin: 0;
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .footer__sectors {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--gutter);
+  }
+
+  .footer a {
+    display: inline-block;
+    padding-block: var(--space-1);
+    text-decoration: none;
+  }
+
+  .footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-4) var(--gutter);
+    padding-block-start: var(--space-5);
+    border-block-start: 1px solid var(--c-dark-blue);
+    font-size: var(--fs-xs);
+  }
+
+  .footer__meta {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: var(--space-5) !important;
+  }
+
+  @media (max-width: 1023px) {
+    .footer__inner {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .footer__brand {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 599px) {
+    .footer__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .footer__sectors {
+      grid-template-columns: 1fr;
+    }
+
+    .footer a {
+      padding-block: var(--space-2);
+    }
+  }
+</style>

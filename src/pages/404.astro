@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import Icon from '../components/Icon.astro';
+import { url } from '../lib/url';
+---
+
+<BaseLayout title="Page not found" noindex printLabel="Not found">
+  <section class="nf" data-surface="medium" aria-labelledby="nf-title">
+    <svg class="nf__arc" viewBox="0 0 1000 1000" aria-hidden="true" focusable="false">
+      <circle cx="500" cy="500" r="498" vector-effect="non-scaling-stroke"></circle>
+    </svg>
+    <div class="container nf__inner">
+      <Eyebrow>Error 404</Eyebrow>
+      <h1 class="t-display" id="nf-title">
+        This page has moved.
+      </h1>
+      <p class="t-lead">The page you’re looking for isn’t here. Try the overview or the sector index.</p>
+      <div class="nf__actions">
+        <a class="btn btn--light btn--lg" href={url('/')}>
+          Back to the overview <Icon name="arrow-right" />
+        </a>
+        <a class="btn btn--outline-light btn--lg" href={url('/sectors/')}>
+          All sectors
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    min-block-size: calc(100svh - var(--header-h));
+    display: grid;
+    align-items: center;
+  }
+
+  .nf__arc {
+    position: absolute;
+    z-index: -1;
+    inline-size: min(90vw, 1100px);
+    aspect-ratio: 1;
+    inset-inline-end: -20vw;
+    inset-block-start: 50%;
+    translate: 0 -50%;
+    fill: none;
+    stroke: var(--c-white);
+    stroke-opacity: 0.45;
+  }
+
+  .nf__inner {
+    display: grid;
+    gap: var(--space-6);
+    padding-block: var(--space-10);
+  }
+
+  .nf__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-start: var(--space-4);
+  }
+</style>

@@ -1,0 +1,128 @@
+---
+import Icon from './Icon.astro';
+import type { Sector } from '../lib/sectors';
+import { url } from '../lib/url';
+
+interface Props {
+  prev?: Sector;
+  next?: Sector;
+}
+const { prev, next } = Astro.props;
+---
+
+<nav class="pn" aria-label="More sectors">
+  <div class="container pn__inner">
+    {prev ? (
+      <a class="pn__link pn__link--prev" href={url(`/sectors/${prev.id}/`)} rel="prev">
+        <span class="pn__dir">
+          <Icon name="arrow-left" /> Previous
+        </span>
+        <span class="pn__title">{prev.data.title}</span>
+      </a>
+    ) : (
+      <span />
+    )}
+    {next && (
+      <a class="pn__link pn__link--next" href={url(`/sectors/${next.id}/`)} rel="next">
+        <span class="pn__dir">
+          Next <Icon name="arrow-right" />
+        </span>
+        <span class="pn__title">{next.data.title}</span>
+      </a>
+    )}
+  </div>
+  <div class="container pn__all">
+    <a class="link-arrow" href={url('/sectors/')}>
+      <span>All sectors</span> <Icon name="arrow-right" />
+    </a>
+  </div>
+</nav>
+
+<style>
+  .pn {
+    padding-block: var(--space-9) var(--space-8);
+    border-block-start: 1px solid var(--c-pale-blue-grey);
+  }
+
+  .pn__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gutter);
+  }
+
+  .pn__link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding-block: var(--space-4);
+    text-decoration: none;
+    color: var(--c-deep-blue);
+  }
+
+  .pn__link--next {
+    align-items: flex-end;
+    text-align: end;
+  }
+
+  .pn__dir {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    color: var(--c-medium-blue);
+  }
+
+  .pn__dir :global(.icon) {
+    transition: transform var(--dur-hover) var(--ease-out);
+  }
+
+  .pn__link--next:hover .pn__dir :global(.icon) {
+    transform: translateX(4px);
+  }
+
+  .pn__link--prev:hover .pn__dir :global(.icon) {
+    transform: translateX(-4px);
+  }
+
+  .pn__title {
+    font-size: var(--fs-h2);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: var(--tr-h2);
+    text-wrap: balance;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-size: 0 1px;
+    background-position: 0 100%;
+    transition: background-size var(--dur-base) var(--ease-out);
+  }
+
+  .pn__link--next .pn__title {
+    background-position: 100% 100%;
+  }
+
+  .pn__link:hover .pn__title {
+    background-size: 100% 1px;
+  }
+
+  .pn__all {
+    margin-block-start: var(--space-7);
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (max-width: 599px) {
+    .pn__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .pn__link--next {
+      order: -1;
+    }
+
+    .pn__title {
+      font-size: var(--fs-h3);
+    }
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+import Icon from './Icon.astro';
+import { qaSteps } from '../data/quality';
+import { url } from '../lib/url';
+---
+
+<section class="qstrip" data-surface="pale" aria-labelledby="qstrip-title">
+  <div class="container qstrip__inner">
+    <div class="qstrip__copy" data-reveal>
+      <p class="eyebrow">Quality assurance</p>
+      <h2 class="t-h3 qstrip__title" id="qstrip-title">
+        Every assignment goes through Colliers Assure
+      </h2>
+      <p class="qstrip__text">
+        Colliers’ externally audited and certified risk management and quality assurance methodology. All
+        valuations and advice undergo a comprehensive, multi-stage peer-review process.
+      </p>
+      <a class="link-arrow" href={url('/#quality')}>
+        <span>How Colliers Assure works</span> <Icon name="arrow-right" />
+      </a>
+    </div>
+    <ol class="qstrip__steps" role="list" data-reveal style="--i:2">
+      {qaSteps.map((s) => (
+        <li>{s.title}</li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .qstrip {
+    padding-block: var(--section-pad-tight);
+  }
+
+  .qstrip__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    gap: var(--space-7) var(--gutter);
+    align-items: center;
+  }
+
+  .qstrip__title {
+    margin-block: var(--space-4);
+    font-weight: 400;
+  }
+
+  .qstrip__text {
+    max-inline-size: 52ch;
+    margin-block-end: var(--space-4);
+  }
+
+  .qstrip__steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    counter-reset: step;
+  }
+
+  .qstrip__steps li {
+    counter-increment: step;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-block-size: 40px;
+    padding: 0 var(--space-4);
+    border-radius: var(--r-pill);
+    background: var(--c-white);
+    font-size: var(--fs-small);
+    font-weight: 600;
+  }
+
+  .qstrip__steps li::before {
+    content: counter(step, decimal-leading-zero);
+    font-variant-numeric: tabular-nums;
+    color: var(--c-medium-blue);
+    font-weight: 700;
+    font-size: var(--fs-xs);
+  }
+
+  @media (max-width: 1023px) {
+    .qstrip__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

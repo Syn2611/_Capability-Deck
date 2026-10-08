@@ -1,0 +1,235 @@
+---
+import Icon from './Icon.astro';
+import type { Service } from '../data/services';
+import type { Sector } from '../lib/sectors';
+import { url } from '../lib/url';
+
+interface Props {
+  services: Service[];
+  sectors: Sector[];
+}
+
+const { services, sectors } = Astro.props;
+
+/** Which sectors list a matching service on their own page — factual, derived from sector data. */
+const matchers: Record<string, RegExp> = {
+  'acquisition-disposal': /acquisition/i,
+  advisory: /advis/i,
+  'capital-raising': /capital raising/i,
+  'financial-reporting': /financial reporting/i,
+  'first-mortgage-security': /first mortgage/i,
+  'government-property': /^$/,
+  insurance: /insurance/i,
+  'plant-equipment': /^$/,
+  'rent-reviews': /rent/i,
+  'statutory-litigation': /statutory|litigation/i,
+  taxation: /tax/i,
+};
+
+const sectorsFor = (id: string) => {
+  const re = matchers[id];
+  const hits = sectors.filter((s) => s.data.services.some((x) => re.test(x)));
+  if (id === 'government-property') return sectors.filter((s) => s.id === 'government-legal');
+  return hits;
+};
+---
+
+<ul class="services" role="list" data-reveal-group>
+  {services.map((s) => {
+    const related = sectorsFor(s.id);
+    return (
+      <li data-reveal>
+        <details class="service" name={undefined}>
+          <summary class="service__summary">
+            <span class="service__icon">
+              <Icon name={s.icon} />
+            </span>
+            <span class="service__head">
+              <span class="service__title">{s.title}</span>
+              <span class="service__desc">{s.summary}</span>
+            </span>
+            <span class="service__toggle" aria-hidden="true">
+              <Icon name="plus" />
+            </span>
+          </summary>
+          <div class="service__body">
+            <p class="service__full">{s.summary}</p>
+            {related.length > 0 && (
+              <div class="service__related">
+                <p class="service__related-label">Delivered across</p>
+                <ul role="list">
+                  {related.map((r) => (
+                    <li>
+                      <a class="chip service__chip" href={url(`/sectors/${r.id}/`)}>
+                        {r.data.shortTitle}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </details>
+      </li>
+    );
+  })}
+</ul>
+
+<style>
+  .services {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    margin: 0;
+    border-block-end: 1px solid var(--keyline);
+  }
+
+  .services > li {
+    border-block-start: 1px solid var(--keyline);
+  }
+
+  .service__summary {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: start;
+    gap: var(--space-5);
+    padding-block: var(--space-5);
+    list-style: none;
+    cursor: pointer;
+    min-block-size: var(--tap);
+  }
+
+  .service__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .service__icon {
+    display: grid;
+    place-items: center;
+    inline-size: 48px;
+    block-size: 48px;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--keyline);
+    color: var(--accent);
+    background: var(--card-bg);
+    transition: background-color var(--dur-hover) var(--ease-out);
+  }
+
+  .service__title {
+    display: block;
+    font-size: var(--fs-h4);
+    font-weight: 600;
+    line-height: 1.35;
+    padding-block-start: var(--space-1);
+  }
+
+  .service__desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-block-start: var(--space-1);
+    font-size: var(--fs-small);
+    color: var(--fg-muted);
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+
+  .service[open] .service__desc {
+    opacity: 0;
+    block-size: 0;
+    margin: 0;
+  }
+
+  .service__toggle {
+    display: grid;
+    place-items: center;
+    inline-size: var(--tap);
+    block-size: var(--tap);
+    margin-block-start: 2px;
+    color: var(--accent);
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  .service[open] .service__toggle {
+    transform: rotate(45deg);
+  }
+
+  .service__summary:hover .service__icon {
+    background: var(--bg);
+  }
+
+  .service__body {
+    padding: 0 calc(var(--tap) + var(--space-5)) var(--space-6) calc(48px + var(--space-5));
+  }
+
+  .service__full {
+    max-inline-size: 52ch;
+    color: var(--fg-muted);
+  }
+
+  .service__related {
+    margin-block-start: var(--space-5);
+  }
+
+  .service__related-label {
+    font-size: var(--fs-eyebrow);
+    font-weight: 700;
+    letter-spacing: var(--tr-eyebrow);
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-block-end: var(--space-3);
+  }
+
+  .service__related ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .service__chip {
+    text-decoration: none;
+    background: var(--c-white);
+    transition: border-color var(--dur-hover) var(--ease-out);
+  }
+
+  .service__chip:hover {
+    border-color: var(--c-medium-blue);
+  }
+
+  /* Animated height where supported (interpolate-size + ::details-content) */
+  @media (prefers-reduced-motion: no-preference) {
+    .service::details-content {
+      block-size: 0;
+      overflow: clip;
+      transition:
+        block-size var(--dur-base) var(--ease-out),
+        content-visibility var(--dur-base) allow-discrete;
+    }
+
+    .service[open]::details-content {
+      block-size: auto;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .services {
+      grid-template-columns: 1fr;
+    }
+
+    .service__summary {
+      gap: var(--space-4);
+    }
+
+    .service__icon {
+      inline-size: 40px;
+      block-size: 40px;
+    }
+
+    .service__body {
+      padding-inline: 0;
+    }
+  }
+</style>

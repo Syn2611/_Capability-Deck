@@ -1,0 +1,576 @@
+/* ==========================================================================
+   Base — reset, typography, surfaces, layout primitives, buttons
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  interpolate-size: allow-keywords;
+  scroll-padding-block-start: calc(var(--header-h-condensed) + var(--index-h) + var(--space-5));
+  background: var(--c-white);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  min-block-size: 100svh;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: 400;
+  color: var(--c-deep-blue);
+  background: var(--c-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-optical-sizing: auto;
+  overflow-x: clip;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+/* <picture> is only a source wrapper — let the <img> size against the real container */
+picture {
+  display: contents;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+ul,
+ol,
+dl,
+dd {
+  margin: 0;
+}
+
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+  padding: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+:where(h1, h2, h3, h4) {
+  text-wrap: balance;
+  font-weight: 300;
+}
+
+:where(p, li, dd, blockquote) {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--c-pale-blue);
+  color: var(--c-deep-blue);
+}
+
+/* ---------- Focus ---------- */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--r-sm);
+}
+
+/* ---------- Skip link ---------- */
+.skip-link {
+  position: fixed;
+  inset-block-start: var(--space-3);
+  inset-inline-start: var(--space-3);
+  z-index: 100;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--r-pill);
+  background: var(--c-deep-blue);
+  color: var(--c-white);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* ---------- Visually hidden ---------- */
+.sr-only {
+  position: absolute !important;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   Surfaces — every text/background pair lives here and is contrast-checked
+   ========================================================================== */
+[data-surface] {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+[data-surface='white'] {
+  --bg: var(--c-white);
+  --fg: var(--c-deep-blue);
+  --fg-muted: var(--c-deep-blue-grey);
+  --fg-soft: var(--c-dark-blue-grey);
+  --accent: var(--c-medium-blue);
+  --keyline: var(--c-pale-blue-grey);
+  --card-bg: var(--c-pale-blue-grey);
+  --card-fg: var(--c-deep-blue);
+}
+
+[data-surface='pale'] {
+  --bg: var(--c-pale-blue-grey);
+  --fg: var(--c-deep-blue);
+  --fg-muted: var(--c-deep-blue-grey);
+  --fg-soft: var(--c-deep-blue-grey);
+  --accent: var(--c-medium-blue);
+  --keyline: var(--c-light-blue-grey);
+  --card-bg: var(--c-white);
+  --card-fg: var(--c-deep-blue);
+}
+
+[data-surface='deep'] {
+  --bg: var(--c-deep-blue);
+  --fg: var(--c-white);
+  --fg-muted: var(--c-white);
+  --fg-soft: var(--c-white);
+  --accent: var(--c-white);
+  --keyline: var(--c-dark-blue);
+  --card-bg: var(--c-dark-blue);
+  --card-fg: var(--c-white);
+}
+
+[data-surface='dark'] {
+  --bg: var(--c-dark-blue);
+  --fg: var(--c-white);
+  --fg-muted: var(--c-white);
+  --fg-soft: var(--c-white);
+  --accent: var(--c-white);
+  --keyline: var(--c-light-blue);
+  --card-bg: var(--c-deep-blue);
+  --card-fg: var(--c-white);
+}
+
+[data-surface='medium'] {
+  --bg: var(--c-medium-blue);
+  --fg: var(--c-white);
+  --fg-muted: var(--c-white);
+  --fg-soft: var(--c-white);
+  --accent: var(--c-white);
+  --keyline: var(--c-white);
+  --card-bg: var(--c-deep-blue);
+  --card-fg: var(--c-white);
+}
+
+/* Muted copy on blue fields stays white; hierarchy comes from size & weight, never a dimmer blue. */
+
+/* ==========================================================================
+   Layout primitives
+   ========================================================================== */
+.container {
+  inline-size: 100%;
+  max-inline-size: calc(var(--content-max) + 2 * var(--page-margin));
+  margin-inline: auto;
+  padding-inline: var(--page-margin);
+}
+
+.container--narrow {
+  max-inline-size: calc(var(--narrow-max) + 2 * var(--page-margin));
+}
+
+.section {
+  padding-block: var(--section-pad);
+  position: relative;
+}
+
+.section--tight {
+  padding-block: var(--section-pad-tight);
+}
+
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+
+.stack > * + * {
+  margin-block-start: var(--stack-gap, var(--space-5));
+}
+
+.hairline {
+  block-size: var(--hairline);
+  border: 0;
+  margin: 0;
+  background: var(--keyline, var(--c-pale-blue-grey));
+}
+
+.hairline--gradient {
+  background: var(--kl-grad-medium);
+}
+
+/* ==========================================================================
+   Typography helpers
+   ========================================================================== */
+.t-display {
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--tr-display);
+  font-weight: 300;
+}
+
+.t-h1 {
+  font-size: var(--fs-h1);
+  line-height: var(--lh-h1);
+  letter-spacing: var(--tr-h1);
+  font-weight: 300;
+}
+
+.t-h2 {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+  letter-spacing: var(--tr-h2);
+  font-weight: 300;
+}
+
+.t-h3 {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-h3);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+.t-h4 {
+  font-size: var(--fs-h4);
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+.t-lead {
+  font-family: var(--font-serif);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+  font-weight: 300;
+  max-inline-size: 40ch;
+}
+
+.t-body {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  max-inline-size: var(--measure);
+}
+
+.t-small {
+  font-size: var(--fs-small);
+  line-height: 1.55;
+}
+
+.t-muted {
+  color: var(--fg-muted);
+}
+
+.t-num,
+.t-stat {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.t-stat {
+  font-size: var(--fs-stat);
+  line-height: 0.9;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+}
+
+.prose > * + * {
+  margin-block-start: 1em;
+}
+
+.prose p {
+  max-inline-size: var(--measure);
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+blockquote,
+q {
+  hanging-punctuation: first last;
+}
+
+/* ==========================================================================
+   Buttons & links
+   ========================================================================== */
+.btn {
+  --btn-bg: var(--c-medium-blue);
+  --btn-fg: var(--c-white);
+  --btn-bg-hover: var(--c-dark-blue);
+  --btn-border: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-block-size: var(--tap);
+  padding: 0 var(--space-5);
+  border-radius: var(--r-pill);
+  border: 1px solid var(--btn-border);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: 0.005em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out),
+    border-color var(--dur-hover) var(--ease-out);
+}
+
+.btn:hover {
+  background: var(--btn-bg-hover);
+}
+
+.btn .icon {
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.btn:hover .icon--arrow {
+  transform: translateX(4px);
+}
+
+.btn--lg {
+  min-block-size: 52px;
+  padding-inline: var(--space-6);
+  font-size: 1rem;
+}
+
+/* Deep Blue text on white button — for use on blue fields */
+.btn--light {
+  --btn-bg: var(--c-white);
+  --btn-fg: var(--c-deep-blue);
+  --btn-bg-hover: var(--c-pale-blue-grey);
+}
+
+.btn--outline-light {
+  --btn-bg: transparent;
+  --btn-fg: var(--c-white);
+  --btn-border: var(--c-white);
+  --btn-bg-hover: var(--c-dark-blue);
+}
+
+.btn--outline {
+  --btn-bg: transparent;
+  --btn-fg: var(--c-deep-blue);
+  --btn-border: var(--c-deep-blue);
+  --btn-bg-hover: var(--c-pale-blue-grey);
+}
+
+.btn--deep {
+  --btn-bg: var(--c-deep-blue);
+  --btn-fg: var(--c-white);
+  --btn-bg-hover: var(--c-dark-blue);
+}
+
+/* Underline that draws from the left */
+.link {
+  color: inherit;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  padding-block-end: 2px;
+  transition: background-size var(--dur-base) var(--ease-out);
+}
+
+.link:hover,
+.link:focus-visible {
+  background-size: 100% 1px;
+}
+
+.link--under {
+  background-size: 100% 1px;
+}
+
+.link--under:hover {
+  background-size: 0% 1px;
+  background-position: 100% 100%;
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--tap);
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--accent);
+}
+
+.link-arrow .icon {
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.link-arrow:hover .icon {
+  transform: translateX(4px);
+}
+
+.link-arrow > span {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size var(--dur-base) var(--ease-out);
+}
+
+.link-arrow:hover > span {
+  background-size: 100% 1px;
+}
+
+/* ==========================================================================
+   Cards & chips
+   ========================================================================== */
+.card {
+  border-radius: var(--r-card);
+  background: var(--card-bg);
+  color: var(--card-fg);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 36px;
+  padding: 0 var(--space-4);
+  border-radius: var(--r-pill);
+  border: 1px solid var(--keyline);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* Icon base */
+.icon {
+  inline-size: var(--icon-size, 24px);
+  block-size: var(--icon-size, 24px);
+  flex: none;
+  stroke: currentColor;
+  stroke-width: var(--icon-stroke);
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Images with the 16px radius */
+.img-round {
+  border-radius: var(--r-img);
+  overflow: hidden;
+}
+
+/* Blue duotone: luminosity of the photo over a Medium Blue field */
+.duotone {
+  position: relative;
+  background: var(--c-deep-blue);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.duotone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--c-medium-blue), var(--c-dark-blue));
+  z-index: -1;
+}
+
+.duotone img {
+  mix-blend-mode: luminosity;
+  filter: grayscale(1) contrast(1.08);
+  opacity: 0.9;
+}
+
+/* Content pending (dev only) */
+.pending {
+  display: grid;
+  place-items: center;
+  min-block-size: var(--space-9);
+  padding: var(--space-5);
+  border: 1px dashed var(--c-light-blue-grey);
+  border-radius: var(--r-card);
+  color: var(--c-deep-blue-grey);
+  background: var(--c-white);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+/* Eyebrow — mirrors the "CLEAR SPACE & POSITION" labels on the identity sheet */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-eyebrow);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: var(--tr-eyebrow);
+  text-transform: uppercase;
+  color: var(--accent, var(--c-medium-blue));
+}
+
+.eyebrow__num {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.eyebrow__rule {
+  inline-size: var(--space-7);
+  block-size: 1px;
+  background: currentColor;
+}
+
+/* Two consecutive sections on the same surface share one gap, not two */
+[data-surface='white'] + [data-surface='white'].section,
+[data-surface='pale'] + [data-surface='pale'].section {
+  padding-block-start: 0;
+}

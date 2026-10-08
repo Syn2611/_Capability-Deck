@@ -1,0 +1,60 @@
+---
+import { site } from '../data/site';
+import { url } from '../lib/url';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Force noindex for this page regardless of the global switch (e.g. drafts, 404). */
+  noindex?: boolean;
+  image?: string;
+}
+
+const { title, description = site.description, noindex = false, image = '/og.png' } = Astro.props;
+const fullTitle = title ? `${title} | Colliers Valuation & Advisory Services` : site.title;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(url(image), Astro.site).href;
+const robots = site.noindex || noindex ? 'noindex, nofollow' : 'index, follow';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${site.colliersUrl}#organization`,
+      name: 'Colliers',
+      url: site.colliersUrl,
+      logo: new URL(url('/favicon.svg'), Astro.site).href,
+    },
+    {
+      '@type': 'ProfessionalService',
+      name: 'Colliers Valuation & Advisory Services',
+      description: site.description,
+      url: new URL(url('/'), Astro.site).href,
+      parentOrganization: { '@id': `${site.colliersUrl}#organization` },
+      areaServed: { '@type': 'Country', name: 'Australia' },
+    },
+  ],
+};
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta name="robots" content={robots} />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Colliers Valuation & Advisory Services" />
+<meta property="og:locale" content="en_AU" />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

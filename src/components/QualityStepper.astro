@@ -1,0 +1,180 @@
+---
+import { qaSteps } from '../data/quality';
+import { pad } from '../lib/url';
+---
+
+<ol class="qs" role="list" data-reveal aria-label="Colliers Assure review stages">
+  <svg class="qs__line qs__line--h" aria-hidden="true" focusable="false" preserveAspectRatio="none">
+    <line x1="0" y1="0.5" x2="100%" y2="0.5" pathLength="1"></line>
+  </svg>
+  {qaSteps.map((s, i) => (
+    <li class="qs__step" style={`--i:${i}`}>
+      <span class="qs__node t-num">{pad(i + 1)}</span>
+      <span class="qs__title">{s.title}</span>
+      <span class="qs__text">{s.text}</span>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .qs {
+    --node: 44px;
+    --g: var(--gutter);
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--space-6) var(--g);
+    margin: 0;
+    padding: 0;
+  }
+
+  .qs__line {
+    position: absolute;
+    overflow: visible;
+    stroke: var(--c-medium-blue);
+    stroke-width: 1px;
+    fill: none;
+  }
+
+  .qs__line line {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+
+  .qs__line--h {
+    inset-block-start: calc(var(--node) / 2);
+    inset-inline-start: calc(var(--node) / 2);
+    /* first node centre → last node centre: 5 × (column + gap) */
+    inline-size: calc(5 * (100% - 5 * var(--g)) / 6 + 5 * var(--g));
+    block-size: 1px;
+  }
+
+  .qs__step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .qs__node {
+    display: grid;
+    place-items: center;
+    inline-size: var(--node);
+    block-size: var(--node);
+    margin-block-end: var(--space-3);
+    border-radius: var(--r-pill);
+    border: 1px solid var(--c-medium-blue);
+    background: var(--bg);
+    color: var(--c-medium-blue);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+  }
+
+  .qs__title {
+    font-weight: 600;
+  }
+
+  .qs__text {
+    font-size: var(--fs-small);
+    line-height: 1.55;
+    color: var(--fg-muted);
+  }
+
+  /* Connector draw — tied to scroll where supported, else on reveal. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .qs__line line {
+      stroke-dashoffset: 1;
+      transition: stroke-dashoffset 1400ms var(--ease-io) 200ms;
+    }
+
+    :global(.js) .qs:global(.is-in) .qs__line line {
+      stroke-dashoffset: 0;
+    }
+
+    :global(.js) .qs__node {
+      transition:
+        background-color var(--dur-base) var(--ease-out),
+        color var(--dur-base) var(--ease-out);
+      transition-delay: calc(200ms + var(--i) * 220ms);
+    }
+
+    :global(.js) .qs:global(.is-in) .qs__node {
+      background: var(--c-medium-blue);
+      color: var(--c-white);
+    }
+
+    @supports (animation-timeline: view()) {
+      :global(.js) .qs__line line {
+        transition: none;
+        animation: qs-draw linear both;
+        animation-timeline: --qs;
+        animation-range: entry 40% cover 55%;
+      }
+
+      .qs {
+        view-timeline-name: --qs;
+      }
+
+      @keyframes qs-draw {
+        from {
+          stroke-dashoffset: 1;
+        }
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .qs {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+
+    .qs__step {
+      display: grid;
+      grid-template-columns: var(--node) minmax(0, 1fr);
+      column-gap: var(--space-5);
+      row-gap: var(--space-1);
+    }
+
+    .qs__node {
+      grid-row: 1 / span 2;
+      margin: 0;
+    }
+
+    .qs__title {
+      padding-block-start: 10px;
+    }
+
+    .qs__line--h {
+      display: none;
+    }
+
+    /* Vertical connectors: one hairline per gap, drawn top-down */
+    .qs__step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      inset-inline-start: calc(var(--node) / 2);
+      inset-block: var(--node) calc(-1 * var(--space-6));
+      inline-size: 1px;
+      background: var(--c-medium-blue);
+      transform-origin: top;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      :global(.js) .qs__step::after {
+        transform: scaleY(0);
+        transition: transform 500ms var(--ease-out);
+        transition-delay: calc(300ms + var(--i) * 220ms);
+      }
+
+      :global(.js) .qs:global(.is-in) .qs__step::after {
+        transform: none;
+      }
+    }
+  }
+</style>

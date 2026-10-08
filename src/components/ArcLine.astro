@@ -1,0 +1,37 @@
+---
+/** The deck's thin decorative circle — a single 1px hairline, never filled. */
+interface Props {
+  class?: string;
+}
+const { class: cls } = Astro.props;
+---
+
+<svg class:list={['arc', cls]} viewBox="0 0 1000 1000" aria-hidden="true" focusable="false">
+  <circle cx="500" cy="500" r="498" pathLength="1" vector-effect="non-scaling-stroke"></circle>
+</svg>
+
+<style>
+  .arc {
+    position: absolute;
+    pointer-events: none;
+    fill: none;
+    stroke: var(--arc-stroke, var(--c-white));
+    stroke-opacity: var(--arc-opacity, 0.55);
+    stroke-width: 1px;
+    overflow: visible;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .arc circle {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      animation: arc-draw 2.4s var(--ease-out) 0.3s forwards;
+    }
+  }
+
+  @keyframes arc-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

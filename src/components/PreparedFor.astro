@@ -1,0 +1,23 @@
+---
+/** Hidden until `?for=` is present — filled by scripts/personalise.ts using textContent only. */
+interface Props {
+  class?: string;
+}
+const { class: cls } = Astro.props;
+---
+
+<p class:list={['prepared-for', cls]} data-prepared-for hidden>
+  Prepared for <span data-prepared-for-name></span>
+</p>
+
+<style>
+  .prepared-for {
+    font-size: var(--fs-small);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .prepared-for span {
+    font-weight: 700;
+  }
+</style>

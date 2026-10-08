@@ -1,0 +1,253 @@
+---
+import { Picture } from 'astro:assets';
+import tower from '../assets/images/sectors/glass-tower-cutout.png';
+import ArcLine from './ArcLine.astro';
+import Eyebrow from './Eyebrow.astro';
+import Icon from './Icon.astro';
+import PreparedFor from './PreparedFor.astro';
+import { url } from '../lib/url';
+---
+
+<section class="hero" data-surface="medium" id="top" aria-labelledby="hero-title">
+  <div class="hero__media" aria-hidden="true">
+    <ArcLine class="hero__arc" />
+    <div class="hero__tower">
+      <Picture
+        src={tower}
+        alt=""
+        widths={[420, 640, 827]}
+        sizes="(max-width: 767px) 60vw, 34vw"
+        formats={['avif', 'webp']}
+        loading="eager"
+        fetchpriority="high"
+        quality={80}
+      />
+    </div>
+  </div>
+
+  <div class="container hero__content">
+    <div class="hero__copy">
+      <Eyebrow class="hero__eyebrow">Capability Statement · Australia</Eyebrow>
+      <PreparedFor class="hero__prepared" />
+      <h1 class="t-display hero__title" id="hero-title">
+        <span class="hero__line" data-reveal="clip">
+          Valuation &amp;
+        </span>
+        <span class="hero__line" data-reveal="clip" style="--i:1">
+          Advisory Services
+        </span>
+      </h1>
+      <p class="t-lead hero__lead" data-reveal style="--i:4">
+        Specialist property investment advice, research and analysis, reflecting real-time market conditions.
+      </p>
+      <div class="hero__actions" data-reveal style="--i:6">
+        <a class="btn btn--light btn--lg" href={url('/#sectors')}>
+          Explore our sectors <Icon name="arrow-right" />
+        </a>
+        <a class="link link--under hero__link" href={url('/#experts')}>
+          Speak to an expert
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <a class="hero__cue" href="#statement" aria-label="Scroll to the statement of intent">
+    <span></span>
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-block-size: max(640px, calc(100svh - var(--header-h)));
+    display: grid;
+    align-items: end;
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .hero :global(.hero__arc) {
+    inline-size: min(78vw, 1080px);
+    aspect-ratio: 1;
+    inset-inline-end: -14vw;
+    inset-block-start: 50%;
+    translate: 0 -46%;
+  }
+
+  .hero__tower {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-end: 9vw;
+    inline-size: min(30vw, 470px);
+    block-size: 88%;
+  }
+
+  .hero__tower :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: 50% 0;
+    mix-blend-mode: luminosity;
+    border-radius: 0;
+    animation: hero-settle var(--dur-hero) var(--ease-out) both;
+  }
+
+  @keyframes hero-settle {
+    from {
+      scale: 1.04;
+    }
+    to {
+      scale: 1;
+    }
+  }
+
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .hero__tower {
+        animation: hero-parallax linear both;
+        animation-timeline: scroll(root block);
+        animation-range: 0 100vh;
+      }
+
+      @keyframes hero-parallax {
+        to {
+          translate: 0 15vh;
+        }
+      }
+    }
+  }
+
+  .hero__content {
+    padding-block: var(--space-10) var(--space-10);
+  }
+
+  .hero__copy {
+    max-inline-size: 760px;
+  }
+
+  .hero :global(.hero__eyebrow) {
+    margin-block-end: var(--space-5);
+  }
+
+  .hero :global(.hero__prepared) {
+    margin-block: calc(-1 * var(--space-3)) var(--space-5);
+  }
+
+  .hero__title {
+    display: flex;
+    flex-direction: column;
+    margin-block-end: var(--space-6);
+  }
+
+  .hero__line {
+    display: block;
+    padding-block-end: 0.06em;
+  }
+
+  .hero__lead {
+    max-inline-size: 34ch;
+    margin-block-end: var(--space-7);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-5) var(--space-6);
+  }
+
+  .hero__link {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tap);
+    font-weight: 600;
+    padding-block-end: 0;
+    background-position: 0 calc(100% - 10px);
+  }
+
+  .hero__cue {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    display: block;
+    inline-size: var(--tap);
+    block-size: 72px;
+  }
+
+  .hero__cue span {
+    position: absolute;
+    inset-block: 0 0;
+    inset-inline-start: 50%;
+    inline-size: 1px;
+    background: var(--c-white);
+    transform-origin: top;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__cue span {
+      animation: cue-drop 1400ms var(--ease-out) 1400ms both;
+    }
+
+    @keyframes cue-drop {
+      0% {
+        transform: scaleY(0);
+        transform-origin: top;
+      }
+      55% {
+        transform: scaleY(1);
+        transform-origin: top;
+      }
+      56% {
+        transform-origin: bottom;
+      }
+      100% {
+        transform: scaleY(0.5);
+        transform-origin: bottom;
+      }
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .hero__tower {
+      inset-inline-end: 4vw;
+      inline-size: 38vw;
+      block-size: 58%;
+    }
+
+    .hero :global(.hero__arc) {
+      inline-size: 120vw;
+      inset-inline-end: -50vw;
+      inset-block-start: auto;
+      inset-block-end: -60vw;
+      translate: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hero {
+      align-items: start;
+      min-block-size: 0;
+    }
+
+    .hero__content {
+      padding-block: var(--space-8) 300px;
+    }
+
+    .hero__tower {
+      inset-inline-end: var(--page-margin);
+      inline-size: 48vw;
+      block-size: 270px;
+    }
+
+    .hero__cue {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,139 @@
+---
+import ExpertPortrait from './ExpertPortrait.astro';
+import Icon from './Icon.astro';
+import { hasDetail, type Expert } from '../data/experts';
+
+interface Props {
+  expert: Expert;
+  /** Emphasise as the sector lead. */
+  lead?: boolean;
+}
+const { expert: e, lead = false } = Astro.props;
+const interactive = hasDetail(e);
+const Tag = interactive ? 'button' : 'div';
+---
+
+<li class:list={['expert', { 'expert--lead': lead }]} data-reveal>
+  <Tag
+    class="expert__card"
+    type={interactive ? 'button' : undefined}
+    data-dialog-open={interactive ? `expert-${e.id}` : undefined}
+    aria-haspopup={interactive ? 'dialog' : undefined}
+  >
+    <span class="expert__photo">
+      <ExpertPortrait expert={e} size={lead ? 260 : 200} />
+    </span>
+    <span class="expert__chip">
+      {lead && <span class="expert__badge">Sector lead</span>}
+      <span class="expert__name">{e.name}</span>
+      <span class="expert__title">{e.title}</span>
+    </span>
+    {interactive && (
+      <span class="expert__more" aria-hidden="true">
+        <Icon name="plus" />
+      </span>
+    )}
+    {interactive && <span class="sr-only">, view profile</span>}
+  </Tag>
+</li>
+
+<style>
+  .expert {
+    container-type: inline-size;
+  }
+
+  .expert__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    inline-size: 100%;
+    block-size: 100%;
+    padding: var(--space-6) var(--space-3) var(--space-3);
+    border: 0;
+    border-radius: var(--r-card);
+    background: var(--c-pale-blue);
+    color: var(--c-deep-blue);
+    text-align: center;
+    font: inherit;
+  }
+
+  button.expert__card {
+    cursor: pointer;
+  }
+
+  .expert__photo {
+    display: grid;
+    place-items: center;
+    inline-size: 76%;
+    margin-block-end: var(--space-5);
+  }
+
+  .expert__photo :global(.portrait) {
+    transition: transform 600ms var(--ease-out);
+  }
+
+  button.expert__card:hover .expert__photo :global(.portrait) {
+    transform: scale(1.03);
+  }
+
+  .expert__chip {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    inline-size: 100%;
+    margin-block-start: auto;
+    padding: var(--space-4) var(--space-4);
+    border-radius: calc(var(--r-card) - 8px);
+    background: var(--c-white);
+  }
+
+  .expert__badge {
+    align-self: center;
+    margin-block-end: var(--space-2);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: var(--tr-eyebrow);
+    text-transform: uppercase;
+    color: var(--c-medium-blue);
+  }
+
+  .expert__name {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 1.0625rem;
+    line-height: 1.35;
+  }
+
+  .expert__title {
+    font-size: var(--fs-xs);
+    line-height: 1.45;
+    color: var(--c-deep-blue-grey);
+  }
+
+  .expert__more {
+    position: absolute;
+    inset-block-start: var(--space-3);
+    inset-inline-end: var(--space-3);
+    display: grid;
+    place-items: center;
+    inline-size: 36px;
+    block-size: 36px;
+    border-radius: var(--r-pill);
+    background: var(--c-white);
+    color: var(--c-medium-blue);
+    --icon-size: 18px;
+    transition:
+      background-color var(--dur-hover) var(--ease-out),
+      color var(--dur-hover) var(--ease-out);
+  }
+
+  button.expert__card:hover .expert__more {
+    background: var(--c-medium-blue);
+    color: var(--c-white);
+  }
+
+  .expert--lead .expert__name {
+    font-size: 1.25rem;
+  }
+</style>

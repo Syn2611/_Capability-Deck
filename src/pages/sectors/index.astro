@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Eyebrow from '../../components/Eyebrow.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import SectorGrid from '../../components/SectorGrid.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import { getLiveSectors } from '../../lib/sectors';
+import { sectorCoverage } from '../../data/services';
+import { url } from '../../lib/url';
+
+const sectors = await getLiveSectors();
+---
+
+<BaseLayout
+  title="Sectors"
+  description="Valuation and advisory specialists across every property sector in Australia — from office, industrial and retail to agribusiness, healthcare, data centres and service stations."
+  printLabel="Sectors"
+>
+  <section class="si-hero" data-surface="white" aria-labelledby="si-title">
+    <div class="container">
+      <Breadcrumb items={[{ label: 'Valuation & Advisory', href: url('/') }, { label: 'Sectors' }]} />
+      <div class="si-hero__grid">
+        <div>
+          <Eyebrow>Sectors</Eyebrow>
+          <h1 class="t-display si-hero__title" id="si-title" data-reveal="clip">
+            Every property sector
+          </h1>
+        </div>
+        <p class="t-lead si-hero__lead" data-reveal>
+          With a team of over 50 specialists across all property sectors in Australia, we are well suited to
+          tasks that demand a multidisciplinary focus.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" data-surface="white" aria-label="Sector index">
+    <div class="container">
+      <SectorGrid sectors={sectors} />
+    </div>
+  </section>
+
+  <section class="section" data-surface="pale" aria-labelledby="coverage-title">
+    <div class="container coverage">
+      <div>
+        <Eyebrow>Coverage</Eyebrow>
+        <h2 class="t-h2 coverage__title" id="coverage-title">
+          Researched, thorough advice across
+        </h2>
+      </div>
+      <ul class="coverage__list" role="list" data-reveal-group>
+        {sectorCoverage.map((s) => (
+          <li data-reveal>{s}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand id="contact" title="Find the right specialist.">
+    <a class="btn btn--light btn--lg" href={url('/contact/')}>
+      Contact a sector lead <Icon name="arrow-right" />
+    </a>
+  </CtaBand>
+</BaseLayout>
+
+<style>
+  .si-hero {
+    padding-block: var(--space-6) var(--space-9);
+  }
+
+  .si-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: end;
+    gap: var(--space-6) var(--gutter);
+    margin-block-start: var(--space-9);
+  }
+
+  .si-hero__title {
+    margin-block-start: var(--space-5);
+    max-inline-size: 10ch;
+  }
+
+  .si-hero__lead {
+    max-inline-size: 30ch;
+  }
+
+  .coverage {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-8) var(--gutter);
+  }
+
+  .coverage__title {
+    margin-block-start: var(--space-5);
+    max-inline-size: 14ch;
+  }
+
+  .coverage__list {
+    columns: 2;
+    column-gap: var(--gutter);
+    margin: 0;
+  }
+
+  .coverage__list li {
+    break-inside: avoid;
+    padding-block: var(--space-3);
+    border-block-start: 1px solid var(--keyline);
+    font-weight: 500;
+  }
+
+  @media (max-width: 1023px) {
+    .si-hero__grid,
+    .coverage {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .coverage__list {
+      columns: 1;
+    }
+  }
+</style>

@@ -1,0 +1,376 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectorHero from '../../components/SectorHero.astro';
+import SectionIndex from '../../components/SectionIndex.astro';
+import Eyebrow from '../../components/Eyebrow.astro';
+import StatRow from '../../components/StatRow.astro';
+import ProjectGrid from '../../components/ProjectGrid.astro';
+import ExpertGrid from '../../components/ExpertGrid.astro';
+import QualityStrip from '../../components/QualityStrip.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import PrevNextSector from '../../components/PrevNextSector.astro';
+import Pending from '../../components/Pending.astro';
+import Icon from '../../components/Icon.astro';
+
+import { getAllSectors, getLiveSectors, type Sector } from '../../lib/sectors';
+import { getExpert } from '../../data/experts';
+import { projectsForSector, officeCredentials, type SectorSlug } from '../../data/projects';
+import { url, telHref, pad } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const all = await getAllSectors();
+  return all.map((sector) => ({ params: { slug: sector.id }, props: { sector } }));
+}
+
+interface Props {
+  sector: Sector;
+}
+
+const { sector } = Astro.props;
+const d = sector.data;
+const { Content } = await render(sector);
+const hasIntro = Boolean(sector.body?.trim());
+
+const live = await getLiveSectors();
+const pos = live.findIndex((s) => s.id === sector.id);
+const prev = pos > 0 ? live[pos - 1] : undefined;
+const next = pos >= 0 && pos < live.length - 1 ? live[pos + 1] : undefined;
+const number = pos >= 0 ? pos + 1 : d.order;
+
+const lead = d.leadExpert ? getExpert(d.leadExpert) : undefined;
+const team = [...(lead ? [lead] : []), ...d.experts.map(getExpert)];
+const projects = projectsForSector(sector.id as SectorSlug);
+const credentials = sector.id === 'office' ? officeCredentials : [];
+const isDev = import.meta.env.DEV;
+
+const show = {
+  overview: hasIntro || isDev,
+  services: d.services.length > 0 || isDev,
+  value: d.assetTypes.length > 0 || isDev,
+  track: projects.length > 0 || credentials.length > 0 || isDev,
+  experts: team.length > 0 || isDev,
+};
+
+const index = [
+  show.overview && { id: 'overview', label: 'Overview' },
+  show.services && { id: 'services', label: 'Services' },
+  show.value && { id: 'what-we-value', label: 'What we value' },
+  show.track && { id: 'track-record', label: 'Track record' },
+  show.experts && { id: 'experts', label: 'Experts' },
+  { id: 'quality', label: 'Quality' },
+  { id: 'contact', label: 'Contact' },
+].filter(Boolean) as { id: string; label: string }[];
+
+const description = d.descriptor
+  ? `${d.title} valuation & advisory — ${d.descriptor}`
+  : `${d.title} valuation & advisory services from Colliers Australia.`;
+const stat = d.stat ? [{ id: sector.id, ...d.stat }] : [];
+---
+
+<BaseLayout
+  title={`${d.title} valuation`}
+  description={description}
+  current={sector.id}
+  noindex={d.draft}
+  printLabel={d.title}
+>
+  <SectorHero sector={sector} index={number} />
+  <SectionIndex items={index} />
+
+  {show.overview && (
+    <section class="section" data-surface="white" id="overview" aria-labelledby="overview-title">
+      <div class="container grid-12">
+        <header class="sp-side">
+          <Eyebrow num="01">Overview</Eyebrow>
+          <h2 class="t-h2 sp-side__title" id="overview-title" data-reveal="clip">
+            Our approach
+          </h2>
+        </header>
+        <div class:list={['sp-intro', { 'sp-intro--stat': stat.length }]}>
+          {hasIntro ? (
+            <div class="sp-intro__copy prose" data-reveal>
+              <Content />
+            </div>
+          ) : (
+            <Pending label="Content pending — sector introduction" />
+          )}
+          {stat.length > 0 && (
+            <div class="sp-intro__stat">
+              <StatRow stats={stat} showSource />
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {show.services && (
+    <section class="section" data-surface="pale" id="services" aria-labelledby="services-title">
+      <div class="container grid-12">
+        <header class="sp-side">
+          <Eyebrow num="02">Services</Eyebrow>
+          <h2 class="t-h2 sp-side__title" id="services-title" data-reveal="clip">
+            What we deliver
+          </h2>
+        </header>
+        <div class="sp-main">
+          {d.services.length ? (
+            <ol class="sp-services" role="list" data-reveal-group>
+              {d.services.map((s, i) => (
+                <li data-reveal>
+                  <span class="sp-services__num t-num">{pad(i + 1)}</span>
+                  <span>{s}</span>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <Pending label="Content pending — services" />
+          )}
+          {d.servicesReview && (
+            <Pending label="Service list drawn from the core services — to be confirmed" />
+          )}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {show.value && (
+    <section class="section" data-surface="white" id="what-we-value" aria-labelledby="value-title">
+      <div class="container grid-12">
+        <header class="sp-side">
+          <Eyebrow num="03">What we value</Eyebrow>
+          <h2 class="t-h2 sp-side__title" id="value-title" data-reveal="clip">
+            Asset types
+          </h2>
+        </header>
+        <div class="sp-main">
+          {d.assetTypes.length ? (
+            <ul class="sp-chips" role="list" data-reveal-group>
+              {d.assetTypes.map((a) => (
+                <li class="chip sp-chip" data-reveal>
+                  {a}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <Pending label="Content pending — asset types" />
+          )}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {show.track && (
+    <section class="section" data-surface="white" id="track-record" aria-labelledby="track-title">
+      <div class="container">
+        <header class="sp-head">
+          <Eyebrow num="04">Selected track record</Eyebrow>
+          <h2 class="t-h2" id="track-title" data-reveal="clip">
+            {sector.id === 'mortgage' ? 'Valued for first mortgage security' : 'Valued in the last 24 months'}
+          </h2>
+        </header>
+        {projects.length > 0 ? (
+          <ProjectGrid projects={projects} />
+        ) : (
+          <Pending label="Content pending — track record" />
+        )}
+        {credentials.length > 0 && (
+          <div class="sp-creds" data-reveal>
+            <h3 class="t-h4">Further office credentials</h3>
+            <ul role="list">
+              {credentials.map((c) => (
+                <li>{c}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  {show.experts && (
+    <section class="section" data-surface="pale" id="experts" aria-labelledby="experts-title">
+      <div class="container">
+        <header class="sp-head">
+          <Eyebrow num="05">Sector experts</Eyebrow>
+          <h2 class="t-h2" id="experts-title" data-reveal="clip">
+            Your {d.shortTitle} team
+          </h2>
+        </header>
+        {team.length ? (
+          <ExpertGrid experts={team} leadId={lead?.id} />
+        ) : (
+          <Pending label="Content pending — sector lead (TBC)" />
+        )}
+      </div>
+    </section>
+  )}
+
+  <div id="quality">
+    <QualityStrip />
+  </div>
+
+  <CtaBand
+    id="contact"
+    title={lead ? `Talk to ${lead.name}` : 'Talk to our team'}
+    text={lead ? `${lead.title}${lead.team ? `, ${lead.team}` : ''}` : undefined}
+  >
+    {lead?.email && (
+      <a class="btn btn--light btn--lg" href={`mailto:${lead.email}`}>
+        <Icon name="mail" /> Email {lead.name.split(' ')[0]}
+      </a>
+    )}
+    {lead?.phone && (
+      <a class="btn btn--outline-light btn--lg" href={telHref(lead.phone)}>
+        <Icon name="phone" /> <span class="t-num">{lead.phone}</span>
+      </a>
+    )}
+    {!lead?.email && (
+      <a class="btn btn--light btn--lg" href={url('/contact/')}>
+        Contact our team <Icon name="arrow-right" />
+      </a>
+    )}
+  </CtaBand>
+
+  <PrevNextSector prev={prev} next={next} />
+</BaseLayout>
+
+<style>
+  .sp-side {
+    grid-column: 1 / span 4;
+    display: grid;
+    gap: var(--space-5);
+    align-content: start;
+  }
+
+  .sp-side__title {
+    max-inline-size: 12ch;
+  }
+
+  .sp-main,
+  .sp-intro {
+    grid-column: 6 / span 7;
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .sp-intro--stat {
+    grid-column: 6 / span 7;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sp-intro__copy :global(p:first-child) {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--fg);
+  }
+
+  .sp-intro__copy {
+    color: var(--fg-muted);
+  }
+
+  .sp-intro__stat {
+    margin-block-start: var(--space-6);
+    max-inline-size: 420px;
+  }
+
+  .sp-services {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    margin: 0;
+    padding: 0;
+    border-block-end: 1px solid var(--keyline);
+  }
+
+  .sp-services li {
+    display: flex;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+    border-block-start: 1px solid var(--keyline);
+    font-weight: 500;
+  }
+
+  .sp-services__num {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    color: var(--accent);
+    padding-block-start: 3px;
+  }
+
+  .sp-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+  }
+
+  .sp-chip {
+    min-block-size: var(--tap);
+    padding-inline: var(--space-5);
+    font-size: var(--fs-body);
+    background: var(--c-pale-blue-grey);
+    border-color: var(--c-pale-blue-grey);
+  }
+
+  .sp-head {
+    display: grid;
+    gap: var(--space-5);
+    margin-block-end: var(--space-8);
+  }
+
+  .sp-creds {
+    margin-block-start: var(--space-9);
+    padding-block-start: var(--space-6);
+    border-block-start: 1px solid var(--keyline);
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: var(--space-5) var(--gutter);
+  }
+
+  .sp-creds ul {
+    columns: 2;
+    column-gap: var(--gutter);
+    margin: 0;
+    padding: 0;
+  }
+
+  .sp-creds li {
+    break-inside: avoid;
+    padding-block: var(--space-2);
+    color: var(--fg-muted);
+  }
+
+  @media (max-width: 1023px) {
+    .sp-side,
+    .sp-main,
+    .sp-intro,
+    .sp-intro--stat {
+      grid-column: 1 / -1;
+    }
+
+    .sp-side {
+      margin-block-end: var(--space-7);
+    }
+
+    .sp-side__title {
+      max-inline-size: none;
+    }
+
+    .sp-creds {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 599px) {
+    .sp-services,
+    .sp-creds ul {
+      grid-template-columns: 1fr;
+      columns: 1;
+    }
+  }
+</style>

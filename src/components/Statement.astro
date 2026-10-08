@@ -1,0 +1,70 @@
+---
+import Picture from './Picture.astro';
+import spiral from '../assets/images/texture/blue-spiral-particles.jpg';
+---
+
+<section class="statement" data-surface="deep" id="statement" aria-labelledby="statement-label">
+  <div class="statement__media" aria-hidden="true">
+    <Picture src={spiral} alt="" sizes="100vw" widths={[800, 1400, 2000, 2800]} />
+  </div>
+  <div class="container statement__inner">
+    <figure class="statement__panel" data-surface="medium" data-reveal>
+      <blockquote class="statement__text">
+        <p>
+          Our mission is to be the number one provider of choice for Valuation &amp; Advisory Services across
+          all property sectors — and your genuine trusted advisor.
+        </p>
+      </blockquote>
+      <figcaption class="statement__label" id="statement-label">
+        Statement of intent
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .statement {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: var(--section-pad);
+  }
+
+  .statement__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .statement__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: 70% 50%;
+  }
+
+  .statement__panel {
+    max-inline-size: 860px;
+    padding: clamp(32px, 5vw, 72px);
+    border-radius: var(--r-card);
+  }
+
+  .statement__text {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: var(--fs-statement);
+    line-height: 1.32;
+    letter-spacing: -0.01em;
+    hanging-punctuation: first last;
+  }
+
+  .statement__label {
+    margin-block-start: var(--space-7);
+    padding-block-start: var(--space-5);
+    border-block-start: 1px solid var(--c-white);
+    font-size: var(--fs-eyebrow);
+    font-weight: 700;
+    letter-spacing: var(--tr-eyebrow);
+    text-transform: uppercase;
+  }
+</style>

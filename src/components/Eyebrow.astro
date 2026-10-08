@@ -1,0 +1,22 @@
+---
+interface Props {
+  /** Optional section number, e.g. "01". */
+  num?: string;
+  as?: 'p' | 'span' | 'h2';
+  class?: string;
+}
+
+const { num, as: Tag = 'p', class: cls } = Astro.props;
+---
+
+<Tag class:list={['eyebrow', cls]}>
+  {num && (
+    <>
+      <span class="eyebrow__num">{num}</span>
+      <span class="eyebrow__rule" aria-hidden="true" />
+    </>
+  )}
+  <span>
+    <slot />
+  </span>
+</Tag>

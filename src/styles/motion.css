@@ -1,0 +1,71 @@
+/* ==========================================================================
+   Motion — CSS does the animating; JS only toggles `.is-in` (once).
+   Content is only hidden once the `js` class is present, so no-JS and print
+   always get the full page.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(var(--rise));
+    transition:
+      opacity var(--dur-slow) var(--ease-out),
+      transform var(--dur-slow) var(--ease-out);
+    transition-delay: calc(var(--i, 0) * var(--stagger));
+  }
+
+  .js [data-reveal='fade'] {
+    transform: none;
+  }
+
+  /* Clip-mask reveal for display headlines */
+  .js [data-reveal='clip'] {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 100% 0);
+    translate: 0 0.25em;
+    transition:
+      clip-path var(--dur-slow) var(--ease-out),
+      translate var(--dur-slow) var(--ease-out);
+    transition-delay: calc(var(--i, 0) * var(--stagger) + 80ms);
+  }
+
+  .js [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  .js [data-reveal='clip'].is-in {
+    clip-path: inset(0 0 -0.2em 0);
+    translate: 0 0;
+  }
+}
+
+/* Page-transition tuning (Astro ClientRouter) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 300ms;
+  animation-timing-function: var(--ease-io);
+}
+
+::view-transition-group(*) {
+  animation-duration: 600ms;
+  animation-timing-function: var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

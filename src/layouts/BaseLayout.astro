@@ -1,0 +1,71 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '@fontsource-variable/open-sans/wght.css';
+import '@fontsource/merriweather/300.css';
+import '@fontsource/merriweather/300-italic.css';
+import '@fontsource/merriweather/400.css';
+import '@fontsource/merriweather/700.css';
+import openSansUrl from '@fontsource-variable/open-sans/files/open-sans-latin-wght-normal.woff2?url';
+import merriUrl from '@fontsource/merriweather/files/merriweather-latin-300-normal.woff2?url';
+
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/motion.css';
+import '../styles/print.css';
+
+import Seo from '../components/Seo.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileMenu from '../components/MobileMenu.astro';
+import { getLiveSectors } from '../lib/sectors';
+import { url } from '../lib/url';
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+  /** Slug of the current sector, for nav state & print label. */
+  current?: string;
+  /** Label for the print running header (defaults to "Overview"). */
+  printLabel?: string;
+}
+
+const { title, description, noindex, current, printLabel = 'Overview' } = Astro.props;
+const sectors = await getLiveSectors();
+---
+
+<!doctype html>
+<html lang="en-AU" data-print-label={printLabel}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#1C54F4" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="preload" href={openSansUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={merriUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={url('/favicon-32.png')} sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />
+    <link rel="sitemap" href={url('/sitemap-index.xml')} />
+    <Seo title={title} description={description} noindex={noindex} />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+    <ClientRouter fallback="swap" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <Header sectors={sectors} current={current} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer sectors={sectors} />
+    <MobileMenu sectors={sectors} current={current} />
+    <script>
+      import '../scripts/app.ts';
+    </script>
+  </body>
+</html>

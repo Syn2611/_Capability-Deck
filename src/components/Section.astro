@@ -1,0 +1,23 @@
+---
+type Surface = 'white' | 'pale' | 'deep' | 'dark' | 'medium';
+
+interface Props {
+  id?: string;
+  surface?: Surface;
+  tight?: boolean;
+  class?: string;
+  /** Accessible name for the region (falls back to the first heading via aria-labelledby). */
+  labelledby?: string;
+}
+
+const { id, surface = 'white', tight = false, class: cls, labelledby } = Astro.props;
+---
+
+<section
+  id={id}
+  data-surface={surface}
+  class:list={['section', { 'section--tight': tight }, cls]}
+  aria-labelledby={labelledby}
+>
+  <slot />
+</section>

@@ -1,0 +1,579 @@
+/* ==========================================================================
+   Print — a clean A4 portrait document (window.print() and `npm run pdf`).
+   Deep Blue on white, interactions hidden, accordions expanded, URLs shown.
+   ========================================================================== */
+
+@page {
+  size: A4 portrait;
+  margin: 18mm 16mm 20mm;
+
+  @bottom-left {
+    content: 'Capability Statement | Valuation & Advisory Services | ' counter(page);
+    font-family: var(--font-sans);
+    font-size: 8pt;
+    color: var(--c-deep-blue);
+  }
+
+  @bottom-right {
+    content: 'colliers.com.au';
+    font-family: var(--font-sans);
+    font-size: 8pt;
+    color: var(--c-dark-blue-grey);
+  }
+}
+
+@page :first {
+  margin: 0;
+
+  @bottom-left {
+    content: none;
+  }
+
+  @bottom-right {
+    content: none;
+  }
+}
+
+@media print {
+  :root {
+    --section-pad: 10mm;
+    --section-pad-tight: 6mm;
+    --page-margin: 0mm;
+    --fs-display: 40pt;
+    --fs-h1: 26pt;
+    --fs-h2: 20pt;
+    --fs-h3: 13pt;
+    --fs-lead: 12.5pt;
+    --fs-statement: 18pt;
+    --fs-body: 10pt;
+    --fs-small: 9pt;
+    --fs-xs: 8pt;
+    --fs-stat: 34pt;
+  }
+
+  html,
+  body {
+    background: var(--c-white) !important;
+    font-size: 10pt;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Everything visible and still */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    translate: none !important;
+  }
+
+  /* Chrome & interaction hidden */
+  .site-header,
+  .section-index,
+  .mobile-menu,
+  .skip-link,
+  .mega,
+  .hero__cue,
+  .pf__bar,
+  .footer__pdf,
+  .footer__nav,
+  .pn,
+  .expert__more,
+  .service__toggle,
+  .pq__more summary,
+  .pending,
+  .cert__pending,
+  .tile__arrow,
+  .menu-toggle {
+    display: none !important;
+  }
+
+  .container {
+    max-inline-size: none;
+    padding-inline: 0;
+  }
+
+  /* Blue fields become white pages with Deep Blue type */
+  [data-surface] {
+    --bg: var(--c-white);
+    --fg: var(--c-deep-blue);
+    --fg-muted: var(--c-deep-blue-grey);
+    --fg-soft: var(--c-deep-blue-grey);
+    --accent: var(--c-medium-blue);
+    --keyline: var(--c-pale-blue-grey);
+    --card-bg: var(--c-white);
+    background: var(--c-white);
+    color: var(--c-deep-blue);
+  }
+
+  /* ---- Cover (home hero / sector hero) ---- */
+  .hero,
+  .sh {
+    break-after: page;
+    min-block-size: 0 !important;
+    block-size: 297mm !important;
+    overflow: hidden !important;
+    padding: 24mm 18mm !important;
+    background: var(--c-medium-blue) !important;
+    color: var(--c-white) !important;
+    --fg: var(--c-white);
+    --accent: var(--c-white);
+    align-items: end;
+  }
+
+  .hero .container,
+  .sh .container {
+    padding-inline: 0;
+  }
+
+  .hero__actions {
+    display: none !important;
+  }
+
+  .hero__tower {
+    inset-inline-end: 18mm;
+    inline-size: 70mm;
+    block-size: 160mm;
+  }
+
+  .hero__title {
+    font-size: 46pt !important;
+  }
+
+  .hero::before,
+  .sh::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 18mm;
+    inset-inline-start: 18mm;
+    inline-size: 34mm;
+    aspect-ratio: 34.36 / 19.56;
+    background: url('../assets/brand/colliers-logo.svg') no-repeat 0 0 / contain;
+  }
+
+  /* Sector cover: logo on clear blue, image band, title on solid blue beneath */
+  .sh {
+    display: block !important;
+    position: relative !important;
+  }
+
+  .sh__media {
+    position: absolute !important;
+    inset: 46mm 0 auto 0 !important;
+    inline-size: 100% !important;
+    block-size: 140mm !important;
+    min-block-size: 0 !important;
+  }
+
+  .sh__inner {
+    position: absolute !important;
+    inset: auto 18mm 26mm 18mm !important;
+    inline-size: auto !important;
+  }
+
+  .sh__copy {
+    inline-size: 100% !important;
+    padding: 0 !important;
+    gap: 8mm !important;
+    flex-direction: column-reverse !important;
+  }
+
+  .sh .crumbs {
+    display: none;
+  }
+
+  .sh__title {
+    font-size: 40pt !important;
+  }
+
+  /* QA stepper stays horizontal on the page */
+  .quality__stepper {
+    break-inside: avoid;
+    margin-block: 8mm !important;
+    padding-block: 6mm !important;
+  }
+
+  .qs {
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+    gap: 4mm !important;
+    --g: 4mm !important;
+    --node: 30px !important;
+  }
+
+  .qs__step {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5mm !important;
+  }
+
+  .qs__step::after {
+    display: none !important;
+  }
+
+  .qs__line--h {
+    display: block !important;
+  }
+
+  .qs__line line {
+    stroke-dashoffset: 0 !important;
+  }
+
+  .qs__node {
+    margin: 0 0 2mm !important;
+    background: var(--c-medium-blue) !important;
+    color: var(--c-white) !important;
+  }
+
+  .qs__title {
+    padding-block-start: 0 !important;
+    font-size: 9pt;
+  }
+
+  .qs__text {
+    font-size: 7.5pt !important;
+  }
+
+  .pq,
+  .tech,
+  .about__card {
+    break-inside: avoid;
+  }
+
+  .services {
+    grid-template-columns: 1fr 1fr !important;
+    column-gap: 6mm !important;
+  }
+
+  .service__summary {
+    padding-block: 3mm 1mm !important;
+    gap: 3mm !important;
+  }
+
+  .service__icon {
+    inline-size: 32px !important;
+    block-size: 32px !important;
+  }
+
+  .service__body {
+    padding: 0 0 3mm calc(32px + 3mm) !important;
+  }
+
+  .service__full {
+    font-size: 8.5pt;
+  }
+
+  [data-prepared-for]:not([hidden]) {
+    font-size: 11pt;
+  }
+
+  /* ---- Sections ---- */
+  .section,
+  .statement,
+  .cta,
+  .qstrip {
+    padding-block: var(--section-pad);
+    break-inside: auto;
+  }
+
+  /* Chapter breaks on the overview document only; sector pages flow continuously */
+  html[data-print-label='Overview'] :is(#services, #sectors, #strategy, #quality, #track-record, #experts) {
+    break-before: page;
+  }
+
+  .footer,
+  .cta {
+    break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3,
+  .eyebrow {
+    break-after: avoid;
+  }
+
+  p,
+  li,
+  blockquote {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .statement__media,
+  .strategy__media {
+    display: none !important;
+  }
+
+  .statement__panel {
+    padding: 0;
+    max-inline-size: none;
+  }
+
+  .statement__label {
+    border-color: var(--c-medium-blue);
+  }
+
+  .about__head {
+    position: static !important;
+  }
+
+  .grid-12 {
+    column-gap: 6mm;
+  }
+
+  /* Accordions open */
+  details::details-content {
+    content-visibility: visible;
+    block-size: auto !important;
+  }
+
+  .service__desc {
+    display: none;
+  }
+
+  .service__related {
+    display: none;
+  }
+
+  .services > li,
+  .project,
+  .tile-wrap,
+  .expert,
+  .cert,
+  .qs__step,
+  .dir__row,
+  .stat {
+    break-inside: avoid;
+  }
+
+  /* Cards: hairline instead of tone */
+  .card,
+  .tile,
+  .about__card,
+  .tech,
+  .cert,
+  .pq,
+  .md {
+    background: var(--c-white) !important;
+    border: 1px solid var(--c-pale-blue-grey);
+  }
+
+  .pq {
+    color: var(--c-deep-blue) !important;
+  }
+
+  .pq__close {
+    display: none;
+  }
+
+  .sector-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 4mm !important;
+  }
+
+  .tile__media {
+    aspect-ratio: 16 / 6 !important;
+  }
+
+  .tile__body {
+    padding: 3mm 3mm 4mm !important;
+  }
+
+  .tile__desc {
+    font-size: 7.5pt !important;
+  }
+
+  .sector-grid {
+    break-inside: auto;
+  }
+
+  .project-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 5mm 4mm !important;
+  }
+
+  .project__body {
+    padding-block-start: 2.5mm !important;
+  }
+
+  .project__name {
+    font-size: 9pt !important;
+  }
+
+  .project__metric {
+    margin-block: 2mm !important;
+    padding-block-start: 2mm !important;
+  }
+
+  .project__meta div {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+
+  .project__meta {
+    font-size: 7.5pt !important;
+  }
+
+  .project[hidden] {
+    display: block !important;
+  }
+
+  .project__metric {
+    font-size: 11pt !important;
+  }
+
+  /* Experts: cards become a bio directory (dialog content printed inline) */
+  .expert-grid {
+    display: none !important;
+  }
+
+  .expert-dialogs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6mm;
+  }
+
+  dialog[data-expert-dialog] {
+    position: static !important;
+    display: block !important;
+    inline-size: auto !important;
+    max-inline-size: none !important;
+    max-block-size: none !important;
+    opacity: 1 !important;
+    translate: none !important;
+    margin: 0 !important;
+    padding: 0 0 4mm !important;
+    border: 0 !important;
+    border-block-end: 1px solid var(--c-pale-blue-grey) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    break-inside: avoid;
+  }
+
+  .xd__head {
+    padding-inline-end: 0 !important;
+    gap: 4mm !important;
+  }
+
+  .xd__head .portrait {
+    inline-size: 18mm !important;
+  }
+
+  .xd__panel {
+    padding: 0 !important;
+  }
+
+  .xd__close {
+    display: none !important;
+  }
+
+  .xd__name {
+    font-size: 12pt !important;
+  }
+
+  .xd__bio {
+    margin-block-start: 3mm !important;
+    padding-block-start: 3mm !important;
+    font-size: 8.5pt;
+  }
+
+  .xd__contact {
+    margin-block-start: 3mm !important;
+  }
+
+  .xd__contact .btn {
+    min-block-size: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--c-deep-blue);
+    font-size: 8.5pt;
+    font-weight: 500;
+  }
+
+  .xd__contact .icon {
+    display: none;
+  }
+
+  /* CTA band + footer */
+  .cta {
+    break-inside: avoid;
+    border-block-start: 1px solid var(--c-medium-blue);
+  }
+
+  .cta__arc,
+  .nf__arc,
+  .arc {
+    display: none !important;
+  }
+
+  .cta .btn {
+    border: 0;
+    padding: 0;
+    min-block-size: 0;
+    background: none;
+    color: var(--c-deep-blue);
+  }
+
+  .footer {
+    padding-block: 8mm 0;
+    border-block-start: 1px solid var(--c-pale-blue-grey);
+  }
+
+  .footer__inner {
+    padding-block-end: 4mm !important;
+  }
+
+  .footer__brand img {
+    inline-size: 28mm;
+  }
+
+  .footer__legal {
+    border-color: var(--c-pale-blue-grey) !important;
+  }
+
+  /* Show destinations of external, mail and phone links */
+  main a[href^='http']::after,
+  main a[href^='mailto:']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    font-weight: 400;
+    color: var(--c-dark-blue-grey);
+    word-break: break-all;
+  }
+
+  main a[href^='mailto:']::after {
+    content: '';
+  }
+
+  .tile::after,
+  .btn::after {
+    content: none !important;
+  }
+
+  img {
+    break-inside: avoid;
+  }
+}
+
+@media print {
+  .sp-chips,
+  .sp-head,
+  .sp-side,
+  .section-head,
+  .sp-creds {
+    break-inside: avoid;
+  }
+
+  .sp-head,
+  .sp-side,
+  .section-head {
+    break-after: avoid;
+  }
+}

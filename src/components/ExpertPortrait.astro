@@ -1,0 +1,57 @@
+---
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import type { Expert } from '../data/experts';
+
+interface Props {
+  expert: Expert;
+  size?: number;
+}
+const { expert, size = 220 } = Astro.props;
+---
+
+<span class="portrait" style={`--size:${size}px`}>
+  {expert.photo ? (
+    <Picture
+      src={expert.photo}
+      alt=""
+      widths={[size, Math.min(size * 2, expert.photo.width)]}
+      sizes={`${size}px`}
+      formats={['avif', 'webp']}
+      loading="lazy"
+      quality={80}
+    />
+  ) : (
+    <span class="portrait__silhouette">
+      <Icon name="person" />
+    </span>
+  )}
+</span>
+
+<style>
+  .portrait {
+    display: block;
+    inline-size: min(var(--size), 100%);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--c-pale-blue-grey);
+  }
+
+  /* Source headshots are pre-cut circles with a hairline ring — scale slightly to hide it. */
+  .portrait :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    scale: 1.07;
+  }
+
+  .portrait__silhouette {
+    display: grid;
+    place-items: center;
+    block-size: 100%;
+    color: var(--c-medium-blue-grey);
+    --icon-size: 46%;
+    --icon-stroke: 0.9;
+  }
+</style>

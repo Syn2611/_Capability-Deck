@@ -63,6 +63,8 @@ Append `?for=Client%20Name` to any URL. The hero and print cover then show “Pr
 
 ## Deploy
 
+**Cloudflare (live host).** Connected to this repo via Cloudflare Workers Builds. Settings: build command `npm run build`, deploy command `npx wrangler deploy` (config in `wrangler.jsonc`), env var `SITE_URL` = the live address. Every push to the production branch rebuilds and redeploys automatically. Node version comes from `.node-version`.
+
 The output is plain static files in `dist/`, served with `trailingSlash: 'always'` and directory `index.html` files.
 
 ```bash

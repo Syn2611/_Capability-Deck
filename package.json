@@ -8,12 +8,12 @@
     "build": "npm run contrast && astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "contrast": "node scripts/contrast-check.ts",
+    "contrast": "node --experimental-strip-types --no-warnings scripts/contrast-check.ts",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "screenshots": "node scripts/screenshots.ts",
-    "pdf": "node scripts/pdf.ts",
-    "preview:lite": "PREVIEW_LITE=1 astro build --outDir dist-preview && node scripts/preview-lite.ts"
+    "screenshots": "node --experimental-strip-types --no-warnings scripts/screenshots.ts",
+    "pdf": "node --experimental-strip-types --no-warnings scripts/pdf.ts",
+    "preview:lite": "PREVIEW_LITE=1 astro build --outDir dist-preview && node --experimental-strip-types --no-warnings scripts/preview-lite.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
@@ -31,6 +31,7 @@
     "prettier": "^3.9.9",
     "prettier-plugin-astro": "^1.1.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.71.1"
+    "typescript-eslint": "^8.71.1",
+    "wrangler": "^4.149.0"
   }
 }

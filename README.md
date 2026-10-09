@@ -21,6 +21,7 @@ Requires Node ≥ 22.12. The scripts in `scripts/*.ts` run directly with Node's 
 | `npm run pdf` | Renders A4 PDFs with Playwright and `print.css`. `FOR="Client Name" npm run pdf` personalises the cover. |
 | `npm run screenshots` | Full-page PNGs of every live page at 1440 and 390 px → `screenshots/`. |
 | `node scripts/qa.ts` | Runs axe (WCAG 2.2 AA) on every page at both widths, checks console errors, overflow and H1 count, and tests the mega menu, filter, dialog and `?for=`. |
+| `npm run preview:lite` | Builds `dist-preview/`, a light, relative-path copy (one WebP per image, no client router) for sharing as a single preview link. |
 | `node scripts/og.ts` | Regenerates `public/og.png`. |
 | `npm run check` / `lint` / `format` | Run `astro check`, ESLint and Prettier. |
 

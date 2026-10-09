@@ -26,7 +26,7 @@ const inits = [
   initPrint,
 ];
 
-document.addEventListener('astro:page-load', () => {
+const run = () => {
   for (const init of inits) {
     try {
       init();
@@ -34,4 +34,8 @@ document.addEventListener('astro:page-load', () => {
       console.error(err);
     }
   }
-});
+};
+
+document.addEventListener('astro:page-load', run);
+// Without the client router (preview build), `astro:page-load` never fires: run once on load.
+if (!document.querySelector('meta[name="astro-view-transitions-enabled"]')) run();

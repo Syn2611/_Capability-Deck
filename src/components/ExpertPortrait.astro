@@ -1,5 +1,6 @@
 ---
 import { Picture } from 'astro:assets';
+import { imageOpts } from '../lib/image-opts';
 import Icon from './Icon.astro';
 import type { Expert } from '../data/experts';
 
@@ -15,9 +16,8 @@ const { expert, size = 220 } = Astro.props;
     <Picture
       src={expert.photo}
       alt=""
-      widths={[size, Math.min(size * 2, expert.photo.width)]}
+        {...imageOpts([size, Math.min(size * 2, expert.photo.width)], expert.photo.width)}
       sizes={`${size}px`}
-      formats={['avif', 'webp']}
       loading="lazy"
       quality={80}
     />

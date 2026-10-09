@@ -1,5 +1,6 @@
 ---
 import { Picture } from 'astro:assets';
+import { imageOpts } from '../lib/image-opts';
 import tower from '../assets/images/sectors/glass-tower-cutout.png';
 import ArcLine from './ArcLine.astro';
 import Eyebrow from './Eyebrow.astro';
@@ -15,9 +16,8 @@ import { url } from '../lib/url';
       <Picture
         src={tower}
         alt=""
-        widths={[420, 640, 827]}
+        {...imageOpts([420, 640, 827], tower.width)}
         sizes="(max-width: 767px) 60vw, 34vw"
-        formats={['avif', 'webp']}
         loading="eager"
         fetchpriority="high"
         quality={80}

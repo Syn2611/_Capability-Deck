@@ -73,7 +73,7 @@ const pdfExperts: Expert[] = [
   {
     id: 'leon-hadchiti',
     name: 'Leon Hadchiti',
-    title: 'National Director, Healthcare & Retirement Living',
+    title: 'Head of Healthcare & Retirement Living',
     team: VA,
     phone: '+61 422 477 293',
     email: 'leon.hadchiti@colliers.com',
@@ -95,13 +95,14 @@ const pdfExperts: Expert[] = [
   {
     id: 'christopher-milou',
     name: 'Christopher Milou',
-    title: 'Head of Hotels',
+    title: 'Head of Hotels & Living',
     team: VA,
     phone: '+61 413 615 398',
     email: 'christopher.milou@colliers.com',
     photo: milou,
     featured: true,
-    bio: 'As Head of Hotels, Christopher oversees the strategy and operations of the national hotels team. He specialises in the valuation of going-concern properties in the hospitality, student accommodation, co-living, build-to-rent and car parking sectors.',
+    bio: 'Christopher oversees the strategy and operations of the national hotels team. He has over 25 years’ experience in the valuation of going-concern properties, including hotels, motels, serviced apartments, backpackers, student accommodation, co-living, build-to-rent and other accommodation types, together with car parking facilities.',
+    note: 'Associate of the Australian Property Institute (AAPI) and Member of the Royal Institution of Chartered Surveyors (MRICS).',
   },
   {
     id: 'stephen-cameron',
@@ -152,7 +153,7 @@ const pdfExperts: Expert[] = [
   {
     id: 'lisa-murdoch',
     name: 'Lisa Murdoch',
-    title: 'National Director, QLD',
+    title: 'Head of Valuation & Advisory, Queensland',
     team: VA,
     phone: '+61 402 092 503',
     email: 'lisa.murdoch@colliers.com',
@@ -170,6 +171,28 @@ const pdfExperts: Expert[] = [
     photo: shadbolt,
     featured: true,
     bio: 'Matt heads the Colliers valuation mortgage teams in NSW, VIC, ACT and SA, with deep valuation and leadership experience across diverse assets, including in Europe. He is building Colliers’ presence in the $25M mortgage middle market for office, industrial and retail properties.',
+  },
+];
+
+/** Source: Colliers Hotels & Living web page (contacts from the page; photos pending). */
+const hotelsWebExperts: Expert[] = [
+  {
+    id: 'adam-ellis',
+    name: 'Adam Ellis',
+    title: 'National Director, Hotels & Living',
+    team: VA,
+    phone: '+61 411 752 293',
+    email: 'adam.ellis@colliers.com',
+    bio: 'Adam’s expertise extends to city and regional hotels, motels, resorts, mixed-use developments, marinas, backpackers, serviced apartments and co-living property. He provides asset and rental valuation and advisory services to property owners and third parties for purposes including finance, development feasibility, due diligence and financial reporting.',
+  },
+  {
+    id: 'emily-racki',
+    name: 'Emily Racki',
+    title: 'Director, Hotels & Living',
+    team: VA,
+    phone: '+61 439 446 417',
+    email: 'emily.racki@colliers.com',
+    bio: 'Emily provides valuation and strategic advisory services across the hospitality and living sectors — hotels, student accommodation, build-to-rent, serviced apartments, co-living and mixed-use living developments — for institutional investors, developers, lenders, operators and private owners. Her work spans financial reporting, mortgage security, transaction support, insurance valuations, rent reviews, due diligence, capital raising and feasibility, for single assets and large portfolios. She joined Colliers in 2019.',
   },
 ];
 
@@ -205,7 +228,7 @@ const webExperts: Expert[] = [
   },
 ];
 
-export const experts: Expert[] = [...pdfExperts, ...webExperts];
+export const experts: Expert[] = [...pdfExperts, ...hotelsWebExperts, ...webExperts];
 
 const byId = new Map(experts.map((e) => [e.id, e]));
 

@@ -14,26 +14,20 @@ Nothing on the site was invented to fill these gaps. In dev builds, missing modu
 | Industrial page                         | **$7.8bn+** valued, “last 12 months”                                                                                                          | Same as above (`industrial-logistics.md`).                                                                                                                                                                   |
 | HRL page                                | **~$7bn** valued & consulted on                                                                                                               | Same as above (`healthcare-retirement-living.md`).                                                                                                                                                           |
 | Service Stations page                   | **400+** valued annually (ANZ)                                                                                                                | Same as above (`service-stations.md`).                                                                                                                                                                       |
-| Track record › George Place             | **54,262.2 m²**                                                                                                                               | The PDF prints “54,262,.2 m²”. The site shows 54,262.2 m². **Confirm the exact figure.**                                                                                                                     |
 | Track record › David Jones              | Client “Charter Hall”                                                                                                                         | The PDF spells it “Charterhall”. Normalised to Charter Hall.                                                                                                                                                 |
 | Track record › Industrial Portfolio VIC | Purpose                                                                                                                                       | The PDF reads “Valued for on behalf of Frasers…” (purpose word missing). The site shows the client only.                                                                                                     |
 | Track record › Telstra Data Centre      | Client                                                                                                                                        | The PDF names no client (“valued for potential acquisition purposes”). The card shows purpose only.                                                                                                          |
 | Track record heading                    | “Valued in the last 24 months”                                                                                                                | True as of the 2025 PDF. Re-confirm the list and window before each send.                                                                                                                                    |
-| Expert notes                            | Phil Western, “NSW Valuer General for 11 years, to 2014”; Stephen Cameron, “expert witness in the Land Court and Supreme Court of Queensland” | From the brief, **not in the PDF bios**. Shown as a separate note in each bio dialog. Please confirm wording.                                                                                                |
-| Strategy                                | Testimonial uses “CIVAS”                                                                                                                      | Kept verbatim (it is a quote). Confirm Broadspectrum approval is still current.                                                                                                                              |
 
-## 2. Title discrepancies (PDF vs website)
+## Resolved (9 Oct 2026)
 
-PDF titles are used. Each is a single field (`title`) in `src/data/experts.ts`.
+- **George Place**: 54,262.2 m² confirmed.
+- **Expert notes**: Phil Western (NSW Valuer General) and Stephen Cameron (expert witness) approved.
+- **Titles**: the website versions are now used for Lisa Murdoch (Head of Valuation & Advisory, Queensland), Leon Hadchiti (Head of Healthcare & Retirement Living) and Christopher Milou (Head of Hotels & Living).
+- **Joseph Ripepi testimonial**: approved.
+- **Hotels & Living**: content taken from the Colliers Hotels & Living web page.
 
-| Person            | PDF (used)                                                                        | Website                                                                           |
-| ----------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| Lisa Murdoch      | National Director, QLD                                                            | Head of V&A, Queensland                                                           |
-| Leon Hadchiti     | National Director, Healthcare & Retirement Living (PDF: “National Director, HRL”) | Head of HRL                                                                       |
-| Christopher Milou | Head of Hotels                                                                    | Head of Hotels & Living                                                           |
-| Ben McCallum      | National Director                                                                 | (website adds Industrial & Corporate; Plant & Machinery national lead, per brief) |
-
-## 3. Missing people data
+## 2. Missing people data
 
 - **No contact details or photos** for the 20 experts named only on the website: Peter Volakos, Cassandra Mortimer, Robert Rixon, Ben Masters, Devan Vituli, Andrew Govey, Bernard Peverill, Hamish Johnston, James Farrugia, Connie Ndungu, Stanley Ferro, Zane Gil, Josh Swan, Oliver Wheatley, Rob Hancock, Nigel Boon, Jennifer Wong, David Mugenyi, Rishikesh Elkunchwar and Andrew Stove. They render as non-interactive cards with a Pale Blue Grey silhouette. To complete a profile, add `phone`, `email`, `bio` and `photo` in `src/data/experts.ts`.
 - **Generic titles** (“Director”, “National Director”, “Manager”, “Senior Valuer”) for Robert Rixon, Ben Masters, Devan Vituli, Zane Gil, Josh Swan, Oliver Wheatley, Rob Hancock, Nigel Boon, Jennifer Wong, David Mugenyi and Rishikesh Elkunchwar. Supply sector titles.
@@ -41,11 +35,11 @@ PDF titles are used. Each is a single field (`title`) in `src/data/experts.ts`.
 - **Extractive Industries & Waste Management**: no lead (TBC).
 - **Headshot resolution**: PDF headshots are 338–450 px circular crops. They are fine for the 200 px cards but soft on 3× displays. Supply ≥ 900×900 px originals with consistent eye-line, ideally on a neutral grey background.
 
-## 4. Missing sector content
+## 3. Missing sector content
 
 | Sector                                                                 | Gap                                                                                                                                                                                                                             |
 | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Hotels & Living**                                                    | No dedicated web page. Intro built from Christopher Milou’s bio. **The service list is the core services “as applicable” and must be reviewed** (`servicesReview: true` shows a dev-only note). Asset types are from the brief. |
+| **Hotels & Living** | Services, approach copy, asset types and team (Adam Ellis, Emily Racki) now come from the Colliers Hotels & Living web page. Its figure “12,000+ rooms / $4bn+ valued in the last 12 months” needs an `asOf` date. Track record limited to the three PDF entries. |
 | **Childcare & Education**                                              | Schools and universities content is still to come from a separate statement.                                                                                                                                                    |
 | **Plant & Machinery**                                                  | `draft: true`. Has the descriptor (from the core Plant & Equipment service) and a lead (Ben McCallum). Needs intro, services, asset types and track record.                                                                     |
 | **Extractive Industries & Waste Management**                           | `draft: true`. Needs everything, including a lead.                                                                                                                                                                              |
@@ -53,7 +47,7 @@ PDF titles are used. Each is a single field (`title`) in `src/data/experts.ts`.
 | **Mortgage**                                                           | No mortgage-specific projects in the source. The page shows every PDF engagement valued for first mortgage security purposes (factual, derived from the PDF), headed “Valued for first mortgage security”.                      |
 | Retail, Industrial, Office, Government, Data Centres, Service Stations | Track record is limited to the PDF list (1–4 items each). Add more entries in `src/data/projects.ts`.                                                                                                                           |
 
-## 5. Assets needed (with art direction)
+## 4. Assets needed (with art direction)
 
 All current imagery comes from the two reference PDFs. Sector images are shown with a CSS duotone (luminosity on a Medium Blue field), so any well-exposed neutral photo will work.
 
@@ -61,7 +55,6 @@ All current imagery comes from the two reference PDFs. Sector images are shown w
 | --------------------------------------- | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Home hero                               | Glass tower cut-out from Example Slide 1                            | Looking up at an Australian CBD tower facade (Sydney or Melbourne), cool morning light, clean sky, isolated silhouette or clipped facade. ≥ 1600×2400 portrait PNG with transparency, **or** 2400×1600 landscape. |
 | Statement of intent                     | Blue particle spiral (Example Slide 6)                              | Dark-blue abstract (particles, light trails or a curved facade at night). 2800×1600.                                                                                                                              |
-| Strategy                                | Melbourne skyline across the Yarra (PDF p.4)                        | Approved. Higher-res would help: 2400×1600.                                                                                                                                                                       |
 | Office hero                             | Glass tower (Example Slide 1)                                       | Sydney CBD tower looking up, glass and steel, cool light. 2400×1600.                                                                                                                                              |
 | Industrial & Logistics hero             | Highway interchange light trails (Example Slide 8)                  | Aerial of a modern logistics estate or warehouse roofline at dusk. 2400×1600.                                                                                                                                     |
 | Retail hero                             | Curved canopy (Example Slide 12)                                    | Architectural detail of a regional shopping centre atrium or canopy, people blurred. 2400×1600.                                                                                                                   |
@@ -81,7 +74,7 @@ All current imagery comes from the two reference PDFs. Sector images are shown w
 | Colliers Assure diagram                 | Not used (PDF p.5 has an infinity-loop graphic at 770 px)           | Optional: vector version, if Colliers would like it in place of the stepper.                                                                                                                                      |
 | OG / social image                       | Generated `public/og.png` (logo + title on Medium Blue)             | Approve, or supply a designed 1200×630.                                                                                                                                                                           |
 
-## 6. Configuration and decisions
+## 5. Configuration and decisions
 
 1. **Production URL**: `site` defaults to the placeholder `https://va-capability.example.com`. Set `SITE_URL` at build time so canonical, OG and sitemap URLs are correct.
 2. **Indexing**: `noindex` is **on** by default (client-share document). Set `PUBLIC_NOINDEX=false` to allow indexing.

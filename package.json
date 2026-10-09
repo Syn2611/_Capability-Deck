@@ -12,7 +12,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "screenshots": "node scripts/screenshots.ts",
-    "pdf": "node scripts/pdf.ts"
+    "pdf": "node scripts/pdf.ts",
+    "preview:lite": "PREVIEW_LITE=1 astro build --outDir dist-preview && node scripts/preview-lite.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

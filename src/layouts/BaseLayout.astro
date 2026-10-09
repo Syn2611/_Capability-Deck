@@ -19,6 +19,7 @@ import Footer from '../components/Footer.astro';
 import MobileMenu from '../components/MobileMenu.astro';
 import { getLiveSectors } from '../lib/sectors';
 import { url } from '../lib/url';
+import { previewLite } from '../lib/image-opts';
 
 interface Props {
   title?: string;
@@ -52,7 +53,15 @@ const sectors = await getLiveSectors();
     <script is:inline>
       document.documentElement.classList.add('js');
     </script>
-    <ClientRouter fallback="swap" />
+    {
+      /* The preview copy uses relative paths, which Astro's router can't resolve across folder depths;
+         native cross-document view transitions give the same cross-fade and tile morph there. */
+      previewLite ? (
+        <Fragment set:html="<style>@view-transition{navigation:auto}</style>" />
+      ) : (
+        <ClientRouter fallback="swap" />
+      )
+    }
   </head>
   <body>
     <a class="skip-link" href="#main">

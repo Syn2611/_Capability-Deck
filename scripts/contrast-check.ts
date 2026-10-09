@@ -19,7 +19,7 @@ const TOKENS = join(ROOT, 'src/styles/tokens.css');
 
 /** Approved foreground → backgrounds (Visual Identity Cheat Sheet + brief §3.1). */
 const APPROVED: Record<string, string[]> = {
-  white: ['deep-blue', 'dark-blue', 'medium-blue', 'deep-blue-grey', 'dark-blue-grey'],
+  white: ['deep-blue', 'dark-blue', 'medium-blue', 'field-blue', 'deep-blue-grey', 'dark-blue-grey'],
   'deep-blue': ['white', 'pale-blue', 'pale-blue-grey', 'light-blue-grey'],
   'deep-blue-grey': ['white', 'pale-blue', 'pale-blue-grey', 'light-blue-grey'],
   'dark-blue': ['white', 'pale-blue', 'pale-blue-grey'],

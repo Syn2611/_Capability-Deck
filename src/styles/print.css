@@ -119,7 +119,7 @@
     block-size: 297mm !important;
     overflow: hidden !important;
     padding: 24mm 18mm !important;
-    background: var(--c-medium-blue) !important;
+    background: var(--c-field-blue) !important;
     color: var(--c-white) !important;
     --fg: var(--c-white);
     --accent: var(--c-white);
@@ -225,7 +225,7 @@
 
   .qs__node {
     margin: 0 0 2mm !important;
-    background: var(--c-medium-blue) !important;
+    background: var(--c-field-blue) !important;
     color: var(--c-white) !important;
   }
 

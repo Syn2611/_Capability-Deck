@@ -194,7 +194,7 @@ a {
 }
 
 [data-surface='medium'] {
-  --bg: var(--c-medium-blue);
+  --bg: var(--c-field-blue);
   --fg: var(--c-white);
   --fg-muted: var(--c-white);
   --fg-soft: var(--c-white);
@@ -343,7 +343,7 @@ q {
    Buttons & links
    ========================================================================== */
 .btn {
-  --btn-bg: var(--c-medium-blue);
+  --btn-bg: var(--c-field-blue);
   --btn-fg: var(--c-white);
   --btn-bg-hover: var(--c-dark-blue);
   --btn-border: transparent;
@@ -520,7 +520,7 @@ q {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, var(--c-medium-blue), var(--c-dark-blue));
+  background: linear-gradient(180deg, var(--c-field-blue), var(--c-dark-blue));
   z-index: -1;
 }
 

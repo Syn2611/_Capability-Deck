@@ -15,6 +15,10 @@
   --c-pale-blue: #c3e6ff;
   --c-white: #ffffff;
 
+  /* Blue field — every solid Medium Blue *background* (hero, CTA bands, panels, buttons).
+     Client-specified (Oct 2026). Medium Blue itself stays for text, numerals and keylines. */
+  --c-field-blue: #0939c3;
+
   /* ---- Secondary palette — text, backgrounds and section content only ---- */
   --c-deep-blue-grey: #353e59;
   --c-dark-blue-grey: #56648f;

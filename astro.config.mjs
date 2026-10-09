@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { readdirSync, readFileSync } from 'node:fs';
 
-const SITE_URL = process.env.SITE_URL ?? 'https://va-capability.example.com';
+const SITE_URL = process.env.SITE_URL ?? 'https://colliers-va-capability.pegasus456.workers.dev';
 const BASE = process.env.BASE_PATH ?? '/';
 
 /** Slugs of sectors flagged `draft: true` — built, but kept out of the sitemap. */

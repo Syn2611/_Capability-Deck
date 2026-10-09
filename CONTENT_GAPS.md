@@ -27,7 +27,7 @@ Nothing on the site was invented to fill these gaps. Missing data is shown on th
 - **Joseph Ripepi testimonial**: approved.
 - **Colliers boilerplate** (70 countries, 28,000+ professionals, ~40% equity, ~20% returns): approved.
 - **Search indexing**: on (PUBLIC_NOINDEX=true hides the site).
-- **Hosting**: Hostinger (static build + `public/.htaccess`).
+- **Hosting**: Cloudflare Workers (static assets), auto-deployed from GitHub on every push. Live at https://colliers-va-capability.pegasus456.workers.dev/ (set as the default `SITE_URL`).
 - **Hotels & Living**: content taken from the Colliers Hotels & Living web page.
 
 ## 2. Missing people data

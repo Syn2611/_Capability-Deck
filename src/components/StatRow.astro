@@ -1,5 +1,6 @@
 ---
 import type { Stat } from '../data/stats';
+import Input from './Input.astro';
 
 interface Props {
   stats: Stat[];
@@ -22,10 +23,16 @@ const { stats, showSource = false } = Astro.props;
           {s.value}
         </span>
       </dd>
-      {showSource && (
+      {(showSource || s.asOf === 'TBC') && (
         <dd class="stat__source">
-          {s.source}
-          {s.asOf !== 'TBC' && ` · ${s.asOf}`}
+          {showSource && `${s.source} · `}
+          {s.asOf === 'TBC' ? (
+            <>
+              As of <Input label="date" />
+            </>
+          ) : (
+            showSource && s.asOf
+          )}
         </dd>
       )}
     </div>

@@ -1,6 +1,7 @@
 ---
 import Picture from './Picture.astro';
 import Icon from './Icon.astro';
+import Input from './Input.astro';
 import type { Project } from '../data/projects';
 import { filterGroupOf } from '../data/projects';
 import { sectorLabels } from '../data/sector-labels';
@@ -27,6 +28,7 @@ const { project: p, filterable = false } = Astro.props;
       ) : (
         <span class="project__placeholder" role="img" aria-label="Image to be supplied">
           <Icon name="building" />
+          <Input label="project photo" />
         </span>
       )}
       <span class="project__tag">{sectorLabels[p.sector]}</span>
@@ -89,7 +91,9 @@ const { project: p, filterable = false } = Astro.props;
 
   .project__placeholder {
     display: grid;
-    place-items: center;
+    place-content: center;
+    justify-items: center;
+    gap: var(--space-3);
     block-size: 100%;
     color: var(--c-dark-blue-grey);
     --icon-size: 40px;

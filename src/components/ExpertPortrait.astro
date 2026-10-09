@@ -16,7 +16,7 @@ const { expert, size = 220 } = Astro.props;
     <Picture
       src={expert.photo}
       alt=""
-        {...imageOpts([size, Math.min(size * 2, expert.photo.width)], expert.photo.width)}
+      {...imageOpts([size, Math.min(size * 2, expert.photo.width)], expert.photo.width)}
       sizes={`${size}px`}
       loading="lazy"
       quality={80}

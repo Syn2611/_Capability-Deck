@@ -1,6 +1,7 @@
 ---
 import ExpertPortrait from './ExpertPortrait.astro';
 import Icon from './Icon.astro';
+import Input from './Input.astro';
 import { hasDetail, type Expert } from '../data/experts';
 
 interface Props {
@@ -27,6 +28,13 @@ const Tag = interactive ? 'button' : 'div';
       {lead && <span class="expert__badge">Sector lead</span>}
       <span class="expert__name">{e.name}</span>
       <span class="expert__title">{e.title}</span>
+      {(!e.photo || !e.email || !e.phone) && (
+        <span class="expert__inputs">
+          {!e.photo && <Input label="photo" />}
+          {!e.phone && <Input label="phone" />}
+          {!e.email && <Input label="email" />}
+        </span>
+      )}
     </span>
     {interactive && (
       <span class="expert__more" aria-hidden="true">
@@ -109,6 +117,14 @@ const Tag = interactive ? 'button' : 'div';
     font-size: var(--fs-xs);
     line-height: 1.45;
     color: var(--c-deep-blue-grey);
+  }
+
+  .expert__inputs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-1);
+    margin-block-start: var(--space-2);
   }
 
   .expert__more {

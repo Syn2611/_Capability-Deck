@@ -574,3 +574,21 @@ q {
 [data-surface='pale'] + [data-surface='pale'].section {
   padding-block-start: 0;
 }
+
+/* <INPUT> marker — data still to be supplied (see src/components/Input.astro) */
+.input-tag {
+  display: inline-block;
+  padding: 1px var(--space-2);
+  border: 1px dashed var(--c-medium-blue-grey);
+  border-radius: var(--r-sm);
+  background: var(--c-white);
+  color: var(--c-deep-blue-grey);
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  white-space: normal;
+  vertical-align: middle;
+}

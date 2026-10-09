@@ -3,6 +3,7 @@ import Picture from './Picture.astro';
 import Breadcrumb from './Breadcrumb.astro';
 import PreparedFor from './PreparedFor.astro';
 import Eyebrow from './Eyebrow.astro';
+import Input from './Input.astro';
 import type { Sector } from '../lib/sectors';
 import { url, pad } from '../lib/url';
 
@@ -40,11 +41,9 @@ const { title, descriptor, heroImage, heroAlt } = sector.data;
         <h1 class="t-h1 sh__title" id="sector-title" data-reveal="clip">
           {title}
         </h1>
-        {descriptor && (
-          <p class="t-lead sh__lead" data-reveal style="--i:3">
-            {descriptor}
-          </p>
-        )}
+        <p class="t-lead sh__lead" data-reveal style="--i:3">
+          {descriptor ?? <Input label="sector descriptor" />}
+        </p>
       </div>
     </div>
   </div>

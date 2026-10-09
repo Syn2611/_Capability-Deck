@@ -1,5 +1,6 @@
 ---
 import { certifications } from '../data/quality';
+import Input from './Input.astro';
 ---
 
 <ul class="certs" role="list" aria-label="Certifications and external audit">
@@ -8,7 +9,7 @@ import { certifications } from '../data/quality';
       <span class="cert__mark">{c.mark}</span>
       <span class="cert__name">{c.name}</span>
       <span class="cert__role">{c.role}</span>
-      {import.meta.env.DEV && <span class="cert__pending">Artwork pending</span>}
+      <Input label="logo artwork" class="cert__pending" />
     </li>
   ))}
 </ul>
@@ -51,17 +52,10 @@ import { certifications } from '../data/quality';
     color: var(--fg-muted);
   }
 
-  .cert__pending {
+  .cert :global(.cert__pending) {
     position: absolute;
     inset-block-start: var(--space-3);
     inset-inline-end: var(--space-3);
-    padding: 2px var(--space-2);
-    border: 1px dashed var(--c-light-blue-grey);
-    border-radius: var(--r-pill);
-    font-size: 0.6875rem;
-    font-weight: 600;
-    color: var(--c-deep-blue-grey);
-    background: var(--c-white);
   }
 
   @media (max-width: 767px) {

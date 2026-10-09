@@ -4,6 +4,7 @@ import Eyebrow from '../components/Eyebrow.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import ExpertPortrait from '../components/ExpertPortrait.astro';
 import Icon from '../components/Icon.astro';
+import Input from '../components/Input.astro';
 import { getExpert } from '../data/experts';
 import { site } from '../data/site';
 import { getLiveSectors } from '../lib/sectors';
@@ -105,9 +106,8 @@ const leadership = ['andrew-collins'].map(getExpert);
                   {e.email}
                 </a>
               )}
-              {!e.phone && !e.email && import.meta.env.DEV && (
-                <span class="pending">Contact details pending</span>
-              )}
+              {!e.phone && <Input label="phone" />}
+              {!e.email && <Input label="email" />}
             </p>
           </li>
         ))}

@@ -1,7 +1,7 @@
 /**
  * Global site configuration.
- * `noindex` defaults to true: this is a client-share document, not a public marketing page.
- * Flip it to `false` (or set PUBLIC_NOINDEX=false) when the site should be indexed.
+ * Search indexing is on. Set PUBLIC_NOINDEX=true at build time to hide the site from search engines.
+ * Draft sectors and the 404 page are always noindex.
  */
 export const site = {
   name: 'Valuation & Advisory Services',
@@ -10,7 +10,7 @@ export const site = {
   description:
     'Specialist property investment advice, research and analysis, reflecting real-time market conditions. Colliers Valuation & Advisory Services, Australia.',
   locale: 'en-AU',
-  noindex: (import.meta.env.PUBLIC_NOINDEX ?? 'true') !== 'false',
+  noindex: (import.meta.env.PUBLIC_NOINDEX ?? 'false') === 'true',
   colliersUrl: 'https://www.colliers.com.au/',
   privacyUrl: 'https://www.colliers.com/en-au/privacy-policy',
   disclaimer: 'Liability limited by a scheme approved under Professional Standards Legislation.',

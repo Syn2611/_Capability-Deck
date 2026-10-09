@@ -1,15 +1,11 @@
 ---
-/** "Content pending" marker — rendered in dev builds only; production renders nothing. */
+/** Block-level "<INPUT: …>" marker for a missing module (kept for existing call sites). */
+import Input from './Input.astro';
 interface Props {
   label?: string;
   class?: string;
 }
-const { label = 'Content pending', class: cls } = Astro.props;
-const show = import.meta.env.DEV;
+const { label, class: cls } = Astro.props;
 ---
 
-{show && (
-  <div class:list={['pending', cls]} role="note">
-    {label}
-  </div>
-)}
+<Input label={label} block class={cls} />

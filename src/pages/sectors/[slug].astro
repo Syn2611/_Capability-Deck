@@ -11,6 +11,7 @@ import QualityStrip from '../../components/QualityStrip.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import PrevNextSector from '../../components/PrevNextSector.astro';
 import Pending from '../../components/Pending.astro';
+import Input from '../../components/Input.astro';
 import Icon from '../../components/Icon.astro';
 
 import { getAllSectors, getLiveSectors, type Sector } from '../../lib/sectors';
@@ -42,14 +43,13 @@ const lead = d.leadExpert ? getExpert(d.leadExpert) : undefined;
 const team = [...(lead ? [lead] : []), ...d.experts.map(getExpert)];
 const projects = projectsForSector(sector.id as SectorSlug);
 const credentials = sector.id === 'office' ? officeCredentials : [];
-const isDev = import.meta.env.DEV;
 
 const show = {
-  overview: hasIntro || isDev,
-  services: d.services.length > 0 || isDev,
-  value: d.assetTypes.length > 0 || isDev,
-  track: projects.length > 0 || credentials.length > 0 || isDev,
-  experts: team.length > 0 || isDev,
+  overview: true,
+  services: true,
+  value: true,
+  track: true,
+  experts: true,
 };
 
 const index = [
@@ -93,7 +93,7 @@ const stat = d.stat ? [{ id: sector.id, ...d.stat }] : [];
               <Content />
             </div>
           ) : (
-            <Pending label="Content pending — sector introduction" />
+            <Pending label="sector introduction" />
           )}
           {stat.length > 0 && (
             <div class="sp-intro__stat">
@@ -125,7 +125,7 @@ const stat = d.stat ? [{ id: sector.id, ...d.stat }] : [];
               ))}
             </ol>
           ) : (
-            <Pending label="Content pending — services" />
+            <Pending label="services" />
           )}
           {d.servicesReview && (
             <Pending label="Service list drawn from the core services — to be confirmed" />
@@ -154,7 +154,7 @@ const stat = d.stat ? [{ id: sector.id, ...d.stat }] : [];
               ))}
             </ul>
           ) : (
-            <Pending label="Content pending — asset types" />
+            <Pending label="asset types" />
           )}
         </div>
       </div>
@@ -170,11 +170,7 @@ const stat = d.stat ? [{ id: sector.id, ...d.stat }] : [];
             {sector.id === 'mortgage' ? 'Valued for first mortgage security' : 'Valued in the last 24 months'}
           </h2>
         </header>
-        {projects.length > 0 ? (
-          <ProjectGrid projects={projects} />
-        ) : (
-          <Pending label="Content pending — track record" />
-        )}
+        {projects.length > 0 ? <ProjectGrid projects={projects} /> : <Pending label="track record" />}
         {credentials.length > 0 && (
           <div class="sp-creds" data-reveal>
             <h3 class="t-h4">Further office credentials</h3>
@@ -201,7 +197,7 @@ const stat = d.stat ? [{ id: sector.id, ...d.stat }] : [];
         {team.length ? (
           <ExpertGrid experts={team} leadId={lead?.id} />
         ) : (
-          <Pending label="Content pending — sector lead (TBC)" />
+          <Pending label="sector lead and team" />
         )}
       </div>
     </section>
@@ -226,6 +222,12 @@ const stat = d.stat ? [{ id: sector.id, ...d.stat }] : [];
         <Icon name="phone" /> <span class="t-num">{lead.phone}</span>
       </a>
     )}
+    {lead && (!lead.email || !lead.phone) && (
+      <span class="sp-cta-inputs">
+        {!lead.email && <Input label={`${lead.name} email`} />}
+        {!lead.phone && <Input label={`${lead.name} phone`} />}
+      </span>
+    )}
     {!lead?.email && (
       <a class="btn btn--light btn--lg" href={url('/contact/')}>
         Contact our team <Icon name="arrow-right" />
@@ -237,6 +239,14 @@ const stat = d.stat ? [{ id: sector.id, ...d.stat }] : [];
 </BaseLayout>
 
 <style>
+  .sp-cta-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    inline-size: 100%;
+  }
+
   .sp-side {
     grid-column: 1 / span 4;
     display: grid;

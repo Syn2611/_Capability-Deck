@@ -1,0 +1,23 @@
+---
+/**
+ * Visible marker for data still to be supplied: renders "<INPUT: label>".
+ * Shown in every build (dev and production) until the data is filled in.
+ * Find them all with: grep -rn "<Input\|input-tag" src
+ */
+interface Props {
+  label?: string;
+  /** Block-level box instead of an inline tag. */
+  block?: boolean;
+  class?: string;
+}
+const { label, block = false, class: cls } = Astro.props;
+const text = `<INPUT${label ? `: ${label}` : ''}>`;
+---
+
+{block ? (
+  <div class:list={['pending', cls]} role="note">
+    <span class="input-tag">{text}</span>
+  </div>
+) : (
+  <span class:list={['input-tag', cls]}>{text}</span>
+)}

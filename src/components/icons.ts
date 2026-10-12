@@ -1,5 +1,5 @@
 /**
- * Hand-tuned line icons — 24px grid, 1.5px stroke (set in CSS), round caps & joins.
+ * Hand-tuned line icons: 24px grid, 1.5px stroke (set in CSS), round caps & joins.
  * Inner SVG markup only; rendered by Icon.astro.
  */
 export const icons = {

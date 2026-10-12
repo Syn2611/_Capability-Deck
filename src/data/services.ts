@@ -7,7 +7,7 @@ export interface Service {
   icon: IconName;
 }
 
-/** The 11 core services — source: Capability Statement 2025 & brief §6.3. */
+/** The 11 core services: source: Capability Statement 2025 & brief §6.3. */
 export const services: Service[] = [
   {
     id: 'acquisition-disposal',

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Base — reset, typography, surfaces, layout primitives, buttons
+   Base: reset, typography, surfaces, layout primitives, buttons
    ========================================================================== */
 
 *,
@@ -46,7 +46,7 @@ video {
   block-size: auto;
 }
 
-/* <picture> is only a source wrapper — let the <img> size against the real container */
+/* <picture> is only a source wrapper: let the <img> size against the real container */
 picture {
   display: contents;
 }
@@ -142,7 +142,7 @@ a {
 }
 
 /* ==========================================================================
-   Surfaces — every text/background pair lives here and is contrast-checked
+   Surfaces: every text/background pair lives here and is contrast-checked
    ========================================================================== */
 [data-surface] {
   background: var(--bg);
@@ -386,7 +386,7 @@ q {
   font-size: 1rem;
 }
 
-/* Deep Blue text on white button — for use on blue fields */
+/* Deep Blue text on white button: for use on blue fields */
 .btn--light {
   --btn-bg: var(--c-white);
   --btn-fg: var(--c-deep-blue);
@@ -546,7 +546,7 @@ q {
   text-align: center;
 }
 
-/* Eyebrow — mirrors the "CLEAR SPACE & POSITION" labels on the identity sheet */
+/* Eyebrow: mirrors the "CLEAR SPACE & POSITION" labels on the identity sheet */
 .eyebrow {
   display: flex;
   align-items: center;
@@ -575,7 +575,7 @@ q {
   padding-block-start: 0;
 }
 
-/* <INPUT> marker — data still to be supplied (see src/components/Input.astro) */
+/* <INPUT> marker: data still to be supplied (see src/components/Input.astro) */
 .input-tag {
   display: inline-block;
   padding: 1px var(--space-2);

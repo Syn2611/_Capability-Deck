@@ -1,11 +1,11 @@
 import { pageSignal, reducedMotion } from './util';
 
 /**
- * Home hero: scroll scrubs a dusk → night time-lapse drawn on a canvas, while the copy is told
- * in three beats. Progress is written to the section as `--p` (0–1); each beat gets
- * `--bN` (opacity 0–1) and `--yN` (lift in px) so CSS can hand one message over to the next.
+ * Home hero: scroll scrubs a dusk → night time-lapse drawn on a canvas while the copy tells one
+ * story: title, then the lead sentence in three parts, then the actions. Progress is written to
+ * the section as `--p` (0–1); each [data-beat] element gets its opacity and lift inline.
  *
- * Frames: /hero-frames/v1/{lg,sm}/f001.webp … — `sm` on narrow screens or Save-Data.
+ * Frames: /hero-frames/v1/{lg,sm}/f001.webp …: `sm` on narrow screens or Save-Data.
  * Adjacent frames are cross-faded, so 60 frames read as continuous motion.
  */
 export function initHeroScroll() {
@@ -67,27 +67,48 @@ export function initHeroScroll() {
     return -1;
   };
 
-  // ---- Copy beats: [fade-in start, fully in, fade-out start, fully out] as scroll progress ----
-  const BEATS: [number, number, number, number][] = [
-    [0, 0, 0.16, 0.24], // title — visible on load
-    [0.28, 0.36, 0.52, 0.6], // lead sentence
-    [0.64, 0.72, 2, 2], // actions — stay until the hero hands over
-    // Gaps between beats are deliberate: each message clears before the next one arrives.
+  // ---- Copy story, as scroll progress windows ----
+  // Title (visible on load) gives way to the lead sentence, built in three parts; earlier parts
+  // soften while the newest arrives, then the whole sentence returns to full strength and the
+  // actions join beneath it. Gaps between steps are deliberate so nothing ever overlaps.
+  const TITLE_OUT: [number, number] = [0.12, 0.2];
+  const PARTS_IN: [number, number][] = [
+    [0.22, 0.3],
+    [0.34, 0.42],
+    [0.46, 0.54],
   ];
+  const SETTLE: [number, number] = [0.56, 0.62];
+  const ACTIONS_IN: [number, number] = [0.62, 0.7];
+  const DIM = 0.45;
   const RISE = 16;
-  const beatEls = Array.from(hero.querySelectorAll<HTMLElement>('.hero__beat'));
-  const ramp = (x: number, a: number, b: number) => (b <= a ? (x >= a ? 1 : 0) : Math.min(1, Math.max(0, (x - a) / (b - a))));
+
+  const title = hero.querySelector<HTMLElement>('[data-beat="title"]');
+  const parts = Array.from(hero.querySelectorAll<HTMLElement>('[data-beat="part"]'));
+  const actions = hero.querySelector<HTMLElement>('[data-beat="actions"]');
+  const ramp = (x: number, [a, b]: [number, number]) => Math.min(1, Math.max(0, (x - a) / (b - a)));
+  const place = (el: HTMLElement | null | undefined, opacity: number, y: number) => {
+    if (!el) return;
+    el.style.opacity = opacity.toFixed(3);
+    el.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`;
+  };
+
   const applyBeats = () => {
-    BEATS.forEach(([a, b, c, d], i) => {
-      const fadeIn = a === 0 && b === 0 ? 1 : ramp(progress, a, b);
-      const fadeOut = 1 - ramp(progress, c, d);
-      const v = Math.min(fadeIn, fadeOut);
-      // Enter from below, leave upwards.
-      const y = fadeIn < 1 ? (1 - fadeIn) * RISE : -(1 - fadeOut) * RISE;
-      hero.style.setProperty(`--b${i}`, v.toFixed(3));
-      hero.style.setProperty(`--y${i}`, `${y.toFixed(1)}px`);
-      beatEls[i]?.classList.toggle('is-active', v > 0.5);
+    const p = progress;
+    const tOut = ramp(p, TITLE_OUT);
+    place(title, 1 - tOut, -tOut * RISE);
+
+    const settle = ramp(p, SETTLE);
+    parts.forEach((el, i) => {
+      const inn = ramp(p, PARTS_IN[i]);
+      // Soften this part while the next one arrives, until the sentence settles.
+      const next = PARTS_IN[i + 1] ? ramp(p, PARTS_IN[i + 1]) : 0;
+      const emphasis = 1 - DIM * next * (1 - settle);
+      place(el, inn * emphasis, (1 - inn) * RISE);
     });
+
+    const aIn = ramp(p, ACTIONS_IN);
+    place(actions, aIn, (1 - aIn) * RISE);
+    actions?.classList.toggle('is-active', aIn > 0.5);
   };
 
   // ---- State ----

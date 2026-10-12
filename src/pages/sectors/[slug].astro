@@ -63,7 +63,7 @@ const index = [
 ].filter(Boolean) as { id: string; label: string }[];
 
 const description = d.descriptor
-  ? `${d.title} valuation & advisory — ${d.descriptor}`
+  ? `${d.title} valuation & advisory: ${d.descriptor}`
   : `${d.title} valuation & advisory services from Colliers Australia.`;
 const stat = d.stat ? [{ id: sector.id, ...d.stat }] : [];
 ---
@@ -128,7 +128,7 @@ const stat = d.stat ? [{ id: sector.id, ...d.stat }] : [];
             <Pending label="services" />
           )}
           {d.servicesReview && (
-            <Pending label="Service list drawn from the core services — to be confirmed" />
+            <Pending label="confirm service list" />
           )}
         </div>
       </div>

@@ -11,7 +11,7 @@ interface Props {
 
 const { services, sectors } = Astro.props;
 
-/** Which sectors list a matching service on their own page — factual, derived from sector data. */
+/** Which sectors list a matching service on their own page: factual, derived from sector data. */
 const matchers: Record<string, RegExp> = {
   'acquisition-disposal': /acquisition/i,
   advisory: /advis/i,

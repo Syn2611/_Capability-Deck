@@ -16,7 +16,7 @@ import shadbolt from '../assets/images/experts/matt-shadbolt.jpg';
 export interface Expert {
   id: string;
   name: string;
-  /** Single editable title field (PDF titles by default — see CONTENT_GAPS.md). */
+  /** Single editable title field (PDF titles by default: see CONTENT_GAPS.md). */
   title: string;
   team?: string;
   phone?: string;
@@ -68,7 +68,7 @@ const pdfExperts: Expert[] = [
     email: 'jonathan.petsalis@colliers.com',
     photo: petsalis,
     featured: true,
-    bio: 'As Head of Office, Jonathan leads the national office team and specialises in the valuation of institutional-grade office buildings, CBD office developments, and office rental assessments and determinations.',
+    bio: 'As Head of Office, Jonathan leads the national office team and specialises in the valuation of institutional-grade office buildings and CBD office developments, as well as office rental assessments and determinations.',
   },
   {
     id: 'leon-hadchiti',
@@ -137,7 +137,7 @@ const pdfExperts: Expert[] = [
     email: 'ben.mccallum@colliers.com',
     photo: mccallum,
     featured: true,
-    bio: 'Ben leads the Victorian Valuation & Advisory Services business, with a specialised focus on the Industrial and Corporate sectors, and leads Plant & Machinery nationally. He is a trusted advisor to Australia’s largest listed and unlisted property trusts, financial institutions and corporations.',
+    bio: 'Ben leads the Victorian Valuation & Advisory Services business, with a specialised focus on the Industrial and Corporate sectors and leads Plant & Machinery nationally. He is a trusted advisor to Australia’s largest listed and unlisted property trusts, financial institutions and corporations.',
   },
   {
     id: 'dean-johnston',
@@ -192,11 +192,11 @@ const hotelsWebExperts: Expert[] = [
     team: VA,
     phone: '+61 439 446 417',
     email: 'emily.racki@colliers.com',
-    bio: 'Emily provides valuation and strategic advisory services across the hospitality and living sectors — hotels, student accommodation, build-to-rent, serviced apartments, co-living and mixed-use living developments — for institutional investors, developers, lenders, operators and private owners. Her work spans financial reporting, mortgage security, transaction support, insurance valuations, rent reviews, due diligence, capital raising and feasibility, for single assets and large portfolios. She joined Colliers in 2019.',
+    bio: 'Emily provides valuation and strategic advisory services across the hospitality and living sectors: hotels, student accommodation, build-to-rent, serviced apartments, co-living and mixed-use living developments, for institutional investors, developers, lenders, operators and private owners. Her work spans financial reporting, mortgage security, transaction support, insurance valuations, rent reviews, due diligence, capital raising and feasibility, for single assets and large portfolios. She joined Colliers in 2019.',
   },
 ];
 
-/** Named on the Colliers sector web pages — contact details and photos pending. */
+/** Named on the Colliers sector web pages: contact details and photos pending. */
 const webExperts: Expert[] = [
   { id: 'peter-volakos', name: 'Peter Volakos', title: 'National Director, Office' },
   { id: 'cassandra-mortimer', name: 'Cassandra Mortimer', title: 'Director, Office' },
@@ -234,7 +234,7 @@ const byId = new Map(experts.map((e) => [e.id, e]));
 
 export function getExpert(id: string): Expert {
   const e = byId.get(id);
-  if (!e) throw new Error(`Unknown expert id "${id}" — add it to src/data/experts.ts`);
+  if (!e) throw new Error(`Unknown expert id "${id}"; add it to src/data/experts.ts`);
   return e;
 }
 

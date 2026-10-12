@@ -2,7 +2,7 @@
  * Single client entry. Every module re-initialises on `astro:page-load`, which fires on the first
  * load and after every View-Transition navigation (Astro ClientRouter).
  */
-import { initHeader } from './header';
+import { initHeader, initNavSpy } from './header';
 import { initMegaMenu } from './mega-menu';
 import { initMobileMenu } from './mobile-menu';
 import { initSectionIndex } from './section-index';
@@ -16,6 +16,7 @@ import { initHeroScroll } from './hero-scroll';
 
 const inits = [
   initHeader,
+  initNavSpy,
   initMegaMenu,
   initMobileMenu,
   initSectionIndex,

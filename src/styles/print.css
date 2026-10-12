@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Print — a clean A4 portrait document (window.print() and `npm run pdf`).
+   Print: a clean A4 portrait document (window.print() and `npm run pdf`).
    Deep Blue on white, interactions hidden, accordions expanded, URLs shown.
    ========================================================================== */
 
@@ -149,9 +149,19 @@
     display: none !important;
   }
 
-  .hero__copy {
+  .hero__copy,
+  .hero [data-beat] {
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .hero .hero__slot {
+    gap: 6mm !important;
+  }
+
+  .hero .hero__title,
+  .hero .hero__story {
+    grid-area: auto !important;
   }
 
   .hero__scrim {

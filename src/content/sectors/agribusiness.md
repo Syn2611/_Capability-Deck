@@ -32,6 +32,6 @@ heroImage: ../../assets/images/texture/particle-wave-arc.jpg
 heroAlt: Abstract wave of fine blue particles on a deep blue field.
 ---
 
-Our rural property specialists — most of whom grew up on rural and agribusiness holdings across Australia — bring tailored expertise and a specialist focus to every assignment.
+Our rural property specialists, most of whom grew up on rural and agribusiness holdings across Australia, bring tailored expertise and a specialist focus to every assignment.
 
 Valuation purposes include mortgage security, asset management, capital gains tax, dispute resolution, litigation, company portfolios, carbon trading and resumption matters.

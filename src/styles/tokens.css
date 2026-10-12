@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Design tokens — Colliers Visual Identity (see _reference/Visual_Identity_Cheat_Sheet.jpg)
+   Design tokens: Colliers Visual Identity (see _reference/Visual_Identity_Cheat_Sheet.jpg)
    This is the ONLY file allowed to contain colour literals.
    scripts/contrast-check.ts fails the build if a hex value appears elsewhere.
    ========================================================================== */
@@ -7,26 +7,26 @@
 :root {
   color-scheme: light;
 
-  /* ---- Primary palette — the only colours allowed for solid blocks ---- */
+  /* ---- Primary palette: the only colours allowed for solid blocks ---- */
   --c-deep-blue: #000759;
   --c-dark-blue: #25408f; /* Colliers Dark Blue */
-  --c-medium-blue: #1c54f4; /* hero / brand "moment" colour — screen only */
+  --c-medium-blue: #1c54f4; /* hero / brand "moment" colour: screen only */
   --c-light-blue: #4d93ff;
   --c-pale-blue: #c3e6ff;
   --c-white: #ffffff;
 
-  /* Blue field — every solid Medium Blue *background* (hero, CTA bands, panels, buttons).
+  /* Blue field: every solid Medium Blue *background* (hero, CTA bands, panels, buttons).
      Client-specified (Oct 2026). Medium Blue itself stays for text, numerals and keylines. */
   --c-field-blue: #0939c3;
 
-  /* ---- Secondary palette — text, backgrounds and section content only ---- */
+  /* ---- Secondary palette: text, backgrounds and section content only ---- */
   --c-deep-blue-grey: #353e59;
   --c-dark-blue-grey: #56648f;
   --c-medium-blue-grey: #7b8bbd;
   --c-light-blue-grey: #acbbe8;
   --c-pale-blue-grey: #dbe5ff;
 
-  /* ---- Tertiary palette — charts & illustration ONLY ---- */
+  /* ---- Tertiary palette: charts & illustration ONLY ---- */
   --c-colliers-red: #ed1b34;
   --c-colliers-yellow: #ffd400;
   --c-colliers-lightblue: #0c9ed9;
@@ -50,7 +50,7 @@
   );
   --kl-grad-light: linear-gradient(90deg, var(--c-white) 0%, var(--c-white) 30%, var(--c-light-blue) 100%);
 
-  /* ---- Typography — exactly two families ---- */
+  /* ---- Typography: exactly two families ---- */
   --font-sans:
     'Open Sans Variable', 'Open Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   --font-serif: 'Merriweather', Georgia, 'Times New Roman', serif;
@@ -85,7 +85,7 @@
   --measure: 68ch;
   --measure-narrow: 52ch;
 
-  /* ---- Space — 8pt scale ---- */
+  /* ---- Space: 8pt scale ---- */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;

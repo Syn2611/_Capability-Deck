@@ -36,4 +36,4 @@ heroImage: ../../assets/images/sectors/interchange-light-trails.jpg
 heroAlt: Aerial view of a highway interchange at night, traced by light trails.
 ---
 
-Working with occupiers, developers and investors, we value and advise on all industrial and logistics property types across Australia — including warehouses, climate-controlled facilities and data centres.
+Working with occupiers, developers and investors, we value and advise on all industrial and logistics property types across Australia, including warehouses, climate-controlled facilities and data centres.

@@ -1,4 +1,4 @@
-/** Colliers Assure — multi-stage peer review. Step descriptions are drawn from the 2025 Capability Statement. */
+/** Colliers Assure: multi-stage peer review. Step descriptions are drawn from the 2025 Capability Statement. */
 export const qaSteps = [
   {
     title: 'Instruction',
@@ -6,7 +6,7 @@ export const qaSteps = [
   },
   {
     title: 'Risk review',
-    text: 'Potential risks identified and considered, and industry intelligence reviewed.',
+    text: 'Potential risks identified and considered; industry intelligence reviewed.',
   },
   { title: 'Valuation', text: 'The most appropriate, skilled specialists allocated to each assignment.' },
   { title: 'Peer review', text: 'Certified professionals critique every stage of the work.' },

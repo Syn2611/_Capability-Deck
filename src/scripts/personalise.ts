@@ -22,7 +22,7 @@ export function initPersonalise() {
 
   document.querySelectorAll<HTMLElement>('[data-prepared-for]').forEach((el) => {
     const out = el.querySelector<HTMLElement>('[data-prepared-for-name]');
-    if (out) out.textContent = client; // textContent only — never HTML
+    if (out) out.textContent = client; // textContent only, never HTML
     el.hidden = false;
   });
 

@@ -22,7 +22,7 @@ import cqe from '../assets/images/projects/cqe-childcare-portfolio.jpg';
 import abacus from '../assets/images/projects/abacus-self-storage.jpg';
 import bpNz from '../assets/images/projects/bp-portfolio-new-zealand.jpg';
 
-/** Sector slug — matches `src/content/sectors/<slug>.md`. */
+/** Sector slug: matches `src/content/sectors/<slug>.md`. */
 export type SectorSlug =
   | 'office'
   | 'industrial-logistics'
@@ -50,13 +50,13 @@ export interface Project {
   client?: string;
   sector: SectorSlug;
   image?: ImageMetadata;
-  /** Flag for CONTENT_GAPS — figure needs confirming. */
+  /** Flag for CONTENT_GAPS: figure needs confirming. */
   verify?: string;
 }
 
 const NB = ' ';
 
-/** Track record — valued in the last 24 months. Source: Capability Statement 2025. */
+/** Track record: valued in the last 24 months. Source: Capability Statement 2025. */
 export const projects: Project[] = [
   {
     id: 'george-place',
@@ -301,7 +301,7 @@ export function projectsForSector(slug: SectorSlug): Project[] {
   return projects.filter((p) => p.sector === slug);
 }
 
-/** Additional Office credentials (names only) — Colliers Office valuation web page. */
+/** Additional Office credentials (names only): Colliers Office valuation web page. */
 export const officeCredentials = [
   'Tower 2 and International House, International Towers Sydney',
   '25 Martin Place',

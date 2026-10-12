@@ -34,4 +34,4 @@ heroAlt: The curved glass facade of a high-rise office tower.
 
 Our experienced team specialises in office valuation and advisory services across Australia.
 
-Market knowledge, a best-in-class platform and an extensive track record ensure the best possible outcomes for our clients — from institutional-grade CBD towers and office developments to rental assessments and determinations.
+Market knowledge, a best-in-class platform and an extensive track record ensure the best possible outcomes for our clients, from institutional-grade CBD towers and office developments to rental assessments and determinations.

@@ -26,6 +26,6 @@ heroImage: ../../assets/images/locations/melbourne-yarra-skyline.jpg
 heroAlt: Melbourne CBD skyline across the Yarra River.
 ---
 
-Market knowledge, a best-in-class platform, and rigorous training and external quality assurance deliver accurate, timely and consistent advice to lenders.
+Market knowledge, a best-in-class platform, rigorous training and external quality assurance deliver accurate, timely and consistent advice to lenders.
 
 That includes a growing focus on the $25M middle market for office, industrial and retail property.

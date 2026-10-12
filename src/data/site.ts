@@ -6,7 +6,7 @@
 export const site = {
   name: 'Valuation & Advisory Services',
   org: 'Colliers',
-  title: 'Colliers | Valuation & Advisory Services — Capability Statement',
+  title: 'Colliers | Valuation & Advisory Services | Capability Statement',
   description:
     'Specialist property investment advice, research and analysis, reflecting real-time market conditions. Colliers Valuation & Advisory Services, Australia.',
   locale: 'en-AU',

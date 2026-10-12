@@ -1,14 +1,14 @@
 ---
 /**
- * Home hero — Sydney Harbour time-lapse (dusk → night) scrubbed by scroll. Frames live in
+ * Home hero: Sydney Harbour time-lapse (dusk → night) scrubbed by scroll. Frames live in
  * /public/hero-frames/v1/{lg,sm}/fNNN.webp and are drawn to a canvas by scripts/hero-scroll.ts.
- * The copy is told in three beats (title → lead → actions) that hand over as you scroll;
- * the script sets --b0/--b1/--b2 (0–1 visibility) and --y0/--y1/--y2 (lift) per beat.
+ * The copy is one story told over the scroll: the title, then the lead sentence built in three
+ * parts, then the actions beneath the complete sentence. scripts/hero-scroll.ts sets each
+ * [data-beat] element's opacity and lift inline.
  *
- * Fallbacks: no JS, reduced motion and print show the still poster with all three beats stacked.
+ * Fallbacks: no JS, reduced motion and print show the still poster with the full copy in place.
  */
 import Picture from './Picture.astro';
-import Eyebrow from './Eyebrow.astro';
 import Icon from './Icon.astro';
 import PreparedFor from './PreparedFor.astro';
 import poster from '../assets/images/hero/sydney-harbour-blue-hour.jpg';
@@ -49,34 +49,30 @@ const base = url('/hero-frames/v1/');
 
     <div class="container hero__content">
       <div class="hero__copy" data-hero-copy>
-        <div class="hero__beat hero__beat--0">
-          <Eyebrow class="hero__eyebrow">Capability Statement · Australia</Eyebrow>
-          <PreparedFor class="hero__prepared" />
-          <h1 class="t-display hero__title" id="hero-title">
+        <p class="eyebrow hero__kicker">
+          <span>Capability Statement · Australia</span>
+          <span class="hero__rail" aria-hidden="true"><span></span></span>
+        </p>
+        <PreparedFor class="hero__prepared" />
+        <div class="hero__slot">
+          <h1 class="t-display hero__title" id="hero-title" data-beat="title">
             <span class="hero__line" data-reveal="clip">Valuation &amp;</span>
             <span class="hero__line" data-reveal="clip" style="--i:1">Advisory Services</span>
           </h1>
-        </div>
-        <div class="hero__beat hero__beat--1">
-          <p class="hero__lead">
-            Specialist property investment advice, research and analysis, reflecting real-time market conditions.
+          <p class="hero__story">
+            <span class="hero__part" data-beat="part">Specialist property investment advice,</span>
+            <span class="hero__part" data-beat="part">research and analysis,</span>
+            <span class="hero__part" data-beat="part">reflecting real-time market conditions.</span>
           </p>
         </div>
-        <div class="hero__beat hero__beat--2">
-          <p class="eyebrow hero__eyebrow">Valuation &amp; Advisory Services</p>
-          <div class="hero__actions">
-            <a class="btn btn--light btn--lg" href={url('/#sectors')}>
-              Explore our sectors <Icon name="arrow-right" />
-            </a>
-            <a class="link link--under hero__link" href={url('/#experts')}>Speak to an expert</a>
-          </div>
+        <div class="hero__actions" data-beat="actions">
+          <a class="btn btn--light btn--lg" href={url('/#sectors')}>
+            Explore our sectors <Icon name="arrow-right" />
+          </a>
+          <a class="link link--under hero__link" href={url('/#experts')}>Speak to an expert</a>
         </div>
       </div>
     </div>
-
-    <a class="hero__cue" href="#statement" aria-label="Scroll to the statement of intent" data-hero-cue>
-      <span></span>
-    </a>
   </div>
 </section>
 
@@ -89,9 +85,9 @@ const base = url('/hero-frames/v1/');
     background: var(--c-field-blue);
   }
 
-  /* Scroll runway — only when the script is running the animation */
+  /* Scroll runway: only when the script is running the animation */
   .hero:global(.is-scrubbing) {
-    block-size: calc(var(--stage-h) + 200vh);
+    block-size: calc(var(--stage-h) + 260vh);
   }
 
   .hero__stage {
@@ -99,7 +95,7 @@ const base = url('/hero-frames/v1/');
     overflow: hidden;
     min-block-size: var(--stage-h);
     display: grid;
-    align-items: end;
+    align-items: center;
   }
 
   .hero:global(.is-scrubbing) .hero__stage {
@@ -129,7 +125,7 @@ const base = url('/hero-frames/v1/');
     object-position: 58% 50%;
   }
 
-  /* Fine grain — breaks up the 8-bit banding in the source sky */
+  /* Fine grain: breaks up the 8-bit banding in the source sky */
   .hero__media::after {
     content: '';
     position: absolute;
@@ -163,9 +159,9 @@ const base = url('/hero-frames/v1/');
       linear-gradient(
         90deg,
         var(--c-field-blue) 0%,
-        var(--field-blue-90) 26%,
-        var(--field-blue-60) 44%,
-        var(--field-blue-0) 72%
+        var(--field-blue-90) 34%,
+        var(--field-blue-60) 54%,
+        var(--field-blue-0) 82%
       );
   }
 
@@ -179,62 +175,43 @@ const base = url('/hero-frames/v1/');
   }
 
   .hero__content {
-    padding-block: var(--space-10);
+    padding-block: var(--space-9);
   }
 
   .hero__copy {
-    max-inline-size: 760px;
+    max-inline-size: 820px;
     display: grid;
-    gap: var(--space-8);
+    gap: var(--space-6);
   }
 
-  /* While scrubbing, the three beats share one spot and hand over to each other */
-  .hero:global(.is-scrubbing) .hero__copy {
-    gap: 0;
+  /* Constant anchor: the kicker and a hairline that fills as the story progresses */
+  .hero__kicker {
+    color: var(--c-white);
   }
 
-  .hero:global(.is-scrubbing) .hero__beat {
-    grid-area: 1 / 1;
-    align-self: end;
-    will-change: opacity, transform;
+  .hero__rail {
+    position: relative;
+    inline-size: var(--space-9);
+    block-size: 1px;
+    background: var(--field-blue-60);
+    overflow: hidden;
   }
 
-  .hero:global(.is-scrubbing) .hero__beat--0 {
-    opacity: var(--b0, 1);
-    transform: translate3d(0, var(--y0, 0), 0);
-  }
-
-  .hero:global(.is-scrubbing) .hero__beat--1 {
-    opacity: var(--b1, 0);
-    transform: translate3d(0, var(--y1, 16px), 0);
-  }
-
-  .hero:global(.is-scrubbing) .hero__beat--2 {
-    opacity: var(--b2, 0);
-    transform: translate3d(0, var(--y2, 16px), 0);
-  }
-
-  /* A hidden beat never takes clicks; keyboard focus always reveals the buttons */
-  .hero:global(.is-scrubbing) .hero__beat {
-    pointer-events: none;
-  }
-
-  .hero:global(.is-scrubbing) .hero__beat:global(.is-active),
-  .hero:global(.is-scrubbing) .hero__beat:focus-within {
-    pointer-events: auto;
-  }
-
-  .hero:global(.is-scrubbing) .hero__beat--2:focus-within {
-    opacity: 1;
-    transform: none;
-  }
-
-  .hero :global(.hero__eyebrow) {
-    margin-block-end: var(--space-5);
+  .hero__rail span {
+    position: absolute;
+    inset: 0;
+    background: var(--c-white);
+    transform-origin: left;
+    transform: scaleX(var(--p));
   }
 
   .hero :global(.hero__prepared) {
-    margin-block: calc(-1 * var(--space-3)) var(--space-5);
+    margin-block-start: calc(-1 * var(--space-3));
+  }
+
+  .hero__slot {
+    display: grid;
+    gap: var(--space-7);
   }
 
   .hero__title {
@@ -247,15 +224,16 @@ const base = url('/hero-frames/v1/');
     padding-block-end: 0.06em;
   }
 
-  /* Beat 2: the lead sentence gets the stage to itself, set large */
-  .hero__lead {
-    max-inline-size: 22ch;
+  .hero__story {
     font-family: var(--font-serif);
     font-weight: 300;
-    font-size: var(--fs-statement);
-    line-height: 1.3;
+    font-size: clamp(1.625rem, 0.9rem + 2.2vw, 2.625rem);
+    line-height: 1.32;
     letter-spacing: -0.01em;
-    text-wrap: balance;
+  }
+
+  .hero__part {
+    display: block;
   }
 
   .hero__actions {
@@ -263,6 +241,7 @@ const base = url('/hero-frames/v1/');
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-5) var(--space-6);
+    margin-block-start: var(--space-3);
   }
 
   .hero__link {
@@ -274,48 +253,40 @@ const base = url('/hero-frames/v1/');
     background-position: 0 calc(100% - 10px);
   }
 
-  .hero__cue {
-    position: absolute;
-    inset-block-end: 0;
-    inset-inline-start: 50%;
-    translate: -50% 0;
-    display: block;
-    inline-size: var(--tap);
-    block-size: 72px;
-    opacity: max(0, calc(1 - var(--p) * 8));
+  /* While scrubbing, title and sentence share one spot; every beat starts hidden until the
+     script places it (the title is visible on load). */
+  .hero:global(.is-scrubbing) .hero__slot {
+    gap: 0;
   }
 
-  .hero__cue span {
-    position: absolute;
-    inset-block: 0 0;
-    inset-inline-start: 50%;
-    inline-size: 1px;
-    background: var(--c-white);
-    transform-origin: top;
+  .hero:global(.is-scrubbing) .hero__title,
+  .hero:global(.is-scrubbing) .hero__story {
+    grid-area: 1 / 1;
+    align-self: center;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .hero__cue span {
-      animation: cue-drop 1400ms var(--ease-out) 1400ms both;
-    }
+  .hero:global(.is-scrubbing) [data-beat] {
+    will-change: opacity, transform;
+  }
 
-    @keyframes cue-drop {
-      0% {
-        transform: scaleY(0);
-        transform-origin: top;
-      }
-      55% {
-        transform: scaleY(1);
-        transform-origin: top;
-      }
-      56% {
-        transform-origin: bottom;
-      }
-      100% {
-        transform: scaleY(0.5);
-        transform-origin: bottom;
-      }
-    }
+  .hero:global(.is-scrubbing) .hero__part,
+  .hero:global(.is-scrubbing) .hero__actions {
+    opacity: 0;
+  }
+
+  /* A hidden beat never takes clicks; keyboard focus always reveals the buttons */
+  .hero:global(.is-scrubbing) .hero__actions {
+    pointer-events: none;
+  }
+
+  .hero:global(.is-scrubbing) .hero__actions:global(.is-active),
+  .hero:global(.is-scrubbing) .hero__actions:focus-within {
+    pointer-events: auto;
+  }
+
+  .hero:global(.is-scrubbing) .hero__actions:focus-within {
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   @media (max-width: 767px) {
@@ -324,20 +295,20 @@ const base = url('/hero-frames/v1/');
     }
 
     .hero:global(.is-scrubbing) {
-      block-size: calc(var(--stage-h) + 160vh);
+      block-size: calc(var(--stage-h) + 200vh);
     }
 
+    /* Text sits mid-screen on phones, so the wash is even rather than one-sided */
     .hero__scrim {
       background:
-        linear-gradient(0deg, var(--c-field-blue) 0%, var(--field-blue-90) 30%, var(--field-blue-30) 60%, var(--field-blue-0) 80%),
-        linear-gradient(180deg, var(--field-blue-60) 0%, var(--field-blue-0) 25%);
+        linear-gradient(0deg, var(--c-field-blue) 0%, var(--field-blue-60) 35%, var(--field-blue-60) 70%, var(--field-blue-30) 100%);
     }
 
     .hero__content {
-      padding-block: var(--space-9) var(--space-8);
+      padding-block: var(--space-8);
     }
 
-    .hero__cue {
+    .hero__rail {
       display: none;
     }
   }

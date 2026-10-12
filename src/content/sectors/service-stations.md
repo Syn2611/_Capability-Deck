@@ -33,4 +33,4 @@ heroImage: ../../assets/images/sectors/highway-light-trails.jpg
 heroAlt: Long-exposure light trails along a highway at dusk.
 ---
 
-Our knowledge of the fuel industry lets us value freehold going concerns, leasehold businesses and investment-grade freehold subject to lease — for owners, operators, investors and major financiers — backed by an extensive transaction database.
+Our knowledge of the fuel industry lets us value freehold going concerns, leasehold businesses and investment-grade freehold subject to lease. We advise owners, operators, investors and major financiers, backed by an extensive transaction database.

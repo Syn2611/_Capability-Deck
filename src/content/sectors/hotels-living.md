@@ -41,4 +41,4 @@ heroAlt: Perth city skyline and waterfront at dusk.
 
 Our market knowledge of the Australian and global hotel and hospitality industry, underpinned by in-depth operations experience, ensures we deliver best-in-class hotel valuation and advisory services.
 
-The team advises on hotels, resorts, youth hostels, leisure facilities, tourist parks, pubs and clubs, student accommodation and build-to-rent assets — for some of the largest multinational corporations, financiers and institutional owners, domestically and globally.
+The team advises on hotels, resorts, youth hostels, leisure facilities, tourist parks, pubs and clubs, student accommodation and build-to-rent assets. We act for some of the largest multinational corporations, financiers and institutional owners, in Australia and globally.

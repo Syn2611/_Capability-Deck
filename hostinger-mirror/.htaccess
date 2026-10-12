@@ -1,0 +1,10 @@
+# Send every request to the mirror script (index.php), including /sectors/office/ etc.
+Options -Indexes
+DirectoryIndex index.php
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  RewriteCond %{REQUEST_URI} !^/index\.php$
+  RewriteRule ^ index.php [L,QSA]
+</IfModule>

@@ -12,6 +12,7 @@ import { initProjectFilter } from './project-filter';
 import { initDialogs } from './dialogs';
 import { initPersonalise } from './personalise';
 import { initPrint } from './print';
+import { initHeroScroll } from './hero-scroll';
 
 const inits = [
   initHeader,
@@ -24,6 +25,7 @@ const inits = [
   initDialogs,
   initPersonalise,
   initPrint,
+  initHeroScroll,
 ];
 
 const run = () => {

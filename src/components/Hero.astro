@@ -1,134 +1,189 @@
 ---
-import { Picture } from 'astro:assets';
-import { imageOpts } from '../lib/image-opts';
-import tower from '../assets/images/sectors/glass-tower-cutout.png';
-import ArcLine from './ArcLine.astro';
+/**
+ * Home hero — Sydney Harbour time-lapse (dusk → night) scrubbed by scroll, with a gentle
+ * pointer parallax. Frames live in /public/hero-frames/v1/{lg,sm}/fNNN.webp and are drawn to a
+ * canvas by scripts/hero-scroll.ts. The text fades out as the city lights come on.
+ *
+ * Fallbacks: no JS, reduced motion and print show the still poster with the text in place.
+ */
+import Picture from './Picture.astro';
 import Eyebrow from './Eyebrow.astro';
 import Icon from './Icon.astro';
 import PreparedFor from './PreparedFor.astro';
+import poster from '../assets/images/hero/sydney-harbour-blue-hour.jpg';
 import { url } from '../lib/url';
+
+const FRAMES = { lg: 60, sm: 48 };
+const base = url('/hero-frames/v1/');
 ---
 
-<section class="hero" data-surface="medium" id="top" aria-labelledby="hero-title">
-  <div class="hero__media" aria-hidden="true">
-    <ArcLine class="hero__arc" />
-    <div class="hero__tower">
-      <Picture
-        src={tower}
-        alt=""
-        {...imageOpts([420, 640, 827], tower.width)}
-        sizes="(max-width: 767px) 60vw, 34vw"
-        loading="eager"
-        fetchpriority="high"
-        quality={80}
-      />
-    </div>
-  </div>
+<link rel="preload" as="image" href={`${base}lg/f001.webp`} media="(min-width: 900px)" fetchpriority="high" />
+<link rel="preload" as="image" href={`${base}sm/f001.webp`} media="(max-width: 899px)" fetchpriority="high" />
 
-  <div class="container hero__content">
-    <div class="hero__copy">
-      <Eyebrow class="hero__eyebrow">Capability Statement · Australia</Eyebrow>
-      <PreparedFor class="hero__prepared" />
-      <h1 class="t-display hero__title" id="hero-title">
-        <span class="hero__line" data-reveal="clip">
-          Valuation &amp;
-        </span>
-        <span class="hero__line" data-reveal="clip" style="--i:1">
-          Advisory Services
-        </span>
-      </h1>
-      <p class="t-lead hero__lead" data-reveal style="--i:4">
-        Specialist property investment advice, research and analysis, reflecting real-time market conditions.
-      </p>
-      <div class="hero__actions" data-reveal style="--i:6">
-        <a class="btn btn--light btn--lg" href={url('/#sectors')}>
-          Explore our sectors <Icon name="arrow-right" />
-        </a>
-        <a class="link link--under hero__link" href={url('/#experts')}>
-          Speak to an expert
-        </a>
+<section
+  class="hero"
+  data-surface="medium"
+  id="top"
+  aria-labelledby="hero-title"
+  data-hero
+  data-frames-base={base}
+  data-frames-lg={FRAMES.lg}
+  data-frames-sm={FRAMES.sm}
+>
+  <div class="hero__stage">
+    <div class="hero__media" aria-hidden="true">
+      <div class="hero__layer">
+        <Picture
+          src={poster}
+          alt=""
+          sizes="100vw"
+          widths={[960, 1440, 1920]}
+          priority
+          class="hero__poster"
+        />
+        <canvas class="hero__canvas" data-hero-canvas></canvas>
       </div>
     </div>
-  </div>
+    <div class="hero__scrim" aria-hidden="true"></div>
 
-  <a class="hero__cue" href="#statement" aria-label="Scroll to the statement of intent">
-    <span></span>
-  </a>
+    <div class="container hero__content">
+      <div class="hero__copy" data-hero-copy>
+        <Eyebrow class="hero__eyebrow">Capability Statement · Australia</Eyebrow>
+        <PreparedFor class="hero__prepared" />
+        <h1 class="t-display hero__title" id="hero-title">
+          <span class="hero__line" data-reveal="clip">Valuation &amp;</span>
+          <span class="hero__line" data-reveal="clip" style="--i:1">Advisory Services</span>
+        </h1>
+        <p class="t-lead hero__lead" data-reveal style="--i:4">
+          Specialist property investment advice, research and analysis, reflecting real-time market conditions.
+        </p>
+        <div class="hero__actions" data-reveal style="--i:6">
+          <a class="btn btn--light btn--lg" href={url('/#sectors')}>
+            Explore our sectors <Icon name="arrow-right" />
+          </a>
+          <a class="link link--under hero__link" href={url('/#experts')}>Speak to an expert</a>
+        </div>
+      </div>
+    </div>
+
+    <a class="hero__cue" href="#statement" aria-label="Scroll to the statement of intent" data-hero-cue>
+      <span></span>
+    </a>
+  </div>
 </section>
 
 <style>
   .hero {
+    --p: 0;
+    --mx: 0;
+    --my: 0;
+    --stage-h: max(600px, calc(100svh - var(--header-h-condensed)));
     position: relative;
     isolation: isolate;
+    background: var(--c-field-blue);
+  }
+
+  /* Scroll runway — only when the script is running the animation */
+  .hero:global(.is-scrubbing) {
+    block-size: calc(var(--stage-h) + 110vh);
+  }
+
+  .hero__stage {
+    position: relative;
     overflow: hidden;
-    min-block-size: max(640px, calc(100svh - var(--header-h)));
+    min-block-size: var(--stage-h);
     display: grid;
     align-items: end;
+  }
+
+  .hero:global(.is-scrubbing) .hero__stage {
+    position: sticky;
+    inset-block-start: var(--header-h-condensed);
+    block-size: var(--stage-h);
   }
 
   .hero__media {
     position: absolute;
     inset: 0;
-    z-index: -1;
+    z-index: -2;
   }
 
-  .hero :global(.hero__arc) {
-    inline-size: min(78vw, 1080px);
-    aspect-ratio: 1;
-    inset-inline-end: -14vw;
-    inset-block-start: 50%;
-    translate: 0 -46%;
-  }
-
-  .hero__tower {
+  /* Pointer parallax: at most 14px, applied to the picture only — never to text */
+  .hero__layer {
     position: absolute;
-    inset-block-end: 0;
-    inset-inline-end: 9vw;
-    inline-size: min(30vw, 470px);
-    block-size: 88%;
+    inset: -20px;
+    transform: translate3d(calc(var(--mx) * -14px), calc(var(--my) * -10px), 0);
   }
 
-  .hero__tower :global(img) {
+  .hero__layer :global(img),
+  .hero__canvas {
+    position: absolute;
+    inset: 0;
     inline-size: 100%;
     block-size: 100%;
     object-fit: cover;
-    object-position: 50% 0;
-    mix-blend-mode: luminosity;
-    border-radius: 0;
-    animation: hero-settle var(--dur-hero) var(--ease-out) both;
+    object-position: 58% 50%;
   }
 
-  @keyframes hero-settle {
-    from {
-      scale: 1.04;
-    }
-    to {
-      scale: 1;
-    }
+  /* Fine grain — breaks up the 8-bit banding in the source sky */
+  .hero__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    opacity: 0.22;
+    pointer-events: none;
   }
 
-  @supports (animation-timeline: scroll()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .hero__tower {
-        animation: hero-parallax linear both;
-        animation-timeline: scroll(root block);
-        animation-range: 0 100vh;
-      }
+  .hero__canvas {
+    opacity: 0;
+    transition: opacity 600ms var(--ease-out);
+  }
 
-      @keyframes hero-parallax {
-        to {
-          translate: 0 15vh;
-        }
-      }
-    }
+  .hero:global(.is-ready) .hero__canvas {
+    opacity: 1;
+  }
+
+  /* Brand-blue integration: a field-blue wash from the text side and the bottom edge, so the
+     headline always sits on the field blue and the video bleeds out of it. The text-side scrim lifts a
+     little as the copy fades, letting the night skyline take over. */
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      linear-gradient(0deg, var(--c-field-blue) 0%, var(--field-blue-30) 22%, var(--field-blue-0) 42%),
+      linear-gradient(180deg, var(--field-blue-60) 0%, var(--field-blue-0) 22%),
+      linear-gradient(
+        90deg,
+        var(--c-field-blue) 0%,
+        var(--field-blue-90) 26%,
+        var(--field-blue-60) 44%,
+        var(--field-blue-0) 72%
+      );
+    opacity: calc(1 - min(var(--p) * 1.2, 0.55));
+  }
+
+  .hero__scrim::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--c-field-blue);
+    mix-blend-mode: color;
+    opacity: 0.14;
   }
 
   .hero__content {
-    padding-block: var(--space-10) var(--space-10);
+    padding-block: var(--space-10);
   }
 
   .hero__copy {
     max-inline-size: 760px;
+    opacity: max(0, calc(1 - var(--p) * 4.5));
+    transform: translate3d(0, calc(var(--p) * -24px), 0);
+    will-change: opacity, transform;
   }
 
   .hero :global(.hero__eyebrow) {
@@ -179,6 +234,7 @@ import { url } from '../lib/url';
     display: block;
     inline-size: var(--tap);
     block-size: 72px;
+    opacity: max(0, calc(1 - var(--p) * 4));
   }
 
   .hero__cue span {
@@ -214,36 +270,23 @@ import { url } from '../lib/url';
     }
   }
 
-  @media (max-width: 1023px) {
-    .hero__tower {
-      inset-inline-end: 4vw;
-      inline-size: 38vw;
-      block-size: 58%;
-    }
-
-    .hero :global(.hero__arc) {
-      inline-size: 120vw;
-      inset-inline-end: -50vw;
-      inset-block-start: auto;
-      inset-block-end: -60vw;
-      translate: none;
-    }
-  }
-
   @media (max-width: 767px) {
     .hero {
-      align-items: start;
-      min-block-size: 0;
+      --stage-h: max(620px, calc(100svh - var(--header-h-condensed)));
+    }
+
+    .hero:global(.is-scrubbing) {
+      block-size: calc(var(--stage-h) + 80vh);
+    }
+
+    .hero__scrim {
+      background:
+        linear-gradient(0deg, var(--c-field-blue) 0%, var(--field-blue-90) 30%, var(--field-blue-30) 60%, var(--field-blue-0) 80%),
+        linear-gradient(180deg, var(--field-blue-60) 0%, var(--field-blue-0) 25%);
     }
 
     .hero__content {
-      padding-block: var(--space-8) 300px;
-    }
-
-    .hero__tower {
-      inset-inline-end: var(--page-margin);
-      inline-size: 48vw;
-      block-size: 270px;
+      padding-block: var(--space-9) var(--space-8);
     }
 
     .hero__cue {

@@ -115,6 +115,11 @@
   --hairline: 1px;
   --shadow: 0 1px 2px rgb(0 7 89 / 0.04), 0 12px 32px -12px rgb(0 7 89 / 0.12);
   --frost: rgb(255 255 255 / 0.72);
+  /* Field-blue scrims for text over the hero video */
+  --field-blue-90: rgb(9 57 195 / 0.9);
+  --field-blue-60: rgb(9 57 195 / 0.6);
+  --field-blue-30: rgb(9 57 195 / 0.3);
+  --field-blue-0: rgb(9 57 195 / 0);
   --scrim-deep: rgb(0 7 89 / 0.55);
 
   /* ---- Motion ---- */

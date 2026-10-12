@@ -19,6 +19,10 @@ Nothing on the site was invented to fill these gaps. Missing data is shown on th
 | Track record › Telstra Data Centre      | Client                                                                                          | The PDF names no client (“valued for potential acquisition purposes”). The card shows purpose only.                                                                                                          |
 | Track record heading                    | “Valued in the last 24 months”                                                                  | True as of the 2025 PDF. Re-confirm the list and window before each send.                                                                                                                                    |
 
+## Licensing to confirm
+
+- **Hero video**: Adobe Stock #133848118 (Sydney Harbour time-lapse). Confirm Colliers holds a licence covering web use. It is served as WebP frames in `public/hero-frames/v1/`.
+
 ## Resolved (9 Oct 2026)
 
 - **George Place**: 54,262.2 m² confirmed.

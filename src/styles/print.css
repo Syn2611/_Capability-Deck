@@ -135,10 +135,27 @@
     display: none !important;
   }
 
-  .hero__tower {
-    inset-inline-end: 18mm;
-    inline-size: 70mm;
-    block-size: 160mm;
+  /* Video hero prints as its still poster, runway removed */
+  .hero {
+    block-size: 297mm !important;
+  }
+
+  .hero__stage {
+    position: static !important;
+    block-size: 100% !important;
+  }
+
+  .hero__canvas {
+    display: none !important;
+  }
+
+  .hero__copy {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .hero__scrim {
+    opacity: 1 !important;
   }
 
   .hero__title {

@@ -1,10 +1,11 @@
 ---
 /**
- * Home hero — Sydney Harbour time-lapse (dusk → night) scrubbed by scroll, with a gentle
- * pointer parallax. Frames live in /public/hero-frames/v1/{lg,sm}/fNNN.webp and are drawn to a
- * canvas by scripts/hero-scroll.ts. The text fades out as the city lights come on.
+ * Home hero — Sydney Harbour time-lapse (dusk → night) scrubbed by scroll. Frames live in
+ * /public/hero-frames/v1/{lg,sm}/fNNN.webp and are drawn to a canvas by scripts/hero-scroll.ts.
+ * The copy is told in three beats (title → lead → actions) that hand over as you scroll;
+ * the script sets --b0/--b1/--b2 (0–1 visibility) and --y0/--y1/--y2 (lift) per beat.
  *
- * Fallbacks: no JS, reduced motion and print show the still poster with the text in place.
+ * Fallbacks: no JS, reduced motion and print show the still poster with all three beats stacked.
  */
 import Picture from './Picture.astro';
 import Eyebrow from './Eyebrow.astro';
@@ -48,20 +49,27 @@ const base = url('/hero-frames/v1/');
 
     <div class="container hero__content">
       <div class="hero__copy" data-hero-copy>
-        <Eyebrow class="hero__eyebrow">Capability Statement · Australia</Eyebrow>
-        <PreparedFor class="hero__prepared" />
-        <h1 class="t-display hero__title" id="hero-title">
-          <span class="hero__line" data-reveal="clip">Valuation &amp;</span>
-          <span class="hero__line" data-reveal="clip" style="--i:1">Advisory Services</span>
-        </h1>
-        <p class="t-lead hero__lead" data-reveal style="--i:4">
-          Specialist property investment advice, research and analysis, reflecting real-time market conditions.
-        </p>
-        <div class="hero__actions" data-reveal style="--i:6">
-          <a class="btn btn--light btn--lg" href={url('/#sectors')}>
-            Explore our sectors <Icon name="arrow-right" />
-          </a>
-          <a class="link link--under hero__link" href={url('/#experts')}>Speak to an expert</a>
+        <div class="hero__beat hero__beat--0">
+          <Eyebrow class="hero__eyebrow">Capability Statement · Australia</Eyebrow>
+          <PreparedFor class="hero__prepared" />
+          <h1 class="t-display hero__title" id="hero-title">
+            <span class="hero__line" data-reveal="clip">Valuation &amp;</span>
+            <span class="hero__line" data-reveal="clip" style="--i:1">Advisory Services</span>
+          </h1>
+        </div>
+        <div class="hero__beat hero__beat--1">
+          <p class="hero__lead">
+            Specialist property investment advice, research and analysis, reflecting real-time market conditions.
+          </p>
+        </div>
+        <div class="hero__beat hero__beat--2">
+          <p class="eyebrow hero__eyebrow">Valuation &amp; Advisory Services</p>
+          <div class="hero__actions">
+            <a class="btn btn--light btn--lg" href={url('/#sectors')}>
+              Explore our sectors <Icon name="arrow-right" />
+            </a>
+            <a class="link link--under hero__link" href={url('/#experts')}>Speak to an expert</a>
+          </div>
         </div>
       </div>
     </div>
@@ -75,8 +83,6 @@ const base = url('/hero-frames/v1/');
 <style>
   .hero {
     --p: 0;
-    --mx: 0;
-    --my: 0;
     --stage-h: max(600px, calc(100svh - var(--header-h-condensed)));
     position: relative;
     isolation: isolate;
@@ -85,7 +91,7 @@ const base = url('/hero-frames/v1/');
 
   /* Scroll runway — only when the script is running the animation */
   .hero:global(.is-scrubbing) {
-    block-size: calc(var(--stage-h) + 110vh);
+    block-size: calc(var(--stage-h) + 200vh);
   }
 
   .hero__stage {
@@ -108,11 +114,9 @@ const base = url('/hero-frames/v1/');
     z-index: -2;
   }
 
-  /* Pointer parallax: at most 14px, applied to the picture only — never to text */
   .hero__layer {
     position: absolute;
-    inset: -20px;
-    transform: translate3d(calc(var(--mx) * -14px), calc(var(--my) * -10px), 0);
+    inset: 0;
   }
 
   .hero__layer :global(img),
@@ -163,7 +167,6 @@ const base = url('/hero-frames/v1/');
         var(--field-blue-60) 44%,
         var(--field-blue-0) 72%
       );
-    opacity: calc(1 - min(var(--p) * 1.2, 0.55));
   }
 
   .hero__scrim::after {
@@ -181,9 +184,49 @@ const base = url('/hero-frames/v1/');
 
   .hero__copy {
     max-inline-size: 760px;
-    opacity: max(0, calc(1 - var(--p) * 4.5));
-    transform: translate3d(0, calc(var(--p) * -24px), 0);
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  /* While scrubbing, the three beats share one spot and hand over to each other */
+  .hero:global(.is-scrubbing) .hero__copy {
+    gap: 0;
+  }
+
+  .hero:global(.is-scrubbing) .hero__beat {
+    grid-area: 1 / 1;
+    align-self: end;
     will-change: opacity, transform;
+  }
+
+  .hero:global(.is-scrubbing) .hero__beat--0 {
+    opacity: var(--b0, 1);
+    transform: translate3d(0, var(--y0, 0), 0);
+  }
+
+  .hero:global(.is-scrubbing) .hero__beat--1 {
+    opacity: var(--b1, 0);
+    transform: translate3d(0, var(--y1, 16px), 0);
+  }
+
+  .hero:global(.is-scrubbing) .hero__beat--2 {
+    opacity: var(--b2, 0);
+    transform: translate3d(0, var(--y2, 16px), 0);
+  }
+
+  /* A hidden beat never takes clicks; keyboard focus always reveals the buttons */
+  .hero:global(.is-scrubbing) .hero__beat {
+    pointer-events: none;
+  }
+
+  .hero:global(.is-scrubbing) .hero__beat:global(.is-active),
+  .hero:global(.is-scrubbing) .hero__beat:focus-within {
+    pointer-events: auto;
+  }
+
+  .hero:global(.is-scrubbing) .hero__beat--2:focus-within {
+    opacity: 1;
+    transform: none;
   }
 
   .hero :global(.hero__eyebrow) {
@@ -197,7 +240,6 @@ const base = url('/hero-frames/v1/');
   .hero__title {
     display: flex;
     flex-direction: column;
-    margin-block-end: var(--space-6);
   }
 
   .hero__line {
@@ -205,9 +247,15 @@ const base = url('/hero-frames/v1/');
     padding-block-end: 0.06em;
   }
 
+  /* Beat 2: the lead sentence gets the stage to itself, set large */
   .hero__lead {
-    max-inline-size: 34ch;
-    margin-block-end: var(--space-7);
+    max-inline-size: 22ch;
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: var(--fs-statement);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
   }
 
   .hero__actions {
@@ -234,7 +282,7 @@ const base = url('/hero-frames/v1/');
     display: block;
     inline-size: var(--tap);
     block-size: 72px;
-    opacity: max(0, calc(1 - var(--p) * 4));
+    opacity: max(0, calc(1 - var(--p) * 8));
   }
 
   .hero__cue span {
@@ -276,7 +324,7 @@ const base = url('/hero-frames/v1/');
     }
 
     .hero:global(.is-scrubbing) {
-      block-size: calc(var(--stage-h) + 80vh);
+      block-size: calc(var(--stage-h) + 160vh);
     }
 
     .hero__scrim {

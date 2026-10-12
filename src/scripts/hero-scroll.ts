@@ -1,8 +1,9 @@
 import { pageSignal, reducedMotion } from './util';
 
 /**
- * Home hero: scroll scrubs a dusk → night time-lapse drawn on a canvas, and the pointer adds a
- * small parallax. Progress is written to the section as `--p` (0–1) so CSS fades the copy.
+ * Home hero: scroll scrubs a dusk → night time-lapse drawn on a canvas, while the copy is told
+ * in three beats. Progress is written to the section as `--p` (0–1); each beat gets
+ * `--bN` (opacity 0–1) and `--yN` (lift in px) so CSS can hand one message over to the next.
  *
  * Frames: /hero-frames/v1/{lg,sm}/f001.webp … — `sm` on narrow screens or Save-Data.
  * Adjacent frames are cross-faded, so 60 frames read as continuous motion.
@@ -66,12 +67,31 @@ export function initHeroScroll() {
     return -1;
   };
 
+  // ---- Copy beats: [fade-in start, fully in, fade-out start, fully out] as scroll progress ----
+  const BEATS: [number, number, number, number][] = [
+    [0, 0, 0.16, 0.24], // title — visible on load
+    [0.28, 0.36, 0.52, 0.6], // lead sentence
+    [0.64, 0.72, 2, 2], // actions — stay until the hero hands over
+    // Gaps between beats are deliberate: each message clears before the next one arrives.
+  ];
+  const RISE = 16;
+  const beatEls = Array.from(hero.querySelectorAll<HTMLElement>('.hero__beat'));
+  const ramp = (x: number, a: number, b: number) => (b <= a ? (x >= a ? 1 : 0) : Math.min(1, Math.max(0, (x - a) / (b - a))));
+  const applyBeats = () => {
+    BEATS.forEach(([a, b, c, d], i) => {
+      const fadeIn = a === 0 && b === 0 ? 1 : ramp(progress, a, b);
+      const fadeOut = 1 - ramp(progress, c, d);
+      const v = Math.min(fadeIn, fadeOut);
+      // Enter from below, leave upwards.
+      const y = fadeIn < 1 ? (1 - fadeIn) * RISE : -(1 - fadeOut) * RISE;
+      hero.style.setProperty(`--b${i}`, v.toFixed(3));
+      hero.style.setProperty(`--y${i}`, `${y.toFixed(1)}px`);
+      beatEls[i]?.classList.toggle('is-active', v > 0.5);
+    });
+  };
+
   // ---- State ----
   let progress = 0;
-  let mx = 0;
-  let my = 0;
-  let tx = 0;
-  let ty = 0;
   let lastKey = '';
   let raf = 0;
   let inView = true;
@@ -84,12 +104,8 @@ export function initHeroScroll() {
 
   const render = () => {
     raf = 0;
-    // Ease the pointer toward its target for a soft, weighted feel.
-    mx += (tx - mx) * 0.08;
-    my += (ty - my) * 0.08;
     hero.style.setProperty('--p', progress.toFixed(4));
-    hero.style.setProperty('--mx', mx.toFixed(4));
-    hero.style.setProperty('--my', my.toFixed(4));
+    applyBeats();
 
     const f = progress * (count - 1);
     const i = Math.floor(f);
@@ -105,7 +121,6 @@ export function initHeroScroll() {
         ctx.globalAlpha = 1;
       }
     }
-    if (Math.abs(tx - mx) > 0.001 || Math.abs(ty - my) > 0.001) schedule();
   };
 
   const schedule = () => {
@@ -160,27 +175,6 @@ export function initHeroScroll() {
     { passive: true, signal },
   );
 
-  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    hero.addEventListener(
-      'pointermove',
-      (e) => {
-        const r = hero.getBoundingClientRect();
-        tx = ((e.clientX - r.left) / r.width) * 2 - 1;
-        ty = ((e.clientY - Math.max(r.top, 0)) / Math.min(r.height, window.innerHeight)) * 2 - 1;
-        schedule();
-      },
-      { passive: true, signal },
-    );
-    hero.addEventListener(
-      'pointerleave',
-      () => {
-        tx = 0;
-        ty = 0;
-        schedule();
-      },
-      { signal },
-    );
-  }
 
   const io = new IntersectionObserver(([e]) => {
     inView = e.isIntersecting;

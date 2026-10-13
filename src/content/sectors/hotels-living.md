@@ -35,8 +35,8 @@ leadExpert: christopher-milou
 experts:
   - adam-ellis
   - emily-racki
-heroImage: ../../assets/images/locations/perth-elizabeth-quay-dusk.jpg
-heroAlt: Perth city skyline and waterfront at dusk.
+heroImage: ../../assets/images/sectors/photo-hotels-living.jpg
+heroAlt: A guest with a suitcase looking out the window of a bright hotel room.
 ---
 
 Our market knowledge of the Australian and global hotel and hospitality industry, underpinned by in-depth operations experience, ensures we deliver best-in-class hotel valuation and advisory services.

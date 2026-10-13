@@ -58,31 +58,38 @@ const index = [
       <div class="about__body">
         <p class="t-lead about__lead" data-reveal>
           We provide owners, investors, financiers and all levels of government with specialist property
-          investment advice, research and analysis reflecting real-time market conditions, giving our clients
-          the ability to navigate every market.
+          investment advice, research and market analysis, so they can make informed decisions in changing
+          markets.
         </p>
-        <div class="about__cols prose" data-reveal>
-          <p>
-            Colliers’ Valuation &amp; Advisory Services team delivers specialist property investment advice,
-            property research and market analysis to maximise the potential of property. From acquisition or
-            disposal, capital raising, first mortgage security and insurance to statutory and litigation
-            matters, we can deliver on every one of your real estate needs.
-          </p>
-          <p>
-            Our depth of experience over many decades, across market cycles and severe global shocks, combined
-            with an intricate understanding of the drivers of value, allows us to take a clear, decisive and
-            consistent position.
-          </p>
-          <p>
-            From a single commercial building to a portfolio of properties across the world, we use
-            industry-leading, quality assured systems and processes to ensure you receive the most accurate,
-            informed and knowledgeable service possible.
-          </p>
-          <p>
-            We invest in relationships to deliver enduring value. We are a long-term partner, looking beyond
-            immediate needs to build and grow our clients’ businesses.
-          </p>
-        </div>
+        <p class="about__intro" data-reveal>
+          Colliers’ Valuation &amp; Advisory Services combines deep property expertise with decades of
+          experience across market cycles. From acquisition and disposal to capital raising, first mortgage
+          security and insurance, we provide the insight clients need to protect and maximise the value of
+          their real estate.
+        </p>
+        <ul class="about__points" role="list" data-reveal-group>
+          <li data-reveal>
+            <h3 class="t-h4">Experience across every market cycle</h3>
+            <p>
+              Our understanding of value drivers and changing market conditions enables clear, confident
+              advice when it matters.
+            </p>
+          </li>
+          <li data-reveal>
+            <h3 class="t-h4">From a single asset to global portfolios</h3>
+            <p>
+              Industry-leading, quality-assured systems and processes deliver accurate, informed advice at
+              every scale.
+            </p>
+          </li>
+          <li data-reveal>
+            <h3 class="t-h4">Relationships built for the long term</h3>
+            <p>
+              We look beyond immediate requirements to help clients protect value, identify opportunities and
+              support long-term business objectives.
+            </p>
+          </li>
+        </ul>
 
         <div class="about__pair" data-reveal-group>
           <article class="about__card card" data-surface="pale" data-reveal>
@@ -91,9 +98,8 @@ const index = [
             </span>
             <h3 class="t-h4">We are enterprising</h3>
             <p class="t-small">
-              Our service offering spans from traditional valuation requirements to detailed and bespoke DCF
-              simulations and associated scenario analysis. We provide forensic analysis of the key value
-              driver components within occupier and capital market segments.
+              From traditional valuations to bespoke DCF simulations and scenario analysis, we provide
+              forensic analysis of the drivers of value across occupier and capital markets.
             </p>
           </article>
           <article class="about__card card" data-surface="pale" data-reveal>
@@ -102,13 +108,23 @@ const index = [
             </span>
             <h3 class="t-h4">Colliers</h3>
             <p class="t-small">
-              Colliers (NASDAQ, TSX: CIGI) is a leading diversified professional services and investment
-              management company. With operations in 70 countries, our 28,000+ enterprising professionals work
-              collaboratively to provide expert advice to maximise the value of property for real estate
-              occupiers, owners and investors. For more than 30 years, our experienced leadership, owning
-              approximately 40% of our equity, has delivered compound annual investment returns of almost 20%
-              for shareholders.
+              A leading diversified professional services and investment management company (NASDAQ, TSX:
+              CIGI).
             </p>
+            <dl class="about__facts">
+              <div>
+                <dt>Countries</dt>
+                <dd class="t-num">70</dd>
+              </div>
+              <div>
+                <dt>Professionals</dt>
+                <dd class="t-num">28,000+</dd>
+              </div>
+              <div>
+                <dt>Compound annual shareholder returns over 30+ years</dt>
+                <dd class="t-num">~20%</dd>
+              </div>
+            </dl>
           </article>
         </div>
       </div>
@@ -363,14 +379,66 @@ const index = [
   .about__body {
     grid-column: 7 / span 6;
     display: grid;
-    gap: var(--space-8);
+    gap: var(--space-7);
   }
 
   .about__lead {
     max-inline-size: none;
   }
 
-  .about__cols {
+  .about__intro {
+    max-inline-size: var(--measure);
+    color: var(--fg-muted);
+  }
+
+  /* Three scannable points: short heading, one line of support */
+  .about__points {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    border-block-end: 1px solid var(--keyline);
+  }
+
+  .about__points li {
+    display: grid;
+    gap: var(--space-2);
+    padding-block: var(--space-5);
+    border-block-start: 1px solid var(--keyline);
+  }
+
+  .about__points p {
+    max-inline-size: 60ch;
+    color: var(--fg-muted);
+  }
+
+  .about__facts {
+    display: grid;
+    gap: var(--space-2);
+    margin-block-start: var(--space-2);
+    padding-block-start: var(--space-4);
+    border-block-start: 1px solid var(--keyline);
+  }
+
+  .about__facts div {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .about__facts dd {
+    min-inline-size: 4.2em;
+    font-size: 1.375rem;
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+  }
+
+  .about__facts dt {
+    font-size: var(--fs-xs);
+    line-height: 1.35;
     color: var(--fg-muted);
   }
 

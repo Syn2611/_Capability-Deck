@@ -21,8 +21,8 @@ assetTypes:
 leadExpert: robert-rixon
 experts:
   - zane-gil
-heroImage: ../../assets/images/texture/particle-wave-dark.jpg
-heroAlt: Abstract arc of blue light particles on a dark field.
+heroImage: ../../assets/images/sectors/photo-data-centres.jpg
+heroAlt: Rows of server racks in a bright, clean data hall.
 ---
 
 Our specialists understand the key value drivers for leasehold interests, shell-and-core leased facilities and fully fitted operations.

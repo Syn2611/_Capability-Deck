@@ -14,8 +14,8 @@ const { title, descriptor, heroImage } = sector.data;
 ---
 
 <li class="tile-wrap" data-reveal>
-  <a class="tile" href={url(`/sectors/${sector.id}/`)}>
-    <span class="tile__media duotone">
+  <a class="tile" href={url(`/sectors/${sector.id}/`)} data-colour-reveal>
+    <span class="tile__media">
       <Picture
         src={heroImage}
         alt=""
@@ -73,18 +73,45 @@ const { title, descriptor, heroImage } = sector.data;
     transform: scaleX(1);
   }
 
+  /* Blue tint at rest; hover, focus or (on touch screens) scrolling into view lifts it to reveal the
+     photo's own colour. The tint is an overlay so it can fade: blend modes cannot transition. */
   .tile__media {
+    position: relative;
     display: block;
     aspect-ratio: 16 / 10;
     margin: 8px 8px 0;
     border-radius: calc(var(--r-card) - 8px);
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--c-deep-blue);
+  }
+
+  .tile__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--c-field-blue), var(--c-dark-blue));
+    mix-blend-mode: color;
+    pointer-events: none;
+    transition: opacity 600ms var(--ease-out);
   }
 
   .tile__media :global(img) {
     inline-size: 100%;
     block-size: 100%;
     object-fit: cover;
-    transition: transform 600ms var(--ease-out);
+    filter: grayscale(1) contrast(1.08) brightness(0.92);
+    transition:
+      transform 600ms var(--ease-out),
+      filter 600ms var(--ease-out);
+  }
+
+  .tile:is(:hover, :focus-visible, :global(.is-current)) .tile__media::after {
+    opacity: 0;
+  }
+
+  .tile:is(:hover, :focus-visible, :global(.is-current)) .tile__media :global(img) {
+    filter: none;
   }
 
   .tile:hover .tile__media :global(img) {
@@ -155,6 +182,71 @@ const { title, descriptor, heroImage } = sector.data;
   @container (max-width: 300px) {
     .tile__num {
       font-size: 1.5rem;
+    }
+  }
+
+  /* Phones: a compact row (thumbnail beside the text) so twelve sectors stay a short scroll */
+  @media (max-width: 599px) {
+    .tile {
+      flex-direction: row;
+      align-items: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .tile__media {
+      flex: 0 0 104px;
+      aspect-ratio: 1;
+      margin: 8px 0 8px 8px;
+    }
+
+    .tile__body {
+      grid-template-rows: auto auto;
+      column-gap: var(--space-2);
+      align-content: center;
+      padding: var(--space-3) var(--space-8) var(--space-3) var(--space-4);
+    }
+
+    .tile__num {
+      grid-row: 1;
+      font-size: 1rem;
+      line-height: 1.5;
+      padding-block-start: 1px;
+    }
+
+    .tile__title {
+      font-size: 1rem;
+      padding: 0;
+    }
+
+    .tile__desc {
+      grid-column: 1 / -1;
+      margin-block-start: var(--space-1);
+      font-size: var(--fs-xs);
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+    }
+
+    .tile__arrow {
+      inset-block-start: 50%;
+      inset-inline-end: var(--space-3);
+      inline-size: 32px;
+      block-size: 32px;
+      margin-block-start: -16px;
+      --icon-size: 16px;
+    }
+
+    .tile:hover .tile__arrow {
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tile__media::after,
+    .tile__media :global(img) {
+      transition: none;
     }
   }
 </style>

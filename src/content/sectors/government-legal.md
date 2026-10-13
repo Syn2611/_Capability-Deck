@@ -21,8 +21,8 @@ assetTypes:
   - Special-use property
   - Non-operational land
 leadExpert: phil-western
-heroImage: ../../assets/images/hero/sydney-harbour-aerial.jpg
-heroAlt: Aerial view of Sydney Harbour, the CBD and the Harbour Bridge.
+heroImage: ../../assets/images/sectors/photo-government-legal.jpg
+heroAlt: A sandstone civic clock tower framed by modern office towers.
 ---
 
 Valuations and strategic advice for real estate and plant & equipment, across single holdings and portfolios, with a single point of contact for personalised, accountable service.

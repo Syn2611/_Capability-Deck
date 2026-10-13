@@ -32,8 +32,8 @@ experts:
   - jennifer-wong
   - david-mugenyi
   - rishikesh-elkunchwar
-heroImage: ../../assets/images/texture/blue-curved-forms.jpg
-heroAlt: Abstract sweeping forms in deep and medium blue.
+heroImage: ../../assets/images/sectors/photo-healthcare-retirement-living.jpg
+heroAlt: A carer sharing a warm moment with two older residents.
 ---
 
 Healthcare assets are complicated and heavily nuanced. Our methodology begins from first principles and accounts for changes in operating models, market conditions and valuation methodologies.

@@ -25,6 +25,7 @@ Nothing on the site was invented to fill these gaps. Missing data is shown on th
 
 ## Resolved (Oct 2026)
 
+- **Sector photography**: supplied for 11 sectors (`src/assets/images/sectors/photo-*.jpg`), used on the tiles and sector heroes. **Hotels & Living** still uses the Perth skyline placeholder. The Mortgage photo shows an industrial building; swap it if a mixed CBD image is preferred.
 - **Telstra Data Centre photo**: supplied and in use.
 - **Certification logos**: Colliers Assure, ISO 9001 (SAI Global) and ISO/IEC 27001:2022 (CPG) supplied as raster artwork (`src/assets/images/certs/`). Vector (SVG) versions would print sharper.
 - **Quality copy**: aligned with the current Quality Assurance page (nearly 30 years, three Colliers Assure stages, ISMS under ISO 27001). The home stat now reads ~30 years.

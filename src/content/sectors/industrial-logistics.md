@@ -32,8 +32,8 @@ experts:
   - lisa-murdoch
   - connie-ndungu
   - stanley-ferro
-heroImage: ../../assets/images/sectors/interchange-light-trails.jpg
-heroAlt: Aerial view of a highway interchange at night, traced by light trails.
+heroImage: ../../assets/images/sectors/photo-industrial-logistics.jpg
+heroAlt: A container truck in front of stacked shipping containers at a port.
 ---
 
 Working with occupiers, developers and investors, we value and advise on all industrial and logistics property types across Australia, including warehouses, climate-controlled facilities and data centres.

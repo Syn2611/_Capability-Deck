@@ -23,8 +23,8 @@ leadExpert: lisa-murdoch
 experts:
   - rishikesh-elkunchwar
   - zane-gil
-heroImage: ../../assets/images/locations/sydney-harbour-portrait.jpg
-heroAlt: Sydney Harbour and the Harbour Bridge from above.
+heroImage: ../../assets/images/sectors/photo-childcare-education.jpg
+heroAlt: Young children playing with building blocks alongside an educator.
 ---
 
 Over 20 years, childcare has evolved into a structured, transparent part of the essential services sector. We have continued to refine our approach alongside it, anticipating trends, legislation and sentiment across Australia and New Zealand.

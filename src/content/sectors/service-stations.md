@@ -29,8 +29,8 @@ leadExpert: andrew-stove
 experts:
   - robert-rixon
   - zane-gil
-heroImage: ../../assets/images/sectors/highway-light-trails.jpg
-heroAlt: Long-exposure light trails along a highway at dusk.
+heroImage: ../../assets/images/sectors/photo-service-stations.jpg
+heroAlt: A service station forecourt and canopy lit at dusk.
 ---
 
 Our knowledge of the fuel industry lets us value freehold going concerns, leasehold businesses and investment-grade freehold subject to lease. We advise owners, operators, investors and major financiers, backed by an extensive transaction database.

@@ -28,8 +28,8 @@ experts:
   - lisa-murdoch
   - zane-gil
   - josh-swan
-heroImage: ../../assets/images/sectors/curved-facade-sky.jpg
-heroAlt: A sweeping curved architectural canopy against a pale sky.
+heroImage: ../../assets/images/sectors/photo-retail.jpg
+heroAlt: Fashion shopfronts along a shopping centre mall.
 ---
 
 We act for listed and unlisted funds, financiers and private entities on financial reporting, asset reporting and first mortgage security across all retail formats.

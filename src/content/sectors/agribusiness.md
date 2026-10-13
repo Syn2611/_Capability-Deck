@@ -28,8 +28,8 @@ leadExpert: stephen-cameron
 experts:
   - rob-hancock
   - oliver-wheatley
-heroImage: ../../assets/images/texture/particle-wave-arc.jpg
-heroAlt: Abstract wave of fine blue particles on a deep blue field.
+heroImage: ../../assets/images/sectors/photo-agribusiness.jpg
+heroAlt: Aerial view of a harvester working rows of crops.
 ---
 
 Our rural property specialists, most of whom grew up on rural and agribusiness holdings across Australia, bring tailored expertise and a specialist focus to every assignment.

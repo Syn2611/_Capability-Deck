@@ -21,8 +21,8 @@ assetTypes:
 leadExpert: zane-gil
 experts:
   - connie-ndungu
-heroImage: ../../assets/images/sectors/isometric-campus-white.jpg
-heroAlt: Isometric rendering of a modern building campus in white and blue.
+heroImage: ../../assets/images/sectors/photo-self-storage.jpg
+heroAlt: A corridor of roller-door storage units.
 ---
 
 A multi-disciplinary focus gives a comprehensive, precise approach to each valuation, with wholly independent, reliable and confidential advice.

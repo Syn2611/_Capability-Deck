@@ -22,8 +22,8 @@ leadExpert: matt-shadbolt
 experts:
   - dean-johnston
   - lisa-murdoch
-heroImage: ../../assets/images/locations/melbourne-yarra-skyline.jpg
-heroAlt: Melbourne CBD skyline across the Yarra River.
+heroImage: ../../assets/images/sectors/photo-mortgage.jpg
+heroAlt: A modern industrial building facade with a red roller door.
 ---
 
 Market knowledge, a best-in-class platform, rigorous training and external quality assurance deliver accurate, timely and consistent advice to lenders.

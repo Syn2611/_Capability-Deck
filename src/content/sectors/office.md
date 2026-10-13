@@ -28,8 +28,8 @@ experts:
   - andrew-govey
   - bernard-peverill
   - hamish-johnston
-heroImage: ../../assets/images/sectors/glass-tower-cutout.png
-heroAlt: The curved glass facade of a high-rise office tower.
+heroImage: ../../assets/images/sectors/photo-office.jpg
+heroAlt: People working in a bright open-plan office.
 ---
 
 Our experienced team specialises in office valuation and advisory services across Australia.

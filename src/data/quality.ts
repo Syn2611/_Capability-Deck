@@ -40,9 +40,9 @@ export const certifications: Certification[] = [
   {
     id: 'iso-9001',
     name: 'ISO 9001 Quality',
-    role: 'Quality management, SAI Global (Intertek)',
+    role: '5 Ticks StandardsMark, SAI Global (Intertek)',
     logo: iso9001Logo,
-    alt: 'Certified System, Quality ISO 9001, Intertek SAI Global',
+    alt: '5 Ticks StandardsMark: Certified System, Quality ISO 9001, Intertek SAI Global',
   },
   {
     id: 'iso-27001',

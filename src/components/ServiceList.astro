@@ -18,18 +18,31 @@ const matchers: Record<string, RegExp> = {
   'capital-raising': /capital raising/i,
   'financial-reporting': /financial reporting/i,
   'first-mortgage-security': /first mortgage/i,
-  'government-property': /^$/,
   insurance: /insurance/i,
-  'plant-equipment': /^$/,
   'rent-reviews': /rent/i,
   'statutory-litigation': /statutory|litigation/i,
   taxation: /tax/i,
 };
 
+/** Services no sector page lists: sectors named in the service's own source description. */
+const named: Record<string, string[]> = {
+  'government-property': ['government-legal'],
+  'plant-equipment': [
+    'office',
+    'retail',
+    'industrial-logistics',
+    'hotels-living',
+    'agribusiness',
+    'healthcare-retirement-living',
+    'childcare-education',
+    'data-centres',
+  ],
+};
+
 const sectorsFor = (id: string) => {
+  if (named[id]) return named[id].flatMap((n) => sectors.filter((s) => s.id === n));
   const re = matchers[id];
   const hits = sectors.filter((s) => s.data.services.some((x) => re.test(x)));
-  if (id === 'government-property') return sectors.filter((s) => s.id === 'government-legal');
   return hits;
 };
 ---

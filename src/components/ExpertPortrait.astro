@@ -48,9 +48,11 @@ const { expert, size = 220 } = Astro.props;
     inline-size: 100%;
     block-size: 100%;
     object-fit: cover;
+    /* Cut-outs share a crown line and centred head (see experts data): a slight zoom from the top
+       frames head and shoulders, with the face centred in the circle. */
     object-position: 50% 0;
-    scale: 1.35;
-    transform-origin: 50% 6%;
+    scale: 1.15;
+    transform-origin: 50% 0;
   }
 
   .portrait__silhouette {

@@ -1,17 +1,17 @@
 import type { ImageMetadata } from 'astro';
 
-import dwight from '../assets/images/experts/dwight-hillier.jpg';
-import collins from '../assets/images/experts/andrew-collins.jpg';
-import petsalis from '../assets/images/experts/jonathan-petsalis.jpg';
-import hadchiti from '../assets/images/experts/leon-hadchiti.jpg';
-import ajohnston from '../assets/images/experts/andrew-johnston.jpg';
-import milou from '../assets/images/experts/christopher-milou.jpg';
-import cameron from '../assets/images/experts/stephen-cameron.jpg';
-import western from '../assets/images/experts/phil-western.jpg';
-import mccallum from '../assets/images/experts/ben-mccallum.jpg';
-import djohnston from '../assets/images/experts/dean-johnston.jpg';
-import murdoch from '../assets/images/experts/lisa-murdoch.jpg';
-import shadbolt from '../assets/images/experts/matt-shadbolt.jpg';
+import dwight from '../assets/images/experts/dwight-hillier.webp';
+import collins from '../assets/images/experts/andrew-collins.webp';
+import petsalis from '../assets/images/experts/jonathan-petsalis.webp';
+import hadchiti from '../assets/images/experts/leon-hadchiti.webp';
+import ajohnston from '../assets/images/experts/andrew-johnston.webp';
+import milou from '../assets/images/experts/christopher-milou.webp';
+import cameron from '../assets/images/experts/stephen-cameron.webp';
+import western from '../assets/images/experts/phil-western.webp';
+import mccallum from '../assets/images/experts/ben-mccallum.webp';
+import djohnston from '../assets/images/experts/dean-johnston.webp';
+import murdoch from '../assets/images/experts/lisa-murdoch.webp';
+import shadbolt from '../assets/images/experts/matt-shadbolt.webp';
 
 export interface Expert {
   id: string;

@@ -13,6 +13,7 @@ import { initDialogs } from './dialogs';
 import { initPersonalise } from './personalise';
 import { initPrint } from './print';
 import { initHeroScroll } from './hero-scroll';
+import { initPortraitCards } from './portrait-cards';
 
 const inits = [
   initHeader,
@@ -27,6 +28,7 @@ const inits = [
   initPersonalise,
   initPrint,
   initHeroScroll,
+  initPortraitCards,
 ];
 
 const run = () => {

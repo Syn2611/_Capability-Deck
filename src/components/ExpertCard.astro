@@ -1,5 +1,12 @@
 ---
-import ExpertPortrait from './ExpertPortrait.astro';
+/**
+ * Portrait card: the cut-out photo fills the card on a flat Portrait field, with a white name chip
+ * overlapping the bottom. Hover, keyboard focus and tap shift the field to Portrait Hover; on touch
+ * screens the card nearest the middle of the viewport takes the hover colour (scripts/portrait-cards.ts).
+ * Cards with a bio open the expert dialog (scripts/dialogs.ts).
+ */
+import { Picture } from 'astro:assets';
+import { imageOpts } from '../lib/image-opts';
 import Icon from './Icon.astro';
 import Input from './Input.astro';
 import { hasDetail, type Expert } from '../data/experts';
@@ -19,10 +26,25 @@ const Tag = interactive ? 'button' : 'div';
     class="expert__card"
     type={interactive ? 'button' : undefined}
     data-dialog-open={interactive ? `expert-${e.id}` : undefined}
+    data-portrait-card={interactive ? '' : undefined}
     aria-haspopup={interactive ? 'dialog' : undefined}
   >
-    <span class="expert__photo">
-      <ExpertPortrait expert={e} size={lead ? 260 : 200} />
+    <span class="expert__photo" aria-hidden="true">
+      {e.photo ? (
+        <Picture
+          src={e.photo}
+          alt=""
+          {...imageOpts([320, 480, 640, 800], e.photo.width)}
+          sizes="(max-width: 767px) 46vw, (max-width: 1023px) 31vw, 320px"
+          loading="lazy"
+          quality={82}
+          fallbackFormat="webp"
+        />
+      ) : (
+        <span class="expert__silhouette">
+          <Icon name="person" />
+        </span>
+      )}
     </span>
     <span class="expert__chip">
       {lead && <span class="expert__badge">Sector lead</span>}
@@ -36,62 +58,90 @@ const Tag = interactive ? 'button' : 'div';
         </span>
       )}
     </span>
-    {interactive && (
-      <span class="expert__more" aria-hidden="true">
-        <Icon name="plus" />
-      </span>
-    )}
     {interactive && <span class="sr-only">, view profile</span>}
   </Tag>
 </li>
 
 <style>
-  .expert {
-    container-type: inline-size;
-  }
-
   .expert__card {
     position: relative;
+    isolation: isolate;
     display: flex;
     flex-direction: column;
-    align-items: center;
     inline-size: 100%;
     block-size: 100%;
-    padding: var(--space-6) var(--space-3) var(--space-3);
+    padding: 0 var(--space-3) var(--space-3);
     border: 0;
     border-radius: var(--r-card);
-    background: var(--c-pale-blue);
+    overflow: hidden;
+    background: var(--c-portrait);
     color: var(--c-deep-blue);
     text-align: center;
     font: inherit;
+    transition: background-color 450ms var(--ease-out);
   }
 
   button.expert__card {
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
 
+  button.expert__card:hover,
+  button.expert__card:focus-visible,
+  button.expert__card:active,
+  button.expert__card:global(.is-current) {
+    background: var(--c-portrait-hover);
+  }
+
+  /* The photo spans the card width, anchored at the top so every crown sits on the same line. Its
+     height never depends on the chip, so a longer title shows more suit and never resizes a face. */
   .expert__photo {
-    display: grid;
-    place-items: center;
-    inline-size: 76%;
-    margin-block-end: var(--space-5);
+    position: absolute;
+    inset: 0;
+    z-index: -1;
   }
 
-  .expert__photo :global(.portrait) {
+  .expert__photo :global(picture) {
+    display: block;
+  }
+
+  .expert__photo :global(img) {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    transform-origin: 50% 30%;
     transition: transform 600ms var(--ease-out);
   }
 
-  button.expert__card:hover .expert__photo :global(.portrait) {
-    transform: scale(1.03);
+  button.expert__card:hover .expert__photo :global(img) {
+    transform: scale(1.025);
+  }
+
+  /* Reserves the portrait area above the chip */
+  .expert__card::before {
+    content: '';
+    display: block;
+    aspect-ratio: 1 / 0.98;
+    margin-inline: calc(-1 * var(--space-3));
+  }
+
+  .expert__silhouette {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1 / 0.86;
+    color: var(--c-medium-blue-grey);
+    --icon-size: 46%;
+    --icon-stroke: 0.9;
   }
 
   .expert__chip {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    inline-size: 100%;
-    margin-block-start: auto;
-    padding: var(--space-4) var(--space-4);
+    margin-block-start: -14%;
+    flex: 1 0 auto;
+    justify-content: center;
+    padding: var(--space-4);
     border-radius: calc(var(--r-card) - 8px);
     background: var(--c-white);
   }
@@ -127,29 +177,36 @@ const Tag = interactive ? 'button' : 'div';
     margin-block-start: var(--space-2);
   }
 
-  .expert__more {
-    position: absolute;
-    inset-block-start: var(--space-3);
-    inset-inline-end: var(--space-3);
-    display: grid;
-    place-items: center;
-    inline-size: 36px;
-    block-size: 36px;
-    border-radius: var(--r-pill);
-    background: var(--c-white);
-    color: var(--c-medium-blue);
-    --icon-size: 18px;
-    transition:
-      background-color var(--dur-hover) var(--ease-out),
-      color var(--dur-hover) var(--ease-out);
-  }
-
-  button.expert__card:hover .expert__more {
-    background: var(--c-field-blue);
-    color: var(--c-white);
-  }
-
   .expert--lead .expert__name {
     font-size: 1.25rem;
+  }
+
+  @media (max-width: 767px) {
+    .expert__card {
+      padding: 0 var(--space-2) var(--space-2);
+    }
+
+    .expert__card::before {
+      margin-inline: calc(-1 * var(--space-2));
+    }
+
+    .expert__chip {
+      padding: var(--space-3) var(--space-2);
+    }
+
+    .expert__name {
+      font-size: 0.9375rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .expert__card,
+    .expert__photo :global(img) {
+      transition: none;
+    }
+
+    button.expert__card:hover .expert__photo :global(img) {
+      transform: none;
+    }
   }
 </style>

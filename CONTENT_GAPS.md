@@ -40,7 +40,7 @@ Nothing on the site was invented to fill these gaps. Missing data is shown on th
 - **Generic titles** (“Director”, “National Director”, “Manager”, “Senior Valuer”) for Robert Rixon, Ben Masters, Devan Vituli, Zane Gil, Josh Swan, Oliver Wheatley, Rob Hancock, Nigel Boon, Jennifer Wong, David Mugenyi and Rishikesh Elkunchwar. Supply sector titles.
 - **Sector leads without contacts**: Data Centres (Robert Rixon), Self Storage (Zane Gil) and Service Stations (Andrew Stove). Their sector CTA falls back to “Contact our team” (→ `/contact/`), and the contact directory shows no phone or email for them.
 - **Extractive Industries & Waste Management**: no lead (TBC).
-- **Headshot resolution**: PDF headshots are 338–450 px circular crops. They are fine for the 200 px cards but soft on 3× displays. Supply ≥ 900×900 px originals with consistent eye-line, ideally on a neutral grey background.
+- **Headshots for web-only experts**: the 12 leaders now use the supplied cut-outs (Oct 2026), scaled to a common head size and crown line in `src/assets/images/experts/`. New photos should be cut-outs on transparency, at least 1500 × 1500 px, head and shoulders, so they match.
 
 ## 3. Missing sector content
 

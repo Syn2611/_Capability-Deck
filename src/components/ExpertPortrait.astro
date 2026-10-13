@@ -20,6 +20,7 @@ const { expert, size = 220 } = Astro.props;
       sizes={`${size}px`}
       loading="lazy"
       quality={80}
+      fallbackFormat="webp"
     />
   ) : (
     <span class="portrait__silhouette">
@@ -38,12 +39,18 @@ const { expert, size = 220 } = Astro.props;
     background: var(--c-pale-blue-grey);
   }
 
-  /* Source headshots are pre-cut circles with a hairline ring: scale slightly to hide it. */
+  /* Headshots are cut-outs on transparency: sit them on the same field as the portrait cards */
+  .portrait:has(img) {
+    background: var(--c-portrait);
+  }
+
   .portrait :global(img) {
     inline-size: 100%;
     block-size: 100%;
     object-fit: cover;
-    scale: 1.07;
+    object-position: 50% 0;
+    scale: 1.35;
+    transform-origin: 50% 6%;
   }
 
   .portrait__silhouette {

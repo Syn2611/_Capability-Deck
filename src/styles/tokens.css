@@ -18,6 +18,9 @@
   /* Blue field: every solid Medium Blue *background* (hero, CTA bands, panels, buttons).
      Client-specified (Oct 2026). Medium Blue itself stays for text, numerals and keylines. */
   --c-field-blue: #0939c3;
+  /* Leadership portrait cards: resting and hover backgrounds behind the cut-out photos */
+  --c-portrait: #cccdde;
+  --c-portrait-hover: #8eaafa;
 
   /* ---- Secondary palette: text, backgrounds and section content only ---- */
   --c-deep-blue-grey: #353e59;

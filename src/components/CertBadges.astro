@@ -1,15 +1,15 @@
 ---
+import { Image } from 'astro:assets';
 import { certifications } from '../data/quality';
-import Input from './Input.astro';
 ---
 
-<ul class="certs" role="list" aria-label="Certifications and external audit">
+<ul class="certs" role="list" aria-label="Quality methodology and certifications">
   {certifications.map((c) => (
     <li class="cert">
-      <span class="cert__mark">{c.mark}</span>
-      <span class="cert__name">{c.name}</span>
+      <span class="cert__logo">
+        <Image src={c.logo} alt={c.alt} height={300} densities={[1, 2]} format="webp" loading="lazy" />
+      </span>
       <span class="cert__role">{c.role}</span>
-      <Input label="logo artwork" class="cert__pending" />
     </li>
   ))}
 </ul>
@@ -24,27 +24,29 @@ import Input from './Input.astro';
   }
 
   .cert {
-    position: relative;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 2px;
-    padding: var(--space-5);
+    padding: var(--space-6) var(--space-4) var(--space-5);
     border: 1px solid var(--keyline);
     border-radius: var(--r-card);
     background: var(--card-bg);
+    text-align: center;
   }
 
-  .cert__mark {
-    font-size: 1.75rem;
-    font-weight: 300;
-    letter-spacing: -0.02em;
-    color: var(--accent);
-    margin-block-end: var(--space-3);
+  .cert__logo {
+    display: grid;
+    place-items: center;
+    block-size: 150px;
+    margin-block-end: var(--space-5);
   }
 
-  .cert__name {
-    font-weight: 600;
-    font-size: var(--fs-small);
+  .cert__logo :global(img) {
+    inline-size: auto;
+    block-size: 150px;
+    max-inline-size: 100%;
+    object-fit: contain;
   }
 
   .cert__role {
@@ -52,15 +54,22 @@ import Input from './Input.astro';
     color: var(--fg-muted);
   }
 
-  .cert :global(.cert__pending) {
-    position: absolute;
-    inset-block-start: var(--space-3);
-    inset-inline-end: var(--space-3);
-  }
-
   @media (max-width: 767px) {
     .certs {
-      grid-template-columns: 1fr;
+      gap: var(--space-3);
+    }
+
+    .cert {
+      padding: var(--space-4) var(--space-2);
+    }
+
+    .cert__logo {
+      block-size: 88px;
+      margin-block-end: var(--space-3);
+    }
+
+    .cert__logo :global(img) {
+      block-size: 88px;
     }
   }
 </style>

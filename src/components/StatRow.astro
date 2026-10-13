@@ -1,10 +1,9 @@
 ---
 import type { Stat } from '../data/stats';
-import Input from './Input.astro';
 
 interface Props {
   stats: Stat[];
-  /** Show the source + as-of date beneath each figure (sector pages). */
+  /** Show the source (and as-of date, once confirmed) beneath each figure (sector pages). */
   showSource?: boolean;
 }
 
@@ -23,17 +22,8 @@ const { stats, showSource = false } = Astro.props;
           {s.value}
         </span>
       </dd>
-      {(showSource || s.asOf === 'TBC') && (
-        <dd class="stat__source">
-          {showSource && `${s.source} · `}
-          {s.asOf === 'TBC' ? (
-            <>
-              As of <Input label="date" />
-            </>
-          ) : (
-            showSource && s.asOf
-          )}
-        </dd>
+      {showSource && (
+        <dd class="stat__source">{[s.source, s.asOf !== 'TBC' && s.asOf].filter(Boolean).join(' · ')}</dd>
       )}
     </div>
   ))}

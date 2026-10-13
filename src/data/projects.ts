@@ -21,6 +21,7 @@ import bp from '../assets/images/projects/bp-portfolio-australia.jpg';
 import cqe from '../assets/images/projects/cqe-childcare-portfolio.jpg';
 import abacus from '../assets/images/projects/abacus-self-storage.jpg';
 import bpNz from '../assets/images/projects/bp-portfolio-new-zealand.jpg';
+import telstra from '../assets/images/projects/telstra-data-centre-clayton.jpg';
 
 /** Sector slug: matches `src/content/sectors/<slug>.md`. */
 export type SectorSlug =
@@ -227,6 +228,7 @@ export const projects: Project[] = [
     metric: `1${NB}data centre asset`,
     purpose: 'Potential acquisition',
     sector: 'data-centres',
+    image: telstra,
   },
   {
     id: 'bp-portfolio',

@@ -23,7 +23,12 @@ Nothing on the site was invented to fill these gaps. Missing data is shown on th
 
 - **Hero video**: Adobe Stock #133848118 (Sydney Harbour time-lapse). Confirm Colliers holds a licence covering web use. It is served as WebP frames in `public/hero-frames/v1/`.
 
-## Resolved (9 Oct 2026)
+## Resolved (Oct 2026)
+
+- **Telstra Data Centre photo**: supplied and in use.
+- **Certification logos**: Colliers Assure, ISO 9001 (SAI Global) and ISO/IEC 27001:2022 (CPG) supplied as raster artwork (`src/assets/images/certs/`). Vector (SVG) versions would print sharper.
+- **Quality copy**: aligned with the current Quality Assurance page (nearly 30 years, three Colliers Assure stages, ISMS under ISO 27001). The home stat now reads ~30 years.
+- **"As of" dates**: the visible `<INPUT: date>` markers under the rolling figures were removed at the client's request. The dates are still `TBC` in `src/data/stats.ts` and the sector files, to be supplied.
 
 - **George Place**: 54,262.2 m² confirmed.
 - **Expert notes**: Phil Western (NSW Valuer General) and Stephen Cameron (expert witness) approved.
@@ -76,8 +81,6 @@ All current imagery comes from the two reference PDFs. Sector images are shown w
 | Service Stations hero                   | Highway light trails (Example Slide 5)                              | Service station canopy at night (unbranded or approved brand). 2400×1600.                                                                                                                                         |
 | Plant & Machinery / Extractive (drafts) | Spiral particles / dark cantilever form                             | Plant room or machinery detail; quarry or waste facility aerial. 2400×1600.                                                                                                                                       |
 | **Track-record photos**                 | PDF images at 207–560 px wide (e.g. 1 Farrer Place 207 px)          | Originals ≥ 1200×1000 for every project, especially 1 Farrer Place, 32 Smith Street, George Place and Victoria Cross.                                                                                             |
-| **Telstra Data Centre**                 | Icon placeholder (the PDF only had the Telstra logo)                | Photo of the Clayton facility, or approval to show the asset.                                                                                                                                                     |
-| **Certification marks**                 | Text marks for RICS, SAI Global and 5 Ticks StandardsMark           | Official artwork (SVG) and usage approval. Replace in `src/components/CertBadges.astro`.                                                                                                                          |
 | Colliers Assure diagram                 | Not used (PDF p.5 has an infinity-loop graphic at 770 px)           | Optional: vector version, if Colliers would like it in place of the stepper.                                                                                                                                      |
 | OG / social image                       | Generated `public/og.png` (logo + title on Medium Blue)             | Approve, or supply a designed 1200×630.                                                                                                                                                                           |
 

@@ -20,10 +20,10 @@ export const stats = {
   },
   qaYears: {
     id: 'qa-years',
-    value: '25+',
+    value: '~30',
     label: 'years of quality assurance at the core of the business',
-    asOf: '2025',
-    source: 'Capability Statement 2025',
+    asOf: '2026',
+    source: 'Quality Assurance page (nearly 30 years)',
   },
   countries: {
     id: 'countries',

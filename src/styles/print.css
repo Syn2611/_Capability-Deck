@@ -86,7 +86,6 @@
   .service__toggle,
   .pq__more summary,
   .pending,
-  .cert__pending,
   .tile__arrow,
   .menu-toggle {
     display: none !important;

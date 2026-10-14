@@ -9,6 +9,9 @@ const { projects } = Astro.props;
 const filters = projectFilters.filter(
   (f) => f.id === 'all' || projects.some((p) => filterGroupOf(p) === f.id),
 );
+/** Phones show this many under "All" before the "Show all" button. */
+const PREVIEW = 6;
+const hasMore = projects.length > PREVIEW;
 ---
 
 <div class="pf" data-project-filter>
@@ -24,7 +27,12 @@ const filters = projectFilters.filter(
       Showing all {projects.length} engagements
     </p>
   </div>
-  <ProjectGrid projects={projects} filterable />
+  <ProjectGrid projects={projects} filterable previewCount={PREVIEW} />
+  {hasMore && (
+    <button class="btn btn--outline pf__more" type="button" data-filter-more>
+      Show all {projects.length} engagements
+    </button>
+  )}
 </div>
 
 <style>
@@ -71,6 +79,28 @@ const filters = projectFilters.filter(
   .pf__status {
     font-size: var(--fs-small);
     color: var(--fg-muted);
+  }
+
+  .pf__more {
+    display: none;
+  }
+
+  /* Phones: the first few under "All", the rest one tap away. Without JS everything shows. */
+  @media screen and (max-width: 599px) {
+    .pf__bar {
+      margin-block-end: var(--space-5);
+    }
+
+    :global(.js) .pf:not(.is-expanded):not(.is-filtered) :global(.project--extra) {
+      display: none;
+    }
+
+    :global(.js) .pf:not(.is-expanded):not(.is-filtered) .pf__more {
+      display: flex;
+      inline-size: 100%;
+      justify-content: center;
+      margin-block-start: var(--space-5);
+    }
   }
 
   @media (max-width: 599px) {

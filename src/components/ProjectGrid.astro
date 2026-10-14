@@ -5,13 +5,15 @@ import type { Project } from '../data/projects';
 interface Props {
   projects: Project[];
   filterable?: boolean;
+  /** On phones, how many show before "Show all" (filterable lists only). */
+  previewCount?: number;
 }
-const { projects, filterable = false } = Astro.props;
+const { projects, filterable = false, previewCount = Infinity } = Astro.props;
 ---
 
 <ul class="project-grid" role="list" data-filter-grid>
-  {projects.map((p) => (
-    <ProjectCard project={p} filterable={filterable} />
+  {projects.map((p, i) => (
+    <ProjectCard project={p} filterable={filterable} extra={filterable && i >= previewCount} />
   ))}
 </ul>
 
@@ -38,7 +40,16 @@ const { projects, filterable = false } = Astro.props;
   @media (max-width: 599px) {
     .project-grid {
       grid-template-columns: 1fr;
-      row-gap: var(--space-7);
+      row-gap: 0;
+    }
+
+    .project-grid > :global(.project) {
+      padding-block: var(--space-4);
+      border-block-end: 1px solid var(--keyline);
+    }
+
+    .project-grid > :global(.project:first-child) {
+      padding-block-start: 0;
     }
   }
 </style>

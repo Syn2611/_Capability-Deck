@@ -26,14 +26,14 @@ export function initHeroScroll() {
   const src = (i: number) => `${base}${set}/f${String(i + 1).padStart(3, '0')}.webp`;
 
   const load = (i: number) =>
-    new Promise<void>((resolve) => {
+    new Promise<boolean>((resolve) => {
       const img = new Image();
       img.decoding = 'async';
       img.onload = () => {
         frames[i] = img;
-        resolve();
+        resolve(true);
       };
-      img.onerror = () => resolve();
+      img.onerror = () => resolve(false);
       img.src = src(i);
     });
 
@@ -116,6 +116,7 @@ export function initHeroScroll() {
   let lastKey = '';
   let raf = 0;
   let inView = true;
+  let failed = false;
 
   const readProgress = () => {
     const r = hero.getBoundingClientRect();
@@ -145,7 +146,7 @@ export function initHeroScroll() {
   };
 
   const schedule = () => {
-    if (!raf && inView) raf = requestAnimationFrame(render);
+    if (!raf && inView && !failed) raf = requestAnimationFrame(render);
   };
 
   // ---- Boot: first frame immediately, the rest progressively ----
@@ -153,7 +154,15 @@ export function initHeroScroll() {
   resize();
   readProgress();
 
-  load(0).then(() => {
+  load(0).then((ok) => {
+    // Frames unavailable (offline, blocked or a failed host): keep the still poster and the full copy
+    if (!ok || signal.aborted) {
+      failed = true;
+      if (raf) cancelAnimationFrame(raf);
+      hero.classList.remove('is-scrubbing');
+      [title, ...parts, actions].forEach((el) => el?.removeAttribute('style'));
+      return;
+    }
     schedule();
     hero.classList.add('is-ready');
     const rest = Array.from({ length: count - 1 }, (_, k) => k + 1);
@@ -195,7 +204,6 @@ export function initHeroScroll() {
     },
     { passive: true, signal },
   );
-
 
   const io = new IntersectionObserver(([e]) => {
     inView = e.isIntersecting;

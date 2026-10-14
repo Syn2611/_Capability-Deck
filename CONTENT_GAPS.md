@@ -21,7 +21,7 @@ Nothing on the site was invented to fill these gaps. Missing data is shown on th
 
 ## Licensing to confirm
 
-- **Hero video**: Adobe Stock #133848118 (Sydney Harbour time-lapse). Confirm Colliers holds a licence covering web use. It is served as WebP frames in `public/hero-frames/v1/`.
+- **Hero video**: Adobe Stock #324874461 (aerial fly-in to the Sydney Harbour Bridge at sunset), replacing #133848118. Confirm Colliers holds a licence covering web use. It is served as WebP frames in `public/hero-frames/v2/`.
 
 ## Resolved (Oct 2026)
 

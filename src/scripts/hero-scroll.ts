@@ -1,12 +1,12 @@
 import { pageSignal, reducedMotion } from './util';
 
 /**
- * Home hero: scroll scrubs a dusk → night time-lapse drawn on a canvas while the copy tells one
+ * Home hero: scroll scrubs an aerial fly-in to the Harbour Bridge, drawn on a canvas while the copy tells one
  * story: title, then the lead sentence in three parts, then the actions. Progress is written to
  * the section as `--p` (0–1); each [data-beat] element gets its opacity and lift inline.
  *
- * Frames: /hero-frames/v1/{lg,sm}/f001.webp …: `sm` on narrow screens or Save-Data.
- * Adjacent frames are cross-faded, so 60 frames read as continuous motion.
+ * Frames: /hero-frames/v2/{lg,sm}/f001.webp …: `sm` on narrow screens or Save-Data.
+ * Adjacent frames are cross-faded, so 61 frames read as continuous motion.
  */
 export function initHeroScroll() {
   const hero = document.querySelector<HTMLElement>('[data-hero]');
@@ -19,7 +19,7 @@ export function initHeroScroll() {
   const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
   const set = window.innerWidth < 900 || conn?.saveData ? 'sm' : 'lg';
   const count = Number(hero.dataset[set === 'lg' ? 'framesLg' : 'framesSm']) || 0;
-  const base = hero.dataset.framesBase ?? '/hero-frames/v1/';
+  const base = hero.dataset.framesBase ?? '/hero-frames/v2/';
   if (!count) return;
 
   const frames: (HTMLImageElement | null)[] = new Array(count).fill(null);

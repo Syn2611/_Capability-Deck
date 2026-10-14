@@ -1,7 +1,7 @@
 ---
 /**
- * Home hero: Sydney Harbour time-lapse (dusk → night) scrubbed by scroll. Frames live in
- * /public/hero-frames/v1/{lg,sm}/fNNN.webp and are drawn to a canvas by scripts/hero-scroll.ts.
+ * Home hero: aerial fly-in to the Sydney Harbour Bridge at sunset, scrubbed by scroll. Frames live in
+ * /public/hero-frames/v2/{lg,sm}/fNNN.webp and are drawn to a canvas by scripts/hero-scroll.ts.
  * The copy is one story told over the scroll: the title, then the lead sentence built in three
  * parts, then the actions beneath the complete sentence. scripts/hero-scroll.ts sets each
  * [data-beat] element's opacity and lift inline.
@@ -11,11 +11,11 @@
 import Picture from './Picture.astro';
 import Icon from './Icon.astro';
 import PreparedFor from './PreparedFor.astro';
-import poster from '../assets/images/hero/sydney-harbour-blue-hour.jpg';
+import poster from '../assets/images/hero/sydney-harbour-bridge-sunset.jpg';
 import { url } from '../lib/url';
 
-const FRAMES = { lg: 60, sm: 48 };
-const base = url('/hero-frames/v1/');
+const FRAMES = { lg: 61, sm: 46 };
+const base = url('/hero-frames/v2/');
 ---
 
 <link rel="preload" as="image" href={`${base}lg/f001.webp`} media="(min-width: 900px)" fetchpriority="high" />
@@ -147,7 +147,7 @@ const base = url('/hero-frames/v1/');
 
   /* Brand-blue integration: a field-blue wash from the text side and the bottom edge, so the
      headline always sits on the field blue and the video bleeds out of it. The text-side scrim lifts a
-     little as the copy fades, letting the night skyline take over. */
+     little as the copy fades, letting the harbour take over. */
   .hero__scrim {
     position: absolute;
     inset: 0;

@@ -154,6 +154,18 @@ def css_bundle():
     return '\n'.join(parts)
 
 # ---------- pages ----------
+# Links that may leave CloudPages: Colliers corporate pages only (plus email and phone)
+ALLOWED_EXTERNAL = ('https://www.colliers.com.au/', 'https://www.colliers.com/')
+link_rows = []
+
+def link_kind(href):
+    if href.startswith('#'): return 'Section on this page'
+    if href.startswith('mailto:'): return 'Email'
+    if href.startswith('tel:'): return 'Phone'
+    if href.startswith(BASE): return 'CloudPages page'
+    if href.startswith(ALLOWED_EXTERNAL): return 'Colliers corporate website'
+    return None
+
 report = []
 for n, (src, cloud) in enumerate(PAGES, 1):
     soup = BeautifulSoup(open(os.path.join(DIST, src), encoding='utf-8').read(), 'html.parser')
@@ -250,8 +262,13 @@ for n, (src, cloud) in enumerate(PAGES, 1):
                 if r.split('#')[0] == page_url and '#' in r:
                     r = '#' + r.split('#', 1)[1]
                 a['href'] = r
-            elif h.endswith('.pdf') or h.startswith('/pdf/'):
-                a['href'] = 'https://colliers-va-capability.pegasus456.workers.dev' + h
+    # Every link must stay on CloudPages (or go to Colliers corporate, email or phone)
+    for a in soup.find_all('a', href=True):
+        kind = link_kind(a['href'])
+        if not kind:
+            raise SystemExit(f'{cloud}: link leaves CloudPages: {a["href"]}')
+        text = ' '.join(a.get_text(' ', strip=True).split()) or a.get('aria-label', '')
+        link_rows.append((cloud, text[:80], a['href'], kind))
     for el in soup.find_all(attrs={'data-astro-prefetch': True}):
         del el['data-astro-prefetch']
 
@@ -282,6 +299,16 @@ with open(os.path.join(OUT, 'image-list.csv'), 'w', newline='') as f:
         i = images[var]
         wr.writerow([i['file'], '@' + var, i['kb'], ', '.join(sorted(i['used'])), ''])
 
+with open(os.path.join(OUT, 'link-list.csv'), 'w', newline='') as f:
+    wr = csv.writer(f)
+    wr.writerow(['Page', 'Link text', 'Goes to', 'Type'])
+    seen = set()
+    for row in link_rows:
+        if row not in seen:
+            seen.add(row); wr.writerow([BASE + row[0], *row[1:]])
+kinds = {}
+for r in link_rows: kinds[r[3]] = kinds.get(r[3], 0) + 1
+print('links by type:', kinds)
 for r in report: print(*r)
 print('images to upload:', len(images), 'total KB', sum(i['kb'] for i in images.values()))
 print('css KB', os.path.getsize(os.path.join(OUT, 'code-resources', 'valuations-styles.css')) // 1024,

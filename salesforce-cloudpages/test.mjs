@@ -28,10 +28,13 @@ for (const name of pages) {
   const r = await p.evaluate((B) => {
     // Images in closed profile dialogs load only when a dialog opens
     const broken = [...document.images].filter((i) => !i.closest('dialog') && (!i.complete || !i.naturalWidth));
-    const links = [...document.querySelectorAll('a[href]')].map((a) => a.href).filter((h) => h.startsWith(B));
-    return { broken: broken.length, n: document.images.length, links: [...new Set(links.map((h) => h.slice(B.length).split(/[#?]/)[0]))] };
+    const all = [...document.querySelectorAll('a[href]')].map((a) => a.href);
+    const links = all.filter((h) => h.startsWith(B));
+    // Anything else must be Colliers corporate, email or phone: never the Cloudflare site
+    const outside = all.filter((h) => !h.startsWith(B) && !/^(mailto:|tel:|https:\/\/www\.colliers\.com(\.au)?\/)/.test(h));
+    return { broken: broken.length, n: document.images.length, outside, links: [...new Set(links.map((h) => h.slice(B.length).split(/[#?]/)[0]))] };
   }, B);
-  const unknown = r.links.filter((l) => l && !pages.includes(l));
+  const unknown = [...r.links.filter((l) => l && !pages.includes(l)), ...r.outside];
   const ok = !errs.length && !r.broken && !unknown.length;
   if (!ok) bad++;
   console.log(ok ? 'OK ' : 'BAD', name.padEnd(40), 'images', r.n, 'broken', r.broken, unknown.join(' '), errs.slice(0, 3).join(' | '));

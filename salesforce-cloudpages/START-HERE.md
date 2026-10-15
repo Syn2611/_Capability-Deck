@@ -9,12 +9,19 @@ site on Cloudflare (`colliers-va-capability.pegasus456.workers.dev/hero-frames/`
 Salesforce. If the frames ever cannot load, the hero shows the harbour still from Content Builder
 with the full text, so the page never looks broken.
 
+**Links:** every link stays on CloudPages. Sector tiles, menus, breadcrumbs, "Next sector" and Contact
+buttons all go to the `cloud.realestate.colliers.com/valuations…` pages. The only links that leave
+are the Colliers corporate website (colliers.com.au and the privacy policy), email and phone.
+`link-list.csv` lists every link on every page for review. The current `valuations` page (the
+earlier single-file version) still links to Cloudflare until it is replaced in Step 5.
+
 ## What is in this kit
 
 | Folder / file | What it is |
 | --- | --- |
 | `images/` | 65 images to upload to Content Builder (JPG, PNG and one SVG) |
 | `image-list.csv` | The same 65 images, with the page each one is used on |
+| `link-list.csv` | Every link on every page, where it goes and what type it is (for review) |
 | `va-capability-images.txt` | A content block that tells every page where each image lives |
 | `code-resources/valuations-styles.css` | Shared styles (Code Resource, type **CSS**) |
 | `code-resources/valuations-script.js` | Shared script (Code Resource, type **JavaScript**) |

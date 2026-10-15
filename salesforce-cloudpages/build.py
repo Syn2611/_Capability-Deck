@@ -17,6 +17,13 @@ from bs4 import BeautifulSoup
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+# Optional: --urls image-list.csv (with the Content Builder URL column filled in) bakes the image
+# addresses straight into the pages, so no content block is needed.
+URLS_CSV = None
+if '--urls' in sys.argv:
+    i = sys.argv.index('--urls')
+    URLS_CSV = os.path.abspath(sys.argv[i + 1])
+    del sys.argv[i:i + 2]
 args = sys.argv[1:] + [None] * 3
 DIST = os.path.abspath(args[0] or 'dist')
 OUT = os.path.abspath(args[1] or os.path.join(HERE, 'kit'))
@@ -166,7 +173,7 @@ def link_kind(href):
     if href.startswith(ALLOWED_EXTERNAL): return 'Colliers corporate website'
     return None
 
-report = []
+report, pending_pages = [], []
 for n, (src, cloud) in enumerate(PAGES, 1):
     soup = BeautifulSoup(open(os.path.join(DIST, src), encoding='utf-8').read(), 'html.parser')
     head, body = soup.head, soup.body
@@ -273,13 +280,37 @@ for n, (src, cloud) in enumerate(PAGES, 1):
         del el['data-astro-prefetch']
 
     html = str(soup)
-    # Image variables come from one shared content block, loaded first
+    # Image variables come from one shared content block, loaded first (unless URLs are baked in)
     html = html.replace('<head>', f'<head>\n%%=ContentBlockByKey("{BLOCK_KEY}")=%%', 1)
+    pending_pages.append((n, cloud, html))
+    continue
+
+def finish(n, cloud, html):
+    if baked is not None:
+        html = html.replace(f'%%=ContentBlockByKey("{BLOCK_KEY}")=%%', '')
+        html = re.sub(r'%%=v\(@(\w+)\)=%%', lambda m: baked[m.group(1)], html)
+        assert '%%' not in html
     left = sorted(set(re.findall(r'(?:src|href|content)="(/[^"]*)"', html)))
     assert html.count('%%') % 2 == 0
     fname = f'{n:02d}-{cloud}.html'
     open(os.path.join(OUT, 'pages', fname), 'w', encoding='utf-8').write(html)
     report.append((fname, len(html) // 1024, left))
+
+baked = None
+if URLS_CSV:
+    by_file = {}
+    with open(URLS_CSV, newline='', encoding='utf-8-sig') as f:
+        for row in csv.DictReader(f):
+            u = (row.get('Content Builder URL') or '').strip()
+            if row.get('File to upload') and u:
+                by_file[row['File to upload'].strip()] = u
+    missing = [i['file'] for i in images.values() if i['file'] not in by_file]
+    bad = [f for f, u in by_file.items() if not re.match(r'https://[^\s"<>]+$', u)]
+    if missing or bad:
+        raise SystemExit('Image URLs missing for: ' + ', '.join(missing) + ('\nNot a valid URL: ' + ', '.join(bad) if bad else ''))
+    baked = {var: by_file[i['file']] for var, i in images.items()}
+for args_ in pending_pages:
+    finish(*args_)
 
 open(os.path.join(OUT, 'code-resources', 'valuations-styles.css'), 'w').write(css_bundle())
 shutil.copy(os.path.join(DIST, js_src.lstrip('/')), os.path.join(OUT, 'code-resources', 'valuations-script.js'))
